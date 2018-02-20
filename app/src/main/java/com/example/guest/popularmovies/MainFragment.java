@@ -17,7 +17,6 @@ import java.util.ArrayList;
  */
 
 public class MainFragment extends Fragment{
-    private static final String API_KEY = BuildConfig.API_KEY;
 
     private GridView gridView;
     private ArrayList<SingleMovie> resultList;
