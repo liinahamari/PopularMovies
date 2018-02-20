@@ -17,6 +17,7 @@ import com.example.guest.popularmovies.data.model.MoviesArray;
 import com.example.guest.popularmovies.data.model.SingleMovie;
 import com.example.guest.popularmovies.interfaces.MovieDbApi;
 import com.example.guest.popularmovies.utils.Adapter;
+import com.example.guest.popularmovies.utils.ArrayAdapter;
 import com.example.guest.popularmovies.utils.WrapContentLinearLayoutManager;
 
 import java.util.ArrayList;
@@ -34,10 +35,16 @@ public class MainFragment extends Fragment {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private Adapter adapter;
-    private GridView gridView;
     private List<SingleMovie> resultList;
     private MovieDbApi movieDbApi;
     private CompositeDisposable compositeDisposable;
+    private GridView gridView;
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        compositeDisposable.clear();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,17 +70,28 @@ public class MainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_main, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.posts_recycle_view);
-        linearLayoutManager = new WrapContentLinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        View view = inflater.inflate(R.layout.fragment_movies_gallery, container, false);
+        gridView = view.findViewById(R.id.gridView);
+//        recyclerView = (RecyclerView) view.findViewById(R.id.posts_recycle_view);
+//        linearLayoutManager = new WrapContentLinearLayoutManager(getActivity());
+//        recyclerView.setLayoutManager(linearLayoutManager);
         return view;
     }
 
-    private void setupAdapter() {
+    /*private void setupAdapter() {
         if (isAdded()) {
             adapter = new Adapter(resultList, getContext());
             recyclerView.setAdapter(adapter);
+        }
+    }*/
+
+    void setupAdapter() {
+        if (getActivity() == null || gridView == null) return;
+
+        if (resultList != null) {
+            gridView.setAdapter(new ArrayAdapter(resultList, getContext()));
+        } else {
+            gridView.setAdapter(null);
         }
     }
 }
