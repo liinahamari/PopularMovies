@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.data.model.SingleMovie;
 import com.squareup.picasso.Picasso;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by l1maginaire on 1/25/18.
  */
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<SingleMovie> movieList;
     private Context context;
 
@@ -38,7 +39,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Picasso.with(context).load(movieList.get(position).getPosterPath()).resize(75, 75).into(holder.poster);
+        String s = "http://image.tmdb.org/t/p/w185" + movieList.get(position).getPosterPath();
+        Picasso.with(context).load(s).into(holder.poster);
     }
 
     @Override

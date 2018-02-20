@@ -14,5 +14,5 @@ import dagger.Component;
 @Component(modules = {MoviesModule.class})
 public interface MovieComponent{
 
-    MovieDbApi getNewsService();
+    MovieDbApi getMovieService();
 }

@@ -14,6 +14,6 @@ import io.reactivex.Single;
 public interface MovieDbApi {
     static final String API_KEY = BuildConfig.API_KEY;
 
-    @GET("3/movie/top_rated"+API_KEY)
+    @GET("3/movie/top_rated?api_key=f9a771d5870087b32be1a05bcb8ef697")
     Single<MoviesArray> getDefault(/*@Query("api_key") int limit, @Query("api-key") String key, @Query("offset") int offset*/);
 }
