@@ -2,6 +2,9 @@ package com.example.guest.popularmovies.app;
 
 import android.app.Application;
 
+import com.example.guest.popularmovies.di.components.ApplicationComponent;
+import com.example.guest.popularmovies.di.modules.ApplicationModule;
+
 /**
  * Created by l1maginaire on 3/1/18.
  */
