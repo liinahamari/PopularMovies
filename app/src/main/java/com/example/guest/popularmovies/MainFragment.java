@@ -8,9 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-import com.example.guest.popularmovies.dagger.components.DaggerMovieComponent;
-import com.example.guest.popularmovies.dagger.components.MovieComponent;
-import com.example.guest.popularmovies.dagger.modules.ContextModule;
+import com.example.guest.popularmovies.di.components.DaggerMovieComponent;
+import com.example.guest.popularmovies.di.components.MovieComponent;
 import com.example.guest.popularmovies.data.model.SingleMovie;
 import com.example.guest.popularmovies.interfaces.MovieDbApi;
 import com.example.guest.popularmovies.utils.ArrayAdapter;

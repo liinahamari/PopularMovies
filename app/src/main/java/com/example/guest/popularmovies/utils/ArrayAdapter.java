@@ -34,7 +34,8 @@ public class ArrayAdapter extends android.widget.ArrayAdapter<SingleMovie> {
 
         SingleMovie movie = getItem(position);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.poster);
-        Picasso.with(context).load(URL_BASE + movie.getPosterPath()).into(imageView);
+        String s = URL_BASE + movie.getPosterPath();
+        Picasso.with(context).load(s).into(imageView);
         return convertView;
     }
 }
