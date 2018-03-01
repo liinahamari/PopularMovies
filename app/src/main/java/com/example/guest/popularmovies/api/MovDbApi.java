@@ -14,7 +14,7 @@ import retrofit2.http.GET;
  * Created by l1maginaire on 3/1/18.
  */
 
-public interface MdbApi {
+public interface MovDbApi {
     @GET("3/movie/popular" + BuildConfig.API_KEY)
     Observable<MoviesArray> getPopular();
 
