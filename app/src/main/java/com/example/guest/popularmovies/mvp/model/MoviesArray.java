@@ -1,4 +1,4 @@
-package com.example.guest.popularmovies.data.model;
+package com.example.guest.popularmovies.mvp.model;
 
 // http://www.jsonschema2pojo.org/
 

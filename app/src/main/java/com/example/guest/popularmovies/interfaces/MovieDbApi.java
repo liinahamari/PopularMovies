@@ -5,10 +5,9 @@ package com.example.guest.popularmovies.interfaces;
  */
 
 import com.example.guest.popularmovies.BuildConfig;
-import com.example.guest.popularmovies.data.model.MoviesArray;
+import com.example.guest.popularmovies.mvp.model.MoviesArray;
 
 import retrofit2.http.GET;
-import retrofit2.http.Query;
 import io.reactivex.Single;
 
 public interface MovieDbApi {

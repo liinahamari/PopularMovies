@@ -1,6 +1,8 @@
 package com.example.guest.popularmovies.di.modules;
 
 import com.example.guest.popularmovies.api.MdbApi;
+import com.example.guest.popularmovies.di.scope.PerActivity;
+import com.example.guest.popularmovies.mvp.view.MainView;
 
 import dagger.Module;
 import dagger.Provides;
