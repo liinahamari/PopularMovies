@@ -1,6 +1,6 @@
 package com.example.guest.popularmovies.mvp.presenter;
 
-import com.example.guest.popularmovies.api.MdbApi;
+import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
 import com.example.guest.popularmovies.mvp.model.MoviesArray;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
@@ -21,22 +21,19 @@ import io.reactivex.disposables.Disposable;
 public class MoviesPresenter extends BasePresenter<MainView> implements Observer<MoviesArray> {
 
     @Inject
-    protected MdbApi apiService;
-//    @Inject
-//    protected UsersMapper mapper;
+    protected MovDbApi apiService;
 
     @Inject
     public MoviesPresenter() {
     }
 
-    public void getEmps() {
-        Observable<MoviesArray> empsResponseObservable = apiService.getPopular();
-        subscribe(empsResponseObservable, this);
+    public void getMovies() {
+        Observable<MoviesArray> responseObservable = apiService.getPopular();
+        subscribe(responseObservable, this);
     }
 
     @Override
     public void onError(Throwable e) {
-        getView().onShowToast("Error loading employees: " + e.getMessage());
     }
 
     @Override
@@ -49,8 +46,8 @@ public class MoviesPresenter extends BasePresenter<MainView> implements Observer
 
     @Override
     public void onNext(MoviesArray response) {
-//        List<SingleMovie> movies = mapper.mapMovies(response);
+        List<SingleMovie> movies = response.getResults();
         getView().onClearItems();
-//        getView().onMoviesLoaded(movies);
+        getView().onMoviesLoaded(movies);
     }
 }

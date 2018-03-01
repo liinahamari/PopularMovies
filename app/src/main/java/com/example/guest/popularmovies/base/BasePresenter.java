@@ -13,14 +13,16 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BasePresenter<V extends BaseView> {
 
-    @Inject protected V view;
+    @Inject
+    protected V view;
 
     protected V getView() {
         return view;
     }
 
     protected <T> void subscribe(Observable<T> observable, Observer<T> observer) {
-        observable.subscribeOn(Schedulers.io())
+        observable
+                    .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

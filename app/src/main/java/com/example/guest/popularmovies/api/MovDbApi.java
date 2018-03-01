@@ -15,9 +15,9 @@ import retrofit2.http.GET;
  */
 
 public interface MovDbApi {
-    @GET("3/movie/popular" + BuildConfig.API_KEY)
+    @GET("3/movie/popular?api_key=" + BuildConfig.API_KEY)
     Observable<MoviesArray> getPopular();
 
-    @GET("3/movie/top_rated" + BuildConfig.API_KEY)
+    @GET("3/movie/popular?api_key=" + BuildConfig.API_KEY)
     Observable<MoviesArray> getTopRated();
 }

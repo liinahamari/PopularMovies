@@ -11,6 +11,5 @@ import java.util.List;
 
 public interface MainView extends BaseView {
     void onMoviesLoaded(List<SingleMovie> movies);
-    void onShowToast(String message);
     void onClearItems();
 }

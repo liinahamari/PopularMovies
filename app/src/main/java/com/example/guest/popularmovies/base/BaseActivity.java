@@ -26,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @CallSuper
-    private void onViewReady(Bundle savedInstanceState, Intent intent) {
+    protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         resolveDaggerDependencies();
     }
 

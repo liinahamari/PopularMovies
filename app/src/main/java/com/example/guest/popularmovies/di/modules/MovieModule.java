@@ -1,6 +1,6 @@
 package com.example.guest.popularmovies.di.modules;
 
-import com.example.guest.popularmovies.api.MdbApi;
+import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.di.scope.PerActivity;
 import com.example.guest.popularmovies.mvp.view.MainView;
 
@@ -23,8 +23,8 @@ public class MovieModule {
 
     @PerActivity
     @Provides
-    MdbApi provideApiService(Retrofit retrofit) {
-        return retrofit.create(MdbApi.class);
+    MovDbApi provideApiService(Retrofit retrofit) {
+        return retrofit.create(MovDbApi.class);
     }
 
     @PerActivity
