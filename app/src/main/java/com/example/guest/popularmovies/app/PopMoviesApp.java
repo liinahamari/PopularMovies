@@ -3,7 +3,6 @@ package com.example.guest.popularmovies.app;
 import android.app.Application;
 
 import com.example.guest.popularmovies.di.components.ApplicationComponent;
-import com.example.guest.popularmovies.di.modules.ApplicationModule;
 
 /**
  * Created by l1maginaire on 3/1/18.
@@ -19,10 +18,10 @@ public class PopMoviesApp extends Application {
     }
 
     private void initializeAppComponent() {
-        applicationComponent = DaggerApplicationComponent
+        /*applicationComponent = DaggerApplicationComponent
                 .builder()
                 .applicationModule(new ApplicationModule(this))
-                .build();
+                .build();*/
     }
 
     public ApplicationComponent getApplicationComponent() {

@@ -3,6 +3,7 @@ package com.example.guest.popularmovies.api;
 import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.mvp.model.MoviesArray;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.http.GET;
 
@@ -12,8 +13,8 @@ import retrofit2.http.GET;
 
 public interface MdbApi {
     @GET("3/movie/popular" + BuildConfig.API_KEY)
-    Single<MoviesArray> getPopular();
+    Observable<MoviesArray> getPopular();
 
     @GET("3/movie/top_rated" + BuildConfig.API_KEY)
-    Single<MoviesArray> getTopRated();
+    Observable<MoviesArray> getTopRated();
 }
