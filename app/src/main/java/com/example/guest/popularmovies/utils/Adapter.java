@@ -11,9 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.squareup.picasso.Picasso;
@@ -65,6 +64,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 //                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
 //                .into(holder.poster);
 
+        holder.title.setText(movie.getTitle());
         Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
                 .into(holder.poster);
 
@@ -80,6 +80,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.poster)
         ImageView poster;
+        @BindView(R.id.movie_title)
+        TextView title;
         private final View view;
 
         public ViewHolder(View itemView) {
