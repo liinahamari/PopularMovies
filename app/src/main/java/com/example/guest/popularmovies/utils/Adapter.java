@@ -6,6 +6,7 @@ package com.example.guest.popularmovies.utils;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +24,21 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<SingleMovie> movies = new ArrayList<>();
-    private Context context;
+    private Context context; //todo: check
     private LayoutInflater layoutInflater;
+    private float dpHeight;
+    private float dpWidth;
 
-    public Adapter(LayoutInflater layoutInflater) {
+
+    public Adapter(LayoutInflater layoutInflater, Context context) {
         this.layoutInflater = layoutInflater;
+        this.context = context;
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+
     }
 
     @Override
@@ -51,10 +61,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final SingleMovie movie = movies.get(position);
-        Glide.with(context).load("http://image.tmdb.org/t/p/w185/"+movie.getPosterPath())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .fitCenter()
+//        Glide.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
+//                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                .into(holder.poster);
+
+        Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
                 .into(holder.poster);
+
     }
 
     @Override
@@ -65,11 +78,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.poster) ImageView poster;
+        @BindView(R.id.poster)
+        ImageView poster;
+        private final View view;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            context = itemView.getContext();
+            view = itemView;
+            view.setMinimumWidth((int) (dpWidth / 2));
+            view.setMinimumHeight((int) ((dpWidth / 2) * 1.5));
             ButterKnife.bind(this, itemView);
         }
     }

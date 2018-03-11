@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private void setupAdapter() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new Adapter(getLayoutInflater());
+        adapter = new Adapter(getLayoutInflater(), this);
         recyclerView.setAdapter(adapter);
     }
 
