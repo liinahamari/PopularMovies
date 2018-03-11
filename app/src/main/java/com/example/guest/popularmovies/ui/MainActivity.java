@@ -2,7 +2,7 @@ package com.example.guest.popularmovies.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 
@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private void loadNews() {
         if (NetworkChecker.isNetAvailable(this)) {
-            presenter.getMovies();
+            presenter.getPopular();
         } else {
 
         }
@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private void setupAdapter() {
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         adapter = new Adapter(getLayoutInflater());
         recyclerView.setAdapter(adapter);
     }

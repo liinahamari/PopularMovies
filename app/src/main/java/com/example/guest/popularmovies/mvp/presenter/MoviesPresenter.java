@@ -18,7 +18,7 @@ import io.reactivex.disposables.Disposable;
  * Created by l1maginaire on 2/25/18.
  */
 
-public class MoviesPresenter extends BasePresenter<MainView> implements Observer<MoviesArray> {
+public class MoviesPresenter extends BasePresenter<MainView>{
 
     @Inject
     protected MovDbApi apiService;
@@ -27,27 +27,45 @@ public class MoviesPresenter extends BasePresenter<MainView> implements Observer
     public MoviesPresenter() {
     }
 
-    public void getMovies() {
-        Observable<MoviesArray> responseObservable = apiService.getPopular();
-        subscribe(responseObservable, this);
+    public void getPopular() {
+        Observable<MoviesArray> observable = apiService.getPopular();
+        subscribe(observable, new Observer<MoviesArray>() {
+            @Override
+            public void onNext(MoviesArray response) {
+                List<SingleMovie> movies = response.getResults();
+                getView().onClearItems();
+                getView().onMoviesLoaded(movies);
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {}
+
+            @Override
+            public void onError(Throwable e) {}
+
+            @Override
+            public void onComplete() {}
+        });
     }
 
-    @Override
-    public void onError(Throwable e) {
-    }
+    public void getTopRated() {
+        Observable<MoviesArray> observable = apiService.getTopRated();
+        subscribe(observable, new Observer<MoviesArray>() {
+            @Override
+            public void onNext(MoviesArray response) {
+                List<SingleMovie> movies = response.getResults();
+                getView().onClearItems();
+                getView().onMoviesLoaded(movies);
+            }
 
-    @Override
-    public void onComplete() {
-    }
+            @Override
+            public void onSubscribe(Disposable d) {}
 
-    @Override
-    public void onSubscribe(Disposable d) {
-    }
+            @Override
+            public void onError(Throwable e) {}
 
-    @Override
-    public void onNext(MoviesArray response) {
-        List<SingleMovie> movies = response.getResults();
-        getView().onClearItems();
-        getView().onMoviesLoaded(movies);
+            @Override
+            public void onComplete() {}
+        });
     }
 }

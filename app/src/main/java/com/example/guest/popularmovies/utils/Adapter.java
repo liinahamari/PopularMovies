@@ -22,11 +22,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/*
- * Created by l1maginaire on 3/01/18.
- **/
-
-
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     private List<SingleMovie> movies = new ArrayList<>();
     private Context context;
@@ -58,6 +53,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
         final SingleMovie movie = movies.get(position);
         Glide.with(context).load("http://image.tmdb.org/t/p/w185/"+movie.getPosterPath())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .fitCenter()
                 .into(holder.poster);
     }
 
