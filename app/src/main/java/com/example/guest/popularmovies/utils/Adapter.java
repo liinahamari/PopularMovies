@@ -5,6 +5,7 @@ package com.example.guest.popularmovies.utils;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
+import com.example.guest.popularmovies.ui.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -67,7 +69,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.title.setText(movie.getTitle());
         Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
                 .into(holder.poster);
-
+        holder.view.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra(DetailActivity.IDENTIFICATION, movie);
+            context.startActivity(intent);
+        });
     }
 
     @Override

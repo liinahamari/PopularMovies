@@ -5,11 +5,15 @@ package com.example.guest.popularmovies.mvp.model;
  * Created by guest on 2/19/18.
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SingleMovie{
+public class SingleMovie implements Parcelable {
 
     @SerializedName("vote_count")
     @Expose
@@ -50,9 +54,19 @@ public class SingleMovie{
     @SerializedName("overview")
     @Expose
     private String overview;
-    @SerializedName("releaseDate")
+    @SerializedName("release_date")
     @Expose
     private String releaseDate;
+
+    protected SingleMovie(Parcel in) {
+        originalTitle = in.readString();
+        posterPath = in.readString();
+        overview = in.readString();
+        voteAverage = in.readDouble();
+        releaseDate = in.readString();
+    }
+
+    public SingleMovie() {}
 
     public Integer getVoteCount() {
         return voteCount;
@@ -165,4 +179,28 @@ public class SingleMovie{
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+    @Override
+    public int describeContents() {return 0;}
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(originalTitle);
+        dest.writeString(posterPath);
+        dest.writeString(overview);
+        dest.writeDouble(voteAverage);
+        dest.writeString(releaseDate);
+    }
+
+    public static final Creator<SingleMovie> CREATOR = new Creator<SingleMovie>() {
+        @Override
+        public SingleMovie createFromParcel(Parcel in) {
+            return new SingleMovie(in);
+        }
+
+        @Override
+        public SingleMovie[] newArray(int size) {
+            return new SingleMovie[size];
+        }
+    };
 }

@@ -26,12 +26,12 @@ public class DetailActivity extends BaseActivity {
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
         showBackArrow();
-        SingleMovie movie = (SingleMovie) intent.getParcelableExtra(IDENTIFICATION);
+        SingleMovie movie = (SingleMovie) getIntent().getParcelableExtra(IDENTIFICATION);
         Picasso.with(this).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
                 .into(poster);
         title.setText(movie.getTitle());
         synopsis.setText(movie.getOverview());
-        rating.setText(movie.getVoteCount());
+        rating.setText(String.valueOf(movie.getVoteAverage()));
         releaseDate.setText(movie.getReleaseDate());
     }
 
