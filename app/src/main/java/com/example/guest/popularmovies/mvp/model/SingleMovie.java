@@ -50,7 +50,7 @@ public class SingleMovie{
     @SerializedName("overview")
     @Expose
     private String overview;
-    @SerializedName("release_date")
+    @SerializedName("releaseDate")
     @Expose
     private String releaseDate;
 

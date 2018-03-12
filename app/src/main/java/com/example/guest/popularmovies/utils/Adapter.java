@@ -79,9 +79,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.poster)
-        ImageView poster;
+        protected ImageView poster;
         @BindView(R.id.movie_title)
-        TextView title;
+        protected TextView title;
         private final View view;
 
         public ViewHolder(View itemView) {

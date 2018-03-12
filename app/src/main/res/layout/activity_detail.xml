@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.guest.popularmovies.ui.DetailActivity">
+    tools:context="com.example.guest.popularmovies.ui.DetailActivity"
+    android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/d_poster"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/mov_title"
+        android:id="@+id/d_mov_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/mov_synopsis"
+        android:id="@+id/d_mov_synopsis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/mov_rating"
+        android:id="@+id/d_mov_rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/mov_release_date"
+        android:id="@+id/d_mov_release_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
