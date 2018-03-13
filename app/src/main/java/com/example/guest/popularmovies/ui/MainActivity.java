@@ -27,7 +27,7 @@ import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainView {
 
-    private int page=0;
+    private int page=1;
     @Inject
     protected MoviesPresenter presenter;
 
@@ -60,7 +60,8 @@ public class MainActivity extends BaseActivity implements MainView {
         recyclerView.addOnScrollListener(new EndlessScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                
+                //todo network check
+                presenter.getPopular(++page);
             }
         });
     }
