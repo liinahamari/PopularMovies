@@ -108,4 +108,10 @@ public class MainActivity extends BaseActivity implements MainView {
     public void onClearItems() {
         adapter.clearNews();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.unsubscribe();
+        super.onDestroy();
+    }
 }

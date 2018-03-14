@@ -4,11 +4,15 @@ package com.example.guest.popularmovies.base;
  * Created by l1maginaire on 3/1/18.
  */
 
+import com.example.guest.popularmovies.mvp.model.MoviesArray;
+
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class BasePresenter<V extends BaseView> {
@@ -20,10 +24,11 @@ public class BasePresenter<V extends BaseView> {
         return view;
     }
 
-    protected <T> void subscribe(Observable<T> observable, Observer<T> observer) {
-        observable
-                    .subscribeOn(Schedulers.io())
+    protected Disposable subscribe(Observable<MoviesArray> observable, io.reactivex.functions.Consumer<MoviesArray> onNext,
+                   Consumer<Throwable> onError, Action onComplete) {
+        return observable
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+                .subscribe(onNext, onError, onComplete);
     }
 }
