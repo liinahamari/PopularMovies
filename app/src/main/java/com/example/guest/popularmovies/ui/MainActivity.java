@@ -16,6 +16,7 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.MoviesPresenter;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.Adapter;
+import com.example.guest.popularmovies.utils.EndlessScrollListener;
 import com.example.guest.popularmovies.utils.NetworkChecker;
 
 import java.util.List;
@@ -25,6 +26,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainView {
+
+    private int page=1;
     @Inject
     protected MoviesPresenter presenter;
 
@@ -42,7 +45,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private void loadNews() {
         if (NetworkChecker.isNetAvailable(this)) {
-            presenter.getPopular();
+            presenter.getPopular(page);
         } else {
 
         }
@@ -50,9 +53,17 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private void setupAdapter() {
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new Adapter(getLayoutInflater(), this);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new EndlessScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                //todo network check
+                presenter.getPopular(++page);
+            }
+        });
     }
 
     @Override
@@ -71,10 +82,10 @@ public class MainActivity extends BaseActivity implements MainView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                presenter.getPopular();
+                presenter.getPopular(page);
                 return true;
             case R.id.action_top_rated:
-                presenter.getTopRated();
+                presenter.getTopRated(page);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

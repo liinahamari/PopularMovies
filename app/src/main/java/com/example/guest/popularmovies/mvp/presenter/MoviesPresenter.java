@@ -27,8 +27,8 @@ public class MoviesPresenter extends BasePresenter<MainView>{
     public MoviesPresenter() {
     }
 
-    public void getPopular() {
-        Observable<MoviesArray> observable = apiService.getPopular();
+    public void getPopular(int page) {
+        Observable<MoviesArray> observable = apiService.getPopular(page);
         subscribe(observable, new Observer<MoviesArray>() {
             @Override
             public void onNext(MoviesArray response) {
@@ -48,8 +48,8 @@ public class MoviesPresenter extends BasePresenter<MainView>{
         });
     }
 
-    public void getTopRated() {
-        Observable<MoviesArray> observable = apiService.getTopRated();
+    public void getTopRated(int page) {
+        Observable<MoviesArray> observable = apiService.getTopRated(page);
         subscribe(observable, new Observer<MoviesArray>() {
             @Override
             public void onNext(MoviesArray response) {
