@@ -49,7 +49,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return holder;
     }
 
-    public void addNews(List<SingleMovie> news) {
+    public void addMovies(List<SingleMovie> news) {
         movies.addAll(news);
         notifyDataSetChanged();
     }

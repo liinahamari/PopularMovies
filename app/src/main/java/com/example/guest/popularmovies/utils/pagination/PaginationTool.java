@@ -14,13 +14,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PaginationTool<T> {
 
-    // for first start of items loading then on RecyclerView there are not items and no scrolling
     private static final int EMPTY_LIST_ITEMS_COUNT = 0;
     private static final int MAX_ATTEMPTS_TO_RETRY_LOADING = 3;
 
     private RecyclerView recyclerView;
     private PagingListener<T> pagingListener;
-    private int limit;
     private int emptyListCount;
     private int retryCount;
     private boolean emptyListCountPlusToOffset;
