@@ -32,7 +32,7 @@ public class PaginationTool<T> {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
-                .switchMap(offset -> getPagingObservable(pagingListener, pagingListener.onNextPage(offset), startNumberOfRetryAttempt, offset, retryCount));
+                .switchMap(offset -> PaginationTool.this.getPagingObservable(pagingListener, pagingListener.onNextPage(offset), startNumberOfRetryAttempt, offset, retryCount));
     }
 
     private Observable<Integer> getScrollObservable(RecyclerView recyclerView, int emptyListCount) {
@@ -44,8 +44,9 @@ public class PaginationTool<T> {
                         int position = getLastVisibleItemPosition(recyclerView);
                         int updatePosition = recyclerView.getAdapter().getItemCount() - 1 - (20 / 2);
                         if (position >= updatePosition) {
-                            int offset = emptyListCountPlusToOffset ? recyclerView.getAdapter().getItemCount() : recyclerView.getAdapter().getItemCount() - emptyListCount;
-                            subscriber.onNext(offset);
+                            int actualPage = (recyclerView.getAdapter().getItemCount()/20);
+//                            int offset = emptyListCountPlusToOffset ? recyclerView.getAdapter().getItemCount() : recyclerView.getAdapter().getItemCount() - emptyListCount;
+                            subscriber.onNext(actualPage);
                         }
                     }
                 }
@@ -79,12 +80,12 @@ public class PaginationTool<T> {
         }
     }
 
-    private Observable<T> getPagingObservable(PagingListener<T> listener, Observable<T> observable, int numberOfAttemptToRetry, int offset, int retryCount) {
+    private Observable<T> getPagingObservable(PagingListener<T> listener, Observable<T> observable,
+                                              int numberOfAttemptToRetry, int page, int retryCount) {
         return observable.onErrorResumeNext(throwable -> {
-            // retry to load new data portion if error occurred
             if (numberOfAttemptToRetry < retryCount) {
                 int attemptToRetryInc = numberOfAttemptToRetry + 1;
-                return getPagingObservable(listener, listener.onNextPage(offset), attemptToRetryInc, offset, retryCount);
+                return getPagingObservable(listener, listener.onNextPage(page), attemptToRetryInc, page, retryCount);
             } else {
                 return Observable.empty();
             }
@@ -149,5 +150,4 @@ public class PaginationTool<T> {
         }
 
     }
-
 }

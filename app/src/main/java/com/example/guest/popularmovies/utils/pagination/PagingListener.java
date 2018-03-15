@@ -7,5 +7,5 @@ package com.example.guest.popularmovies.utils.pagination;
 import io.reactivex.Observable;
 
 public interface PagingListener<T> {
-    Observable<T> onNextPage(int offset);
+    Observable<T> onNextPage(int page);
 }

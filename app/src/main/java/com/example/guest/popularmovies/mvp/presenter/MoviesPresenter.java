@@ -9,6 +9,7 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.Adapter;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
+import com.example.guest.popularmovies.utils.pagination.PagingListener;
 
 import java.util.List;
 
@@ -46,7 +47,12 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         }));*/
 
         PaginationTool<MoviesArray> paginationTool = PaginationTool.buildPagingObservable(recyclerView,
-                page -> apiService.getPopular(++page))
+                new PagingListener<MoviesArray>() {
+                    @Override
+                    public Observable<MoviesArray> onNextPage(int page) {
+                        return apiService.getPopular(++page);
+                    }
+                })
                 .build();
 
         disposable = paginationTool
