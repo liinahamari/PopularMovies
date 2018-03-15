@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -19,8 +20,7 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class MoviesPresenter extends BasePresenter<MainView> {
-    private Disposable disposable1;
-    private Disposable disposable2;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
     protected MovDbApi apiService;
@@ -31,30 +31,29 @@ public class MoviesPresenter extends BasePresenter<MainView> {
 
     public void getPopular(int page) {
         Observable<MoviesArray> observable = apiService.getPopular(page);
-        disposable1 = subscribe(observable, response -> {
+        disposable.add(subscribe(observable, response -> {
             List<SingleMovie> movies = response.getResults();
             getView().onClearItems();
             getView().onMoviesLoaded(movies);
         }, Throwable::printStackTrace, () -> {
             // todo: onComplete logging
-        });
+        }));
     }
+
 
     public void getTopRated(int page) {
         Observable<MoviesArray> observable = apiService.getTopRated(page);
-        disposable2 = subscribe(observable, response -> {
+        disposable.add(subscribe(observable, response -> {
             List<SingleMovie> movies = response.getResults();
             getView().onClearItems();
             getView().onMoviesLoaded(movies);
         }, Throwable::printStackTrace, () -> {
             // todo: onComplete logging
-        });
+        }));
     }
 
     public void unsubscribe() {
-        if (disposable1 != null)
-            disposable1.dispose();
-        if (disposable2 != null)
-            disposable2.dispose();
+        if(disposable!=null)
+            disposable.dispose();
     }
 }
