@@ -23,8 +23,8 @@ public class PaginationTool<T> {
     private int retryCount;
     private boolean emptyListCountPlusToOffset;
 
-    private PaginationTool() {
-    }
+    private PaginationTool() { //todo: savedinstancestate and position of scrolling
+    } //todo much rows in landscape mode
 
     public Observable<T> getPagingObservable() {
         int startNumberOfRetryAttempt = 0;
@@ -148,6 +148,5 @@ public class PaginationTool<T> {
             paginationTool.emptyListCountPlusToOffset = emptyListCountPlusToOffset;
             return paginationTool;
         }
-
     }
 }
