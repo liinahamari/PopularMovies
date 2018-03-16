@@ -8,9 +8,11 @@ import com.example.guest.popularmovies.mvp.model.MoviesArray;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.Adapter;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
+import com.example.guest.popularmovies.utils.pagination.PagingListener;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -21,8 +23,8 @@ import io.reactivex.disposables.Disposable;
 
 public class MoviesPresenter extends BasePresenter<MainView> {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private Disposable disposable;
     private PaginationTool<MoviesArray> paginationTool;
+    private Disposable disposable;
 
     @Inject
     protected MovDbApi apiService;
@@ -31,7 +33,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public MoviesPresenter() {
     }
 
-    public void getPopular(RecyclerView recyclerView, Adapter adapter) {
+    public void getPopular(RecyclerView recyclerView, Adapter adapter/*todo adapter from recycler*/) {
         /*Observable<MoviesArray> observable = apiService.getPopular(page);
         compositeDisposable.add(subscribe(observable, response -> {
             List<SingleMovie> movies = response.getResults();
@@ -42,20 +44,26 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         }));*/
 
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
-                page -> apiService.getPopular(++page))
+                new PagingListener<MoviesArray>() {
+                    @Override
+                    public Observable<MoviesArray> onNextPage(int page) { //todo starts with zero
+                        return apiService.getPopular(++page);
+                    }
+                })
                 .build();
-
-        disposable = paginationTool
+        if(compositeDisposable!=null)//todo necesserity
+            compositeDisposable.clear();
+        compositeDisposable.add(paginationTool
                 .getPagingObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
                     adapter.addMovies(items.getResults());
                     adapter.notifyItemInserted(adapter.getItemCount() - items.getResults().size());
-                });
+                }));
     }
 
 
-    public void getTopRated(int page) {
+    public void getTopRated(RecyclerView recyclerView, Adapter adapter) {
         /*Observable<MoviesArray> observable = apiService.getTopRated(page);
         compositeDisposable.add(subscribe(observable, response -> {
             List<SingleMovie> movies = response.getResults();
@@ -64,6 +72,24 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         }, Throwable::printStackTrace, () -> {
             // todo: onComplete logging
         }));*/
+
+        paginationTool = PaginationTool.buildPagingObservable(recyclerView,
+                new PagingListener<MoviesArray>() {
+                    @Override
+                    public Observable<MoviesArray> onNextPage(int page) {
+                        return apiService.getTopRated(++page);
+                    }
+                })
+                .build();
+        if(compositeDisposable!=null) //todo necesserity
+            compositeDisposable.clear();
+        compositeDisposable.add(paginationTool
+                .getPagingObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(items -> {
+                    adapter.addMovies(items.getResults());
+                    adapter.notifyItemInserted(adapter.getItemCount() - items.getResults().size());
+                }));
     }
 
     public void unsubscribe() {

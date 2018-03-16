@@ -31,7 +31,7 @@ public class MainActivity extends BaseActivity implements MainView {
     protected MoviesPresenter presenter;
 
     @BindView(R.id.mov_recycler)
-    RecyclerView recyclerView;
+    protected RecyclerView recyclerView;
 
     private Adapter adapter;
 
@@ -74,10 +74,12 @@ public class MainActivity extends BaseActivity implements MainView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-//                presenter.getPopular(page);
+                setupAdapter(); //todo костыль?
+                presenter.getPopular(recyclerView, adapter);
                 return true;
             case R.id.action_top_rated:
-//                presenter.getTopRated(page);
+                setupAdapter();
+                presenter.getTopRated(recyclerView, adapter);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
