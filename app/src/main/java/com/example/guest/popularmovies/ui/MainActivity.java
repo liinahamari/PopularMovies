@@ -1,6 +1,7 @@
 package com.example.guest.popularmovies.ui;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,8 +53,14 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private void setupAdapter() {
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
+        else{
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        }
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+//        recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new Adapter(getLayoutInflater(), this);
         recyclerView.setAdapter(adapter);
     }
