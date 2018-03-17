@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/flexible.example.toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@null"
+        app:layout_collapseMode="pin"
+        app:navigationIcon="@drawable/abc_ic_ab_back_material"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

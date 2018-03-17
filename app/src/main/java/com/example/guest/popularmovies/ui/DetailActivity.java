@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
@@ -34,8 +33,8 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
-//        showBackArrow();
-        getSupportActionBar().hide(); //todo rостыль
+        showBackArrow();
+        getSupportActionBar().hide(); //todo костыль
         SingleMovie movie = (SingleMovie) getIntent().getParcelableExtra(IDENTIFICATION);
         Picasso.with(this).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
                 .into(poster);
@@ -44,7 +43,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 //        rating.setText(String.valueOf(movie.getVoteAverage()));
 //        releaseDate.setText(movie.getReleaseDate());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.flexible_example_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.mytoolbar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         AppBarLayout appbar = (AppBarLayout) findViewById(R.id.flexible_example_appbar);

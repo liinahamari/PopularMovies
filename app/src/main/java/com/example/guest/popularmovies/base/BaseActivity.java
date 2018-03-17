@@ -1,6 +1,8 @@
 package com.example.guest.popularmovies.base;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
@@ -17,9 +19,14 @@ import butterknife.ButterKnife;
  **/
 
 public abstract class BaseActivity extends AppCompatActivity {
+    private ActionBar actionBar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        actionBar = getSupportActionBar();
+        int color = (System.currentTimeMillis()%2==0) ? Color.RED : Color.CYAN;
+        actionBar.setBackgroundDrawable(new ColorDrawable(color));
         setContentView(getContentView());
         ButterKnife.bind(this);
         onViewReady(savedInstanceState, getIntent());
@@ -31,10 +38,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void showBackArrow() {
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowHomeEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
         }
     }
 

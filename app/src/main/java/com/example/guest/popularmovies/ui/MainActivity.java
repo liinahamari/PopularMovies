@@ -27,7 +27,6 @@ import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainView {
 
-    private int page=1;
     @Inject
     protected MoviesPresenter presenter;
 
@@ -52,15 +51,13 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     private void setupAdapter() {
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true); //todo necessity
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         }
         else{
             recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         }
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-//        recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new Adapter(getLayoutInflater(), this);
         recyclerView.setAdapter(adapter);
     }
@@ -81,7 +78,7 @@ public class MainActivity extends BaseActivity implements MainView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                setupAdapter(); //todo костыль?
+                setupAdapter(); //todo another way?
                 presenter.getPopular(recyclerView, adapter);
                 return true;
             case R.id.action_top_rated:

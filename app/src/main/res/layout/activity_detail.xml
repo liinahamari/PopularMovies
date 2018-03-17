@@ -36,7 +36,7 @@
                 />
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/flexible.example.toolbar"
+                android:id="@+id/mytoolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@null"

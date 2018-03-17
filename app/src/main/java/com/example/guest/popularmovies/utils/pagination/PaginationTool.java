@@ -24,7 +24,7 @@ public class PaginationTool<T> {
     private boolean emptyListCountPlusToOffset;
 
     private PaginationTool() { //todo: savedinstancestate and position of scrolling
-    } //todo much rows in landscape mode
+    }
 
     public Observable<T> getPagingObservable() {
         int startNumberOfRetryAttempt = 0;
@@ -32,7 +32,8 @@ public class PaginationTool<T> {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
-                .switchMap(offset -> PaginationTool.this.getPagingObservable(pagingListener, pagingListener.onNextPage(offset), startNumberOfRetryAttempt, offset, retryCount));
+                .switchMap(offset -> PaginationTool.this.getPagingObservable(pagingListener,
+                        pagingListener.onNextPage(offset), startNumberOfRetryAttempt, offset, retryCount));
     }
 
     private Observable<Integer> getScrollObservable(RecyclerView recyclerView, int emptyListCount) {
@@ -87,6 +88,7 @@ public class PaginationTool<T> {
                 int attemptToRetryInc = numberOfAttemptToRetry + 1;
                 return getPagingObservable(listener, listener.onNextPage(page), attemptToRetryInc, page, retryCount);
             } else {
+                //todo ErrorMessage with RepeatButton
                 return Observable.empty();
             }
         });

@@ -51,8 +51,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                     }
                 })
                 .build();
-        if(compositeDisposable!=null)//todo necesserity
-            compositeDisposable.clear();
+        compositeDisposable.clear();
         compositeDisposable.add(paginationTool
                 .getPagingObservable()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -64,15 +63,6 @@ public class MoviesPresenter extends BasePresenter<MainView> {
 
 
     public void getTopRated(RecyclerView recyclerView, Adapter adapter) {
-        /*Observable<MoviesArray> observable = apiService.getTopRated(page);
-        compositeDisposable.add(subscribe(observable, response -> {
-            List<SingleMovie> movies = response.getResults();
-            getView().onClearItems();
-            getView().onMoviesLoaded(movies);
-        }, Throwable::printStackTrace, () -> {
-            // todo: onComplete logging
-        }));*/
-
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
                 new PagingListener<MoviesArray>() {
                     @Override
@@ -81,8 +71,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                     }
                 })
                 .build();
-        if(compositeDisposable!=null) //todo necesserity
-            compositeDisposable.clear();
+        compositeDisposable.clear();
         compositeDisposable.add(paginationTool
                 .getPagingObservable()
                 .observeOn(AndroidSchedulers.mainThread())
