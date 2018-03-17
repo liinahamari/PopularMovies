@@ -3,6 +3,7 @@ package com.example.guest.popularmovies.ui;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -17,7 +18,6 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.MoviesPresenter;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.Adapter;
-import com.example.guest.popularmovies.utils.NetworkChecker;
 
 import java.util.List;
 
@@ -43,19 +43,14 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     private void loadNews() {
-        if (NetworkChecker.isNetAvailable(this)) {
-            presenter.getPopular(recyclerView, adapter);
-        } else {
-
-        }
+        presenter.getPopular(recyclerView, adapter);
     }
 
     private void setupAdapter() {
         recyclerView.setHasFixedSize(true); //todo necessity
-        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        }
-        else{
+        } else {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         }
         adapter = new Adapter(getLayoutInflater(), this);
@@ -89,6 +84,7 @@ public class MainActivity extends BaseActivity implements MainView {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     protected void resolveDaggerDependencies() {
         DaggerMovieComponent.builder()

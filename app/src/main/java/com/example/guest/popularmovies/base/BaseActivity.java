@@ -19,14 +19,10 @@ import butterknife.ButterKnife;
  **/
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private ActionBar actionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        actionBar = getSupportActionBar();
-        int color = (System.currentTimeMillis()%2==0) ? Color.RED : Color.CYAN;
-        actionBar.setBackgroundDrawable(new ColorDrawable(color));
         setContentView(getContentView());
         ButterKnife.bind(this);
         onViewReady(savedInstanceState, getIntent());
@@ -35,13 +31,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @CallSuper
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         resolveDaggerDependencies();
-    }
-
-    protected void showBackArrow() {
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
     }
 
     protected ApplicationComponent getApplicationComponent() {

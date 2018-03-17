@@ -6,8 +6,9 @@
     android:id="@+id/annonce.main.coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="16dp"
+    android:paddingBottom="5dp"
     tools:ignore="RtlHardcoded"
+    android:background="@color/colorPrimary"
     >
 
     <android.support.design.widget.AppBarLayout
@@ -49,7 +50,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="16dp"
+        android:paddingBottom="4dp"
         android:scrollbars="none"
         app:behavior_overlapTop="78dp"
         android:layout_marginBottom="78dp"
