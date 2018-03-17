@@ -59,7 +59,7 @@ public class SingleMovie implements Parcelable {
     private String releaseDate;
 
     protected SingleMovie(Parcel in) {
-        originalTitle = in.readString();
+        title = in.readString();
         posterPath = in.readString();
         overview = in.readString();
         voteAverage = in.readDouble();
@@ -185,7 +185,7 @@ public class SingleMovie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(originalTitle);
+        dest.writeString(title);
         dest.writeString(posterPath);
         dest.writeString(overview);
         dest.writeDouble(voteAverage);

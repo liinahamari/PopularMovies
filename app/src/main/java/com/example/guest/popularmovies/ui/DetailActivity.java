@@ -3,11 +3,13 @@ package com.example.guest.popularmovies.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
@@ -23,6 +25,9 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     protected ImageView poster;
     @BindView(R.id.flexible_example_fab)
     protected View mFab;
+    @BindView(R.id.my_collapsing_toolbar)
+    protected CollapsingToolbarLayout toolbar;
+
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
     private int mMaxScrollSize;
     private boolean mIsImageHidden;
@@ -34,7 +39,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
         getSupportActionBar().hide(); //todo костыль
-        SingleMovie movie = (SingleMovie) getIntent().getParcelableExtra(IDENTIFICATION);
+        SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
         Picasso.with(this).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
                 .into(poster);
 //        title.setText(movie.getTitle());
@@ -43,6 +48,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 //        releaseDate.setText(movie.getReleaseDate());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.mytoolbar);
+        toolbar.setTitle(movie.getTitle());
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         AppBarLayout appbar = (AppBarLayout) findViewById(R.id.flexible_example_appbar);

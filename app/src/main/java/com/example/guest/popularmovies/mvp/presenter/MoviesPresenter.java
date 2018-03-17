@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Created by l1maginaire on 2/25/18.
@@ -24,7 +23,6 @@ import io.reactivex.disposables.Disposable;
 public class MoviesPresenter extends BasePresenter<MainView> {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private PaginationTool<MoviesArray> paginationTool;
-    private Disposable disposable;
 
     @Inject
     protected MovDbApi apiService;

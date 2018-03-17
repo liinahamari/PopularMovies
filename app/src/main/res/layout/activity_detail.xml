@@ -19,14 +19,12 @@
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/flexible.example.collapsing"
+            android:id="@+id/my_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             app:contentScrim="?colorPrimary"
             app:expandedTitleMarginBottom="94dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:title="flexible_title"
-            >
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
                 android:id="@+id/d_poster"

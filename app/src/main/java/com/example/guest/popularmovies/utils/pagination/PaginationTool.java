@@ -4,6 +4,7 @@ package com.example.guest.popularmovies.utils.pagination;
  * Created by l1maginaire on 3/14/18.
  */
 
+import android.accounts.NetworkErrorException;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 

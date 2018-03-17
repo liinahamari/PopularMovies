@@ -51,6 +51,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private void loadNews() {
         if (NetworkChecker.isNetAvailable(this)) {
+            errorLayout.setVisibility(View.INVISIBLE);
             presenter.getPopular(recyclerView, adapter);
         } else {
             errorLayout.setVisibility(View.VISIBLE);
