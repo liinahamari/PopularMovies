@@ -3,12 +3,14 @@ package com.example.guest.popularmovies.ui;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
@@ -18,6 +20,7 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.MoviesPresenter;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.Adapter;
+import com.example.guest.popularmovies.utils.NetworkChecker;
 
 import java.util.List;
 
@@ -32,6 +35,10 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @BindView(R.id.mov_recycler)
     protected RecyclerView recyclerView;
+    @BindView(R.id.errorLayout)
+    protected FrameLayout errorLayout;
+    @BindView(R.id.btn_repeat)
+    protected Button repeatButton;
 
     private Adapter adapter;
 
@@ -43,7 +50,12 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     private void loadNews() {
-        presenter.getPopular(recyclerView, adapter);
+        if (NetworkChecker.isNetAvailable(this)) {
+            presenter.getPopular(recyclerView, adapter);
+        } else {
+            errorLayout.setVisibility(View.VISIBLE);
+            repeatButton.setOnClickListener(v -> loadNews());
+        }
     }
 
     private void setupAdapter() {
@@ -73,7 +85,7 @@ public class MainActivity extends BaseActivity implements MainView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                setupAdapter(); //todo another way?
+                setupAdapter(); //todo any other way?
                 presenter.getPopular(recyclerView, adapter);
                 return true;
             case R.id.action_top_rated:
