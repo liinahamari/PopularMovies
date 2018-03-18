@@ -77,14 +77,10 @@ public class PaginationTool<T> {
 
     private Observable<T> getPagingObservable(PagingListener<T> listener, Observable<T> observable,
                                               int numberOfAttemptToRetry, int page, int retryCount) {
-        return observable.onErrorResumeNext(throwable -> {
-            if (numberOfAttemptToRetry < retryCount) {
-                int attemptToRetryInc = numberOfAttemptToRetry + 1;
-                return getPagingObservable(listener, listener.onNextPage(page), attemptToRetryInc, page, retryCount);
-            } else {
-                //todo ErrorMessage with RepeatButton
-                return Observable.empty();
-            }
+        return observable
+                .retry(3)
+                .onErrorResumeNext(throwable -> {
+            return Observable.empty();
         });
     }
 
