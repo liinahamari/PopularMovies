@@ -37,7 +37,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                 new PagingListener<MoviesArray>() {
                     @Override
                     public Observable<MoviesArray> onNextPage(int page) { //todo starts with zero
-                        return apiService.getPopular(++page);
+                        return apiService.getPopular(page);
                     }
                 })
                 .build();
@@ -55,7 +55,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public void getTopRated(RecyclerView recyclerView) {
         Adapter adapter = (Adapter) (recyclerView.getAdapter());
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
-                page -> apiService.getTopRated(++page))
+                page -> apiService.getTopRated(page))
                 .build();
         compositeDisposable.clear();
         compositeDisposable.add(paginationTool

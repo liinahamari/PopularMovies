@@ -42,8 +42,7 @@ public class PaginationTool<T> {
                         int updatePosition = recyclerView.getAdapter().getItemCount() - 1 - (20 / 2);
                         if (position >= updatePosition) {
                             int actualPage = (recyclerView.getAdapter().getItemCount() / 20);
-//                            int offset = emptyListCountPlusToOffset ? recyclerView.getAdapter().getItemCount() : recyclerView.getAdapter().getItemCount() - emptyListCount;
-                            subscriber.onNext(actualPage);
+                            subscriber.onNext(++actualPage);
                         }
                     }
                 }
@@ -61,8 +60,7 @@ public class PaginationTool<T> {
                 }
             });
             if (recyclerView.getAdapter().getItemCount() == 0) {
-                int offset = 0;
-                subscriber.onNext(offset);
+                subscriber.onNext(1);
             }
         });
     }
@@ -102,13 +100,13 @@ public class PaginationTool<T> {
 
         private Builder(RecyclerView recyclerView, PagingListener<T> pagingListener) {
             if (recyclerView == null) {
-                throw new PagingException("null recyclerView");
+                throw new PagingException("Null recyclerView");
             }
             if (recyclerView.getAdapter() == null) {
-                throw new PagingException("null recyclerView adapter");
+                throw new PagingException("Null recyclerView adapter");
             }
             if (pagingListener == null) {
-                throw new PagingException("null pagingListener");
+                throw new PagingException("Null pagingListener");
             }
             this.recyclerView = recyclerView;
             this.pagingListener = pagingListener;
