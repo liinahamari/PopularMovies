@@ -8,11 +8,9 @@ import com.example.guest.popularmovies.mvp.model.MoviesArray;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.Adapter;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
-import com.example.guest.popularmovies.utils.pagination.PagingListener;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -31,22 +29,11 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public MoviesPresenter() {
     }
 
-    public void getPopular(RecyclerView recyclerView, Adapter adapter/*todo adapter from recycler*/) {
-        /*Observable<MoviesArray> observable = apiService.getPopular(page);
-        compositeDisposable.add(subscribe(observable, response -> {
-            List<SingleMovie> movies = response.getResults();
-            getView().onClearItems();
-            getView().onMoviesLoaded(movies);
-        }, Throwable::printStackTrace, () -> {
-            // todo: onComplete logging
-        }));*/
-
+    public void getPopular(RecyclerView recyclerView) {
+        Adapter adapter = (Adapter) (recyclerView.getAdapter());
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
-                new PagingListener<MoviesArray>() {
-                    @Override
-                    public Observable<MoviesArray> onNextPage(int page) { //todo starts with zero
-                        return apiService.getPopular(++page);
-                    }
+                page -> { //todo starts with zero
+                    return apiService.getPopular(++page);
                 })
                 .build();
         compositeDisposable.clear();
@@ -60,14 +47,10 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     }
 
 
-    public void getTopRated(RecyclerView recyclerView, Adapter adapter) {
+    public void getTopRated(RecyclerView recyclerView) {
+        Adapter adapter = (Adapter) (recyclerView.getAdapter());
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
-                new PagingListener<MoviesArray>() {
-                    @Override
-                    public Observable<MoviesArray> onNextPage(int page) {
-                        return apiService.getTopRated(++page);
-                    }
-                })
+                page -> apiService.getTopRated(++page))
                 .build();
         compositeDisposable.clear();
         compositeDisposable.add(paginationTool

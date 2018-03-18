@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private void loadNews() {
         if (NetworkChecker.isNetAvailable(this)) {
             errorLayout.setVisibility(View.INVISIBLE);
-            presenter.getPopular(recyclerView, adapter);
+            presenter.getPopular(recyclerView);
         } else {
             errorLayout.setVisibility(View.VISIBLE);
             repeatButton.setOnClickListener(v -> loadNews());
@@ -87,11 +87,11 @@ public class MainActivity extends BaseActivity implements MainView {
         switch (item.getItemId()) {
             case R.id.action_popular:
                 setupAdapter(); //todo any other way?
-                presenter.getPopular(recyclerView, adapter);
+                presenter.getPopular(recyclerView);
                 return true;
             case R.id.action_top_rated:
                 setupAdapter();
-                presenter.getTopRated(recyclerView, adapter);
+                presenter.getTopRated(recyclerView);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
