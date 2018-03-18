@@ -8,9 +8,11 @@ import com.example.guest.popularmovies.mvp.model.MoviesArray;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.Adapter;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
+import com.example.guest.popularmovies.utils.pagination.PagingListener;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -32,8 +34,11 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public void getPopular(RecyclerView recyclerView) {
         Adapter adapter = (Adapter) (recyclerView.getAdapter());
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
-                page -> { //todo starts with zero
-                    return apiService.getPopular(++page);
+                new PagingListener<MoviesArray>() {
+                    @Override
+                    public Observable<MoviesArray> onNextPage(int page) { //todo starts with zero
+                        return apiService.getPopular(++page);
+                    }
                 })
                 .build();
         compositeDisposable.clear();

@@ -41,7 +41,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
-        getSupportActionBar().hide(); //todo костыль
+        getSupportActionBar().hide();
         SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
         Picasso.with(this).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
                 .into(posterIv);

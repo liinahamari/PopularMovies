@@ -1,10 +1,13 @@
 package com.example.guest.popularmovies.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +32,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainView {
+    private static final String LAST_POSITION = "last_position";
 
     @Inject
     protected MoviesPresenter presenter;
@@ -43,6 +47,7 @@ public class MainActivity extends BaseActivity implements MainView {
     protected Button repeatButton;
 
     private Adapter adapter;
+    private int lastFirstVisiblePosition = 1;
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
@@ -54,7 +59,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private void loadNews() {
         if (networkChecker.isNetAvailable(this)) {
             errorLayout.setVisibility(View.INVISIBLE);
-            presenter.getPopular(recyclerView);
+            presenter.getPopular(recyclerView); //todo sharedpreferences
         } else {
             errorLayout.setVisibility(View.VISIBLE);
             repeatButton.setOnClickListener(v -> loadNews());
@@ -118,9 +123,28 @@ public class MainActivity extends BaseActivity implements MainView {
         adapter.clearNews();
     }
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        lastFirstVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+        Log.d("POSITION", String.valueOf(lastFirstVisiblePosition));
+        outState.putInt(LAST_POSITION, lastFirstVisiblePosition);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit().putInt("last_position", lastFirstVisiblePosition).apply();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        lastFirstVisiblePosition = savedInstanceState.getInt(LAST_POSITION);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        lastFirstVisiblePosition = preferences.getInt("last_position", 0);
+    }
+
     @Override
     protected void onDestroy() {
-        presenter.unsubscribe();
         super.onDestroy();
+        presenter.unsubscribe();
     }
 }
