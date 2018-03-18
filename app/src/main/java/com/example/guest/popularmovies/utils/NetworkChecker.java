@@ -4,13 +4,18 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import javax.inject.Inject;
+
 /**
  * Created by l1maginaire on 3/1/18.
  */
 
 public class NetworkChecker {
 
-    public static boolean isNetAvailable(Context context) {
+    @Inject
+    public NetworkChecker() {}
+
+    public boolean isNetAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

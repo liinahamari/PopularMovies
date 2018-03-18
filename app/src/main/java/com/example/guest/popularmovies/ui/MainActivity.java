@@ -32,6 +32,8 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Inject
     protected MoviesPresenter presenter;
+    @Inject
+    protected NetworkChecker networkChecker;
 
     @BindView(R.id.mov_recycler)
     protected RecyclerView recyclerView;
@@ -50,7 +52,7 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     private void loadNews() {
-        if (NetworkChecker.isNetAvailable(this)) {
+        if (networkChecker.isNetAvailable(this)) {
             errorLayout.setVisibility(View.INVISIBLE);
             presenter.getPopular(recyclerView);
         } else {
