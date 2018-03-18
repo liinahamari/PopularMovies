@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailActivity;
@@ -27,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<SingleMovie> movies = new ArrayList<>();
-    private Context context; //todo: check
+    private Context context;
     private LayoutInflater layoutInflater;
     private float dpHeight;
     private float dpWidth;
@@ -62,10 +64,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final SingleMovie movie = movies.get(position);
-//        Glide.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
-//                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                .into(holder.posterIv);
-
         holder.title.setText(movie.getTitle());
         Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
                 .into(holder.poster);
@@ -94,7 +92,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             super(itemView);
             view = itemView;
             view.setMinimumWidth((int) (dpWidth / 2));
-            view.setMinimumHeight((int) ((dpWidth / 2) * 1.5));
+            view.setMinimumHeight((int) ((dpHeight / 2) * 1.5));
             ButterKnife.bind(this, itemView);
         }
     }

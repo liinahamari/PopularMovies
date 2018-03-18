@@ -2,16 +2,16 @@ package com.example.guest.popularmovies.mvp.model;
 
 //http://www.jsonschema2pojo.org/
 /**
- * Created by guest on 2/19/18.
+ * Created by l1maginaire on 2/19/18.
  */
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class SingleMovie implements Parcelable {
 
@@ -36,9 +36,6 @@ public class SingleMovie implements Parcelable {
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
-    @SerializedName("original_language")
-    @Expose
-    private String originalLanguage;
     @SerializedName("original_title")
     @Expose
     private String originalTitle;
@@ -48,9 +45,6 @@ public class SingleMovie implements Parcelable {
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
-    @SerializedName("adult")
-    @Expose
-    private Boolean adult;
     @SerializedName("overview")
     @Expose
     private String overview;
@@ -66,7 +60,8 @@ public class SingleMovie implements Parcelable {
         releaseDate = in.readString();
     }
 
-    public SingleMovie() {}
+    public SingleMovie() {
+    }
 
     public Integer getVoteCount() {
         return voteCount;
@@ -124,14 +119,6 @@ public class SingleMovie implements Parcelable {
         this.posterPath = posterPath;
     }
 
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
     public String getOriginalTitle() {
         return originalTitle;
     }
@@ -156,14 +143,6 @@ public class SingleMovie implements Parcelable {
         this.backdropPath = backdropPath;
     }
 
-    public Boolean getAdult() {
-        return adult;
-    }
-
-    public void setAdult(Boolean adult) {
-        this.adult = adult;
-    }
-
     public String getOverview() {
         return overview;
     }
@@ -181,7 +160,9 @@ public class SingleMovie implements Parcelable {
     }
 
     @Override
-    public int describeContents() {return 0;}
+    public int describeContents() {
+        return 0;
+    }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
