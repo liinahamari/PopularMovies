@@ -13,23 +13,20 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class PaginationTool<T> {
-    private static final int MAX_ATTEMPTS_TO_RETRY_LOADING = 3;
+    private static final int ATTEMPTS_TO_RETRY_LOADING = 3;
 
     private RecyclerView recyclerView;
     private PagingListener<T> pagingListener;
-    private int retryCount;
 
     private PaginationTool() { //todo: savedinstancestate and position of scrolling
     }
 
     public Observable<T> getPagingObservable() {
-        int startNumberOfRetryAttempt = 0;
         return getScrollObservable(recyclerView)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
-                .switchMap(offset -> PaginationTool.this.getPagingObservable(pagingListener,
-                        pagingListener.onNextPage(offset), startNumberOfRetryAttempt, offset, retryCount));
+                .switchMap(offset -> PaginationTool.this.getPagingObservable(pagingListener.onNextPage(offset), ATTEMPTS_TO_RETRY_LOADING));
     }
 
     private Observable<Integer> getScrollObservable(RecyclerView recyclerView) {
@@ -75,10 +72,9 @@ public class PaginationTool<T> {
         }
     }
 
-    private Observable<T> getPagingObservable(PagingListener<T> listener, Observable<T> observable,
-                                              int numberOfAttemptToRetry, int page, int retryCount) {
+    private Observable<T> getPagingObservable(Observable<T> observable, int retryCount) {
         return observable
-                .retry(3)
+                .retry(retryCount)
                 .onErrorResumeNext(throwable -> {
             return Observable.empty();
         });
@@ -92,7 +88,6 @@ public class PaginationTool<T> {
 
         private RecyclerView recyclerView;
         private PagingListener<T> pagingListener;
-        private int retryCount = MAX_ATTEMPTS_TO_RETRY_LOADING;
 
         private Builder(RecyclerView recyclerView, PagingListener<T> pagingListener) {
             if (recyclerView == null) {
@@ -108,19 +103,10 @@ public class PaginationTool<T> {
             this.pagingListener = pagingListener;
         }
 
-        public Builder<T> setRetryCount(int retryCount) {
-            if (retryCount < 0) {
-                throw new PagingException("retryCount must be not less then 0");
-            }
-            this.retryCount = retryCount;
-            return this;
-        }
-
         public PaginationTool<T> build() {
             PaginationTool<T> paginationTool = new PaginationTool<>();
             paginationTool.recyclerView = this.recyclerView;
             paginationTool.pagingListener = pagingListener;
-            paginationTool.retryCount = retryCount;
             return paginationTool;
         }
     }
