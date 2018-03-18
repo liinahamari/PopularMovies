@@ -23,7 +23,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     @BindView(R.id.d_poster)
     protected ImageView posterIv;
-    @BindView(R.id.flexible_example_fab)
+    @BindView(R.id.fab)
     protected View floatingButton;
     @BindView(R.id.my_collapsing_toolbar)
     protected CollapsingToolbarLayout toolbar;
@@ -47,7 +47,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
                 .into(posterIv);
         releaseDateTv.setText(movie.getReleaseDate());
         ratingTv.setText(String.valueOf(movie.getVoteAverage()));
-        synopsisTv.setText(movie.getOverview());
+//        synopsisTv.setText(movie.getOverview());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.mytoolbar);
         toolbar.setTitle(movie.getTitle());
