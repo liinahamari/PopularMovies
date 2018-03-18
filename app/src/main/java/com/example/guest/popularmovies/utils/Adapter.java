@@ -64,7 +64,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         final SingleMovie movie = movies.get(position);
 //        Glide.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
 //                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                .into(holder.poster);
+//                .into(holder.posterIv);
 
         holder.title.setText(movie.getTitle());
         Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())

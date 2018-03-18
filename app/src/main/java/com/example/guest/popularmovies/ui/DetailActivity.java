@@ -22,18 +22,21 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     public static final String IDENTIFICATION = "extra_movie";
 
     @BindView(R.id.d_poster)
-    protected ImageView poster;
+    protected ImageView posterIv;
     @BindView(R.id.flexible_example_fab)
-    protected View mFab;
+    protected View floatingButton;
     @BindView(R.id.my_collapsing_toolbar)
     protected CollapsingToolbarLayout toolbar;
+    @BindView(R.id.d_mov_rate)
+    protected TextView ratingTv;
+    @BindView(R.id.d_mov_date)
+    protected TextView releaseDateTv;
+    @BindView(R.id.d_mov_synopsis)
+    protected TextView synopsisTv;
 
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
     private int mMaxScrollSize;
     private boolean mIsImageHidden;
-//    @BindView(R.id.d_mov_synopsis) protected TextView synopsis;
-//    @BindView(R.id.d_mov_rating) protected TextView rating;
-//    @BindView(R.id.d_mov_release_date) protected TextView releaseDate;
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
@@ -41,22 +44,17 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         getSupportActionBar().hide(); //todo костыль
         SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
         Picasso.with(this).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
-                .into(poster);
-//        title.setText(movie.getTitle());
-//        synopsis.setText(movie.getOverview());
-//        rating.setText(String.valueOf(movie.getVoteAverage()));
-//        releaseDate.setText(movie.getReleaseDate());
+                .into(posterIv);
+        releaseDateTv.setText(movie.getReleaseDate());
+        ratingTv.setText(String.valueOf(movie.getVoteAverage()));
+        synopsisTv.setText(movie.getOverview());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.mytoolbar);
         toolbar.setTitle(movie.getTitle());
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        AppBarLayout appbar = (AppBarLayout) findViewById(R.id.flexible_example_appbar);
+        AppBarLayout appbar = (AppBarLayout) findViewById(R.id.my_appbar);
         appbar.addOnOffsetChangedListener(this);
-    }
-
-    private void loadBackdrop(SingleMovie backdrops) {
-//        Picasso.with(this).load()
     }
 
     @Override
@@ -86,14 +84,14 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
             if (!mIsImageHidden) {
                 mIsImageHidden = true;
 
-                ViewCompat.animate(mFab).scaleY(0).scaleX(0).start();
+                ViewCompat.animate(floatingButton).scaleY(0).scaleX(0).start();
             }
         }
 
         if (currentScrollPercentage < PERCENTAGE_TO_SHOW_IMAGE) {
             if (mIsImageHidden) {
                 mIsImageHidden = false;
-                ViewCompat.animate(mFab).scaleY(1).scaleX(1).start();
+                ViewCompat.animate(floatingButton).scaleY(1).scaleX(1).start();
             }
         }
     }

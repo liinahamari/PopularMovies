@@ -12,7 +12,7 @@
     >
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/flexible.example.appbar"
+        android:id="@+id/my_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -117,6 +117,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     />
                 <TextView
+                    android:id="@+id/d_mov_synopsis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
