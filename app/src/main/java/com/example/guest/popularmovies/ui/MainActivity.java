@@ -93,11 +93,11 @@ public class MainActivity extends BaseActivity implements MainView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                setupAdapter(); //todo any other way?
+                adapter.clearNews();
                 presenter.getPopular(recyclerView);
                 return true;
             case R.id.action_top_rated:
-                setupAdapter();
+                adapter.clearNews();
                 presenter.getTopRated(recyclerView);
                 return true;
             default:
