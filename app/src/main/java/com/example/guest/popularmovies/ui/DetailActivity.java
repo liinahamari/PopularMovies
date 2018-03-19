@@ -57,7 +57,6 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     private void setActionBarView(SingleMovie movie) {
         getSupportActionBar().hide();
         Toolbar toolbar = (Toolbar) findViewById(R.id.mytoolbar);
-        toolbar.setTitle(movie.getTitle());
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         AppBarLayout appbar = (AppBarLayout) findViewById(R.id.my_appbar);
         appbar.addOnOffsetChangedListener(this);

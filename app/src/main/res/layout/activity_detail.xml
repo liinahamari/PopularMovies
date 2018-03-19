@@ -74,9 +74,9 @@
 
                 <TextView
                     android:id="@+id/d_mov_title"
-                    android:textSize="28sp"
-                    android:fontFamily="@font/calling_angels"
-                    android:textStyle="bold"
+                    android:textSize="45sp"
+                    android:fontFamily="@font/birds_of_paradise"
+                    android:paddingBottom="10dp"
                     android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:id="@+id/rateLabel"
                     android:layout_width="0dp"
                     android:fontFamily="@font/calling_angels"
@@ -101,7 +101,7 @@
                     app:layout_constraintHorizontal_chainStyle="spread" />
 
                 <TextView
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:id="@+id/dateLabel"
                     android:gravity="center"
                     android:fontFamily="@font/calling_angels"
@@ -116,7 +116,7 @@
                     app:layout_constraintRight_toRightOf="parent"/>
 
                 <TextView
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:id="@+id/d_mov_rate"
                     android:gravity="center"
                     android:layout_marginStart="4dp"
@@ -128,7 +128,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"/>
 
                 <TextView
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:id="@+id/d_mov_date"
                     android:gravity="center"
                     android:fontFamily="@font/thron_demo"
@@ -147,7 +147,7 @@
                     android:fontFamily="@font/thron_demo"
                     android:lineSpacingExtra="8dp"
                     android:text="@string/lorem"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
                     app:layout_constraintTop_toBottomOf="@id/d_mov_rate"
                     />
             </android.support.constraint.ConstraintLayout>
