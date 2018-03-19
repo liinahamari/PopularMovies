@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:background="#8C000000"
+        android:textSize="18sp"
         android:textColor="#FFFFFF"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"

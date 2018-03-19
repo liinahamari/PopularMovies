@@ -73,17 +73,29 @@
                 android:background="@color/lightLight">
 
                 <TextView
+                    android:id="@+id/d_mov_title"
+                    android:textSize="28sp"
+                    android:fontFamily="@font/calling_angels"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
                     android:textSize="18sp"
                     android:id="@+id/rateLabel"
                     android:layout_width="0dp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/calling_angels"
                     android:gravity="center"
                     android:layout_height="wrap_content"
                     android:text="@string/rate"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="4dp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/d_mov_title"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/dateLabel"
                     app:layout_constraintHorizontal_chainStyle="spread" />
@@ -92,14 +104,14 @@
                     android:textSize="18sp"
                     android:id="@+id/dateLabel"
                     android:gravity="center"
+                    android:fontFamily="@font/calling_angels"
                     android:layout_width="0dp"
-                    android:textStyle="bold"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/d_mov_title"
                     app:layout_constraintLeft_toRightOf="@+id/rateLabel"
                     app:layout_constraintRight_toRightOf="parent"/>
 
@@ -109,6 +121,7 @@
                     android:gravity="center"
                     android:layout_marginStart="4dp"
                     android:layout_width="0dp"
+                    android:fontFamily="@font/thron_demo"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/rateLabel"
                     app:layout_constraintRight_toLeftOf="@id/d_mov_date"
@@ -118,6 +131,7 @@
                     android:textSize="18sp"
                     android:id="@+id/d_mov_date"
                     android:gravity="center"
+                    android:fontFamily="@font/thron_demo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/dateLabel"
@@ -130,7 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/thron_demo"
                     android:lineSpacingExtra="8dp"
                     android:text="@string/lorem"
                     android:textSize="16sp"

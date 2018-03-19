@@ -33,6 +33,8 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     protected TextView releaseDateTv;
     @BindView(R.id.d_mov_synopsis)
     protected TextView synopsisTv;
+    @BindView(R.id.d_mov_title)
+    protected TextView titleTv;
 
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
     private int mMaxScrollSize;
@@ -49,6 +51,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         releaseDateTv.setText(movie.getReleaseDate());
         ratingTv.setText(String.valueOf(movie.getVoteAverage()));
         synopsisTv.setText(movie.getOverview());
+        titleTv.setText(movie.getTitle());
     }
 
     private void setActionBarView(SingleMovie movie) {
