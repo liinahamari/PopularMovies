@@ -19,6 +19,7 @@
         android:textSize="22sp"
         android:textColor="#FFFFFF"
         android:paddingStart="8dp"
+        android:fontFamily="@font/birds_of_paradise"
         android:paddingEnd="8dp"
         android:layout_alignBottom="@+id/poster"
         />
