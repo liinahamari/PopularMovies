@@ -3,7 +3,7 @@ package com.example.guest.popularmovies.mvp.model;
 // http://www.jsonschema2pojo.org/
 
 /**
- * Created by guest on 2/19/18.
+ * Created by l1maginaire on 2/19/18.
  */
 
 import java.util.List;

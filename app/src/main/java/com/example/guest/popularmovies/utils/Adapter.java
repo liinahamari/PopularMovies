@@ -1,7 +1,7 @@
 package com.example.guest.popularmovies.utils;
 
 /**
- * Created by guest on 2/20/18.
+ * Created by l1maginaire on 2/20/18.
  */
 
 import android.content.Context;
@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailActivity;

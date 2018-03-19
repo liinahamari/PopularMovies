@@ -1,7 +1,7 @@
 package com.example.guest.popularmovies.di.components;
 
 /**
- * Created by guest on 2/20/18.
+ * Created by l1maginaire on 2/20/18.
  */
 
 import com.example.guest.popularmovies.di.modules.MovieModule;

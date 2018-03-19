@@ -26,7 +26,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     @BindView(R.id.fab)
     protected View floatingButton;
     @BindView(R.id.my_collapsing_toolbar)
-    protected CollapsingToolbarLayout toolbar;
+    protected CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.d_mov_rate)
     protected TextView ratingTv;
     @BindView(R.id.d_mov_date)
@@ -35,6 +35,10 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     protected TextView synopsisTv;
     @BindView(R.id.d_mov_title)
     protected TextView titleTv;
+    @BindView(R.id.mytoolbar)
+    protected Toolbar toolbar;
+    @BindView(R.id.my_appbar)
+    protected AppBarLayout appbar;
 
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
     private int mMaxScrollSize;
@@ -56,11 +60,8 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     private void setActionBarView(SingleMovie movie) {
         getSupportActionBar().hide();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.mytoolbar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
-        AppBarLayout appbar = (AppBarLayout) findViewById(R.id.my_appbar);
         appbar.addOnOffsetChangedListener(this);
-
     }
 
     @Override
