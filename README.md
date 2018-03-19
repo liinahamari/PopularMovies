@@ -2,18 +2,18 @@
 =================================
 Third-party resources are used:
 
-* Birds of Paradise Personal use font
+* Birds of Paradise Personal use font<br>
 by Herofonts.
 
-Taken from:
+Taken from:<br>
 http://www.fontspace.com/herofonts/birds-of-paradise-personal-use
 
-* Calling Angels Personal Use font
-By Billy Argel
-Taken from:
+* Calling Angels Personal Use font<br>
+By Billy Argel<br>
+Taken from:<br>
 http://www.fontspace.com/billy-argel/calling-angels-personal-use
 
-*  Thron Demo font
-By LeoSupply.co
-Taken from:
+*  Thron Demo font<br>
+By LeoSupply.co<br>
+Taken from:<br>
 http://www.fontspace.com/leosupplyco/thron-demo 
