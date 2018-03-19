@@ -12,7 +12,7 @@ import com.squareup.leakcanary.LeakCanary;
  */
 
 public class PopMoviesApp extends Application {
-    private ApplicationComponent applicationComponent; 
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
