@@ -3,8 +3,7 @@
 Third-party resources are used:
 
 * Birds of Paradise Personal use font<br>
-by Herofonts.
-
+by Herofonts.<br>
 Taken from:<br>
 http://www.fontspace.com/herofonts/birds-of-paradise-personal-use
 
