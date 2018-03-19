@@ -26,7 +26,7 @@ public class PaginationTool<T> {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
-                .switchMap(offset -> PaginationTool.this.getPagingObservable(pagingListener.onNextPage(offset), ATTEMPTS_TO_RETRY_LOADING));
+                .switchMap(offset -> PaginationTool.this.getPagingObservable(pagingListener.onNextPage(offset)));
     }
 
     private Observable<Integer> getScrollObservable(RecyclerView recyclerView) {
@@ -72,12 +72,12 @@ public class PaginationTool<T> {
         }
     }
 
-    private Observable<T> getPagingObservable(Observable<T> observable, int retryCount) {
+    private Observable<T> getPagingObservable(Observable<T> observable) {
         return observable
-                .retry(retryCount)
+                .retry(ATTEMPTS_TO_RETRY_LOADING)
                 .onErrorResumeNext(throwable -> {
-            return Observable.empty();
-        });
+                    return Observable.empty();
+                });
     }
 
     public static <T> Builder<T> buildPagingObservable(RecyclerView recyclerView, PagingListener<T> pagingListener) {

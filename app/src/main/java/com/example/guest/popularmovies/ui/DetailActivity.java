@@ -41,20 +41,24 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
-        getSupportActionBar().hide();
         SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
+        setActionBarView(movie);
+
         Picasso.with(this).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
                 .into(posterIv);
         releaseDateTv.setText(movie.getReleaseDate());
         ratingTv.setText(String.valueOf(movie.getVoteAverage()));
-//        synopsisTv.setText(movie.getOverview());
+        synopsisTv.setText(movie.getOverview());
+    }
 
+    private void setActionBarView(SingleMovie movie) {
+        getSupportActionBar().hide();
         Toolbar toolbar = (Toolbar) findViewById(R.id.mytoolbar);
         toolbar.setTitle(movie.getTitle());
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
         AppBarLayout appbar = (AppBarLayout) findViewById(R.id.my_appbar);
         appbar.addOnOffsetChangedListener(this);
+
     }
 
     @Override

@@ -8,8 +8,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="5dp"
     tools:ignore="RtlHardcoded"
-    android:background="@color/colorPrimary"
-    >
+    android:background="@color/colorPrimaryLight">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/my_appbar"
@@ -27,6 +26,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
+                android:contentDescription="@string/d_poster"
                 android:id="@+id/d_poster"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
@@ -58,7 +58,7 @@
             android:id="@+id/flexible.example.cardview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="78dp"
+            android:layout_marginBottom="2dp"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp"
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-                android:background="@color/cardViewBackground">
+                android:background="@color/lightLight">
 
                 <TextView
                     android:textSize="18sp"

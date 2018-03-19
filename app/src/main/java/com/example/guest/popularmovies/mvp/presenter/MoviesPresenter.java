@@ -36,7 +36,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
                 new PagingListener<MoviesArray>() {
                     @Override
-                    public Observable<MoviesArray> onNextPage(int page) { //todo starts with zero
+                    public Observable<MoviesArray> onNextPage(Integer page) {
                         return apiService.getPopular(page);
                     }
                 })
