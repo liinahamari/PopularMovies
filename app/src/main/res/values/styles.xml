@@ -7,4 +7,23 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/thron_demo</item>
     </style>
+
+    <style name="CustomTextView">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="LabelTextView" parent="CustomTextView">
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/calling_angels</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="ValueTextView" parent="CustomTextView">
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/thron_demo</item>
+    </style>
 </resources>

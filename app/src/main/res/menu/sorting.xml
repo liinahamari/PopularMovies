@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_top_rated"
         android:orderInCategory="1"
-        android:title="@string/action_show_top_rated"
+         android:title="@string/action_show_top_rated"
         app:showAsAction="never"/>
 
     <item

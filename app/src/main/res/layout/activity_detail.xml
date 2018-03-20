@@ -74,43 +74,27 @@
 
                 <TextView
                     android:id="@+id/d_mov_title"
+                    style="@style/CustomTextView"
                     android:textSize="45sp"
                     android:fontFamily="@font/birds_of_paradise"
                     android:paddingBottom="10dp"
-                    android:gravity="center"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:textSize="22sp"
                     android:id="@+id/rateLabel"
-                    android:layout_width="0dp"
-                    android:fontFamily="@font/calling_angels"
-                    android:gravity="center"
-                    android:layout_height="wrap_content"
                     android:text="@string/rate"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="4dp"
+                    style="@style/LabelTextView"
                     app:layout_constraintTop_toBottomOf="@id/d_mov_title"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/dateLabel"
-                    app:layout_constraintHorizontal_chainStyle="spread" />
+                    app:layout_constraintHorizontal_chainStyle="spread"/>
 
                 <TextView
-                    android:textSize="22sp"
                     android:id="@+id/dateLabel"
-                    android:gravity="center"
-                    android:fontFamily="@font/calling_angels"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:text="@string/date"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
+                    style="@style/LabelTextView"
                     app:layout_constraintTop_toBottomOf="@id/d_mov_title"
                     app:layout_constraintLeft_toRightOf="@+id/rateLabel"
                     app:layout_constraintRight_toRightOf="parent"/>
@@ -118,11 +102,7 @@
                 <TextView
                     android:textSize="22sp"
                     android:id="@+id/d_mov_rate"
-                    android:gravity="center"
-                    android:layout_marginStart="4dp"
-                    android:layout_width="0dp"
-                    android:fontFamily="@font/thron_demo"
-                    android:layout_height="wrap_content"
+                    style="@style/ValueTextView"
                     app:layout_constraintTop_toBottomOf="@id/rateLabel"
                     app:layout_constraintRight_toLeftOf="@id/d_mov_date"
                     app:layout_constraintLeft_toLeftOf="parent"/>
@@ -130,16 +110,12 @@
                 <TextView
                     android:textSize="22sp"
                     android:id="@+id/d_mov_date"
-                    android:gravity="center"
-                    android:fontFamily="@font/thron_demo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    style="@style/ValueTextView"
                     app:layout_constraintTop_toBottomOf="@id/dateLabel"
                     app:layout_constraintLeft_toRightOf="@id/d_mov_rate"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
-                <TextView
+                    app:layout_constraintRight_toRightOf="parent"/>
 
+                <TextView
                     android:id="@+id/d_mov_synopsis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,8 +124,7 @@
                     android:lineSpacingExtra="8dp"
                     android:text="@string/lorem"
                     android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@id/d_mov_rate"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/d_mov_rate"/>
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
 
