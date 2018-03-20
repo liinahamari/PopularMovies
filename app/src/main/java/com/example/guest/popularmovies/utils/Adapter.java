@@ -68,7 +68,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         Picasso
                 .with(context)
                 .load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
-                .error(R.drawable.broken_image) //todo: tests in the middle of smth
+                .error(R.drawable.broken_image) //todo: tests in the middle of smth / maybe empty drawable?
                 .into(holder.poster, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -76,7 +76,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     }
 
                     @Override
-                    public void onError() {}
+                    public void onError() {
+                        holder.progressBar.setVisibility(View.GONE);
+                    }
                 });
         holder.view.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
