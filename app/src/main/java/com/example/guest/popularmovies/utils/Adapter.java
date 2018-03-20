@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailActivity;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -63,8 +65,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         final SingleMovie movie = movies.get(position);
         holder.title.setText(movie.getTitle());
-        Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
-                .into(holder.poster);
+        Picasso
+                .with(context)
+                .load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
+                .error(R.drawable.broken_image) //todo: tests in the middle of smth
+                .into(holder.poster, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {}
+                });
         holder.view.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra(DetailActivity.IDENTIFICATION, movie);
@@ -84,6 +97,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         protected ImageView poster;
         @BindView(R.id.movie_title)
         protected TextView title;
+        @BindView(R.id.movie_item_progress)
+        protected ProgressBar progressBar;
         private final View view;
 
         public ViewHolder(View itemView) {
