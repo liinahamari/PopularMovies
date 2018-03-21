@@ -8,11 +8,9 @@ import com.example.guest.popularmovies.mvp.model.MoviesArray;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.Adapter;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
-import com.example.guest.popularmovies.utils.pagination.PagingListener;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -34,26 +32,17 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public void getPopular(RecyclerView recyclerView) {
         Adapter adapter = (Adapter) (recyclerView.getAdapter());
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
-                new PagingListener<MoviesArray>() {
-                    @Override
-                    public Observable<MoviesArray> onNextPage(Integer page) {
-                        return apiService.getPopular(page);
-                    }
-                })
+                page -> apiService.getPopular(page))
                 .build();
         compositeDisposable.clear();
         compositeDisposable.add(paginationTool
                 .getPagingObservable()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-                    adapter.addMovies(items.getResults());
-                    adapter.notifyItemInserted(adapter.getItemCount() - items.getResults().size());
-                }));
+                .subscribe(items -> getView().onMoviesLoaded(items.getResults())));
     }
 
 
     public void getTopRated(RecyclerView recyclerView) {
-        Adapter adapter = (Adapter) (recyclerView.getAdapter());
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
                 page -> apiService.getTopRated(page))
                 .build();
@@ -61,10 +50,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         compositeDisposable.add(paginationTool
                 .getPagingObservable()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-                    adapter.addMovies(items.getResults());
-                    adapter.notifyItemInserted(adapter.getItemCount() - items.getResults().size());
-                }));
+                .subscribe(items -> getView().onMoviesLoaded(items.getResults())));
     }
 
     public void unsubscribe() {

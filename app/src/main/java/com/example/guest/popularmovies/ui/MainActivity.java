@@ -93,11 +93,11 @@ public class MainActivity extends BaseActivity implements MainView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                adapter.clearNews();
+                onClearItems();
                 presenter.getPopular(recyclerView);
                 return true;
             case R.id.action_top_rated:
-                adapter.clearNews();
+                onClearItems();
                 presenter.getTopRated(recyclerView);
                 return true;
             default:
@@ -114,13 +114,15 @@ public class MainActivity extends BaseActivity implements MainView {
                 .inject(this);
     }
 
+    @Override
     public void onMoviesLoaded(List<SingleMovie> movies) {
         adapter.addMovies(movies);
+        adapter.notifyItemInserted(adapter.getItemCount() - movies.size());
     }
 
     @Override
     public void onClearItems() {
-        adapter.clearNews();
+        adapter.clearItems();
     }
 
 

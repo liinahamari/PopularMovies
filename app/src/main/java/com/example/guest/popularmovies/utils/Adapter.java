@@ -56,7 +56,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void clearNews() {
+    public void clearItems() {
         movies.clear();
         notifyDataSetChanged();
     }

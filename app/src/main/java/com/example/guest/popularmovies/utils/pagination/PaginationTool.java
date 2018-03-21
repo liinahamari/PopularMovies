@@ -22,20 +22,20 @@ public class PaginationTool<T> {
     }
 
     public Observable<T> getPagingObservable() {
-        return getScrollObservable(recyclerView)
+        return getScrollObservable()
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
                 .switchMap(offset -> PaginationTool.this.getPagingObservable(pagingListener.onNextPage(offset)));
     }
 
-    private Observable<Integer> getScrollObservable(RecyclerView recyclerView) {
+    private Observable<Integer> getScrollObservable() {
         return Observable.create(subscriber -> {
             final RecyclerView.OnScrollListener sl = new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     if (!subscriber.isDisposed()) {
-                        int position = getLastVisibleItemPosition(recyclerView);
+                        int position = getLastVisibleItemPosition();
                         int updatePosition = recyclerView.getAdapter().getItemCount() - 1 - (20 / 2);
                         if (position >= updatePosition) {
                             int actualPage = (recyclerView.getAdapter().getItemCount() / 20);
@@ -62,7 +62,7 @@ public class PaginationTool<T> {
         });
     }
 
-    private int getLastVisibleItemPosition(RecyclerView recyclerView) {
+    private int getLastVisibleItemPosition() {
         Class recyclerViewLMClass = recyclerView.getLayoutManager().getClass();
         if (recyclerViewLMClass == LinearLayoutManager.class || LinearLayoutManager.class.isAssignableFrom(recyclerViewLMClass)) {
             LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
