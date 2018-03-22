@@ -94,7 +94,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return movies.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.poster)
         protected ImageView poster;
         @BindView(R.id.movie_title)
