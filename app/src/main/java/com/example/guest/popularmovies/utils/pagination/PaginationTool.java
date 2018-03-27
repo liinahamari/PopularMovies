@@ -31,7 +31,7 @@ public class PaginationTool<T> {
 
     private Observable<Integer> getScrollObservable() {
         return Observable.create(subscriber -> {
-            final RecyclerView.OnScrollListener sl = new RecyclerView.OnScrollListener() {
+            final RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     if (!subscriber.isDisposed()) {
@@ -44,11 +44,11 @@ public class PaginationTool<T> {
                     }
                 }
             };
-            recyclerView.addOnScrollListener(sl);
+            recyclerView.addOnScrollListener(scrollListener);
             subscriber.setDisposable(new Disposable() {
                 @Override
                 public void dispose() {
-                    recyclerView.removeOnScrollListener(sl);
+                    recyclerView.removeOnScrollListener(scrollListener);
                 }
 
                 @Override

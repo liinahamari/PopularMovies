@@ -14,6 +14,8 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.*;
 
 /**
@@ -30,21 +32,23 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void addMovie(SingleMovie movie) {
+    public void addMovies(List<SingleMovie> movies) {
         SQLiteDatabase db = getWritableDatabase();
-
         ContentValues values = new ContentValues();
-        values.put(MOV_ID, movie.getTitle());
-        values.put(BACKDROP_PATH, movie.getBackdropPath());
+
+        for (SingleMovie movie:movies) {
+            values.put(MOV_ID, movie.getTitle());
+            values.put(BACKDROP_PATH, movie.getBackdropPath());
 //        values.put(GENRE_IDS, movie.getGenreIds());
 //        values.put(IN_FAVORITES, true); //todo
-        values.put(ORIGINAL_TITLE, movie.getOriginalTitle());
-        values.put(OVERVIEW, movie.getOverview());
-        values.put(POPULARITY, movie.getPopularity());
-        values.put(POSTER_PATH, movie.getPosterPath());
-        values.put(RELEASE_DATE, movie.getReleaseDate());
-        values.put(VOTE_AVERAGE, movie.getVoteAverage());
-        values.put(VOTE_COUNT, movie.getVoteCount());
+            values.put(ORIGINAL_TITLE, movie.getOriginalTitle());
+            values.put(OVERVIEW, movie.getOverview());
+            values.put(POPULARITY, movie.getPopularity());
+            values.put(POSTER_PATH, movie.getPosterPath());
+            values.put(RELEASE_DATE, movie.getReleaseDate());
+            values.put(VOTE_AVERAGE, movie.getVoteAverage());
+            values.put(VOTE_COUNT, movie.getVoteCount());
+        }
 
         try {
             db.insert(TABLE_NAME, null, values);
@@ -55,7 +59,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<SingleMovie> getSavedCakes() {
+    public List<SingleMovie> getSavedMovies() {
         List<SingleMovie> movies = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
 

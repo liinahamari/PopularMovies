@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
+import com.example.guest.popularmovies.db.MoviesDbHelper;
 import com.example.guest.popularmovies.di.components.DaggerMovieComponent;
 import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
@@ -116,6 +117,8 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void onMoviesLoaded(List<SingleMovie> movies) {
+        MoviesDbHelper dbHelper = new MoviesDbHelper(this);
+        dbHelper.addMovies(movies);
         adapter.addMovies(movies);
         //todo mapper to storage
         adapter.notifyItemInserted(adapter.getItemCount() - movies.size());
