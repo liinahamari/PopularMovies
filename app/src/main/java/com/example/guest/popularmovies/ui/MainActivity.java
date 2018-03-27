@@ -101,6 +101,10 @@ public class MainActivity extends BaseActivity implements MainView {
                 onClearItems();
                 presenter.getTopRated(recyclerView);
                 return true;
+            case R.id.action_favorites:
+                onClearItems();
+                presenter.getFavorites(this);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -117,8 +121,8 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void onMoviesLoaded(List<SingleMovie> movies) {
-        MoviesDbHelper dbHelper = new MoviesDbHelper(this); //todo to background thread
-        dbHelper.addMovies(movies);
+//        MoviesDbHelper dbHelper = new MoviesDbHelper(this); //todo to background thread
+//        dbHelper.addMovies(movies);
         adapter.addMovies(movies);
         //todo mapper to storage
         adapter.notifyItemInserted(adapter.getItemCount() - movies.size());

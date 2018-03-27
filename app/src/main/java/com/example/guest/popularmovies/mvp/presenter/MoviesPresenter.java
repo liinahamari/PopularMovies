@@ -1,13 +1,19 @@
 package com.example.guest.popularmovies.mvp.presenter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
+import com.example.guest.popularmovies.db.MoviesDbHelper;
 import com.example.guest.popularmovies.mvp.model.MoviesArray;
+import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
 import com.example.guest.popularmovies.utils.pagination.PagingListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -53,6 +59,12 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                 .getPagingObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> getView().onMoviesLoaded(items.getResults())));
+    }
+
+    public void getFavorites(Context context) {
+        MoviesDbHelper helper = new MoviesDbHelper(context);
+        List<SingleMovie> movies = helper.getSavedMovies();
+        getView().onMoviesLoaded(movies);
     }
 
     public void unsubscribe() {
