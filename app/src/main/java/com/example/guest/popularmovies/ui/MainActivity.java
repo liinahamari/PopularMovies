@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void onMoviesLoaded(List<SingleMovie> movies) {
-        MoviesDbHelper dbHelper = new MoviesDbHelper(this);
+        MoviesDbHelper dbHelper = new MoviesDbHelper(this); //todo to background thread
         dbHelper.addMovies(movies);
         adapter.addMovies(movies);
         //todo mapper to storage

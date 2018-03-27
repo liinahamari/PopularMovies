@@ -14,8 +14,6 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.*;
 
 /**
@@ -37,7 +35,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         for (SingleMovie movie:movies) {
-            values.put(MOV_ID, movie.getTitle());
+                values.put(MOV_ID, movie.getTitle());
             values.put(BACKDROP_PATH, movie.getBackdropPath());
 //        values.put(GENRE_IDS, movie.getGenreIds());
 //        values.put(IN_FAVORITES, true); //todo

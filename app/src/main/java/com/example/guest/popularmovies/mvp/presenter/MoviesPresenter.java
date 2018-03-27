@@ -7,11 +7,15 @@ import com.example.guest.popularmovies.base.BasePresenter;
 import com.example.guest.popularmovies.mvp.model.MoviesArray;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
+import com.example.guest.popularmovies.utils.pagination.PagingListener;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 
 /**
  * Created by l1maginaire on 2/25/18.
