@@ -6,7 +6,6 @@ import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
 import com.example.guest.popularmovies.mvp.model.MoviesArray;
 import com.example.guest.popularmovies.mvp.view.MainView;
-import com.example.guest.popularmovies.utils.Adapter;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
 
 import javax.inject.Inject;
@@ -30,7 +29,6 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     }
 
     public void getPopular(RecyclerView recyclerView) {
-        Adapter adapter = (Adapter) (recyclerView.getAdapter());
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
                 page -> apiService.getPopular(page))
                 .build();

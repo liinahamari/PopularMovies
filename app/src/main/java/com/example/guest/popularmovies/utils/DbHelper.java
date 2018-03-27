@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.guest.popularmovies.mvp.model.MoviesContract.Entry;
+import com.example.guest.popularmovies.db.MoviesContract.Entry;
 
 /**
  * Created by l1maginaire on 3/22/18.
@@ -23,6 +23,7 @@ public class DbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_WAITLIST_TABLE = "CREATE TABLE " + Entry.TABLE_NAME + " (" +
 //                Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 Entry._ID + " INTEGER NOT NULL," +
+                Entry.MOV_ID + " INTEGER NOT NULL," +
                 Entry.BACKDROP_PATH + " TEXT NOT NULL, " +
                 Entry.GENRE_IDS + " TEXT NOT NULL, " +
                 Entry.IN_FAVORITES + " INTEGER NOT NULL, " +
