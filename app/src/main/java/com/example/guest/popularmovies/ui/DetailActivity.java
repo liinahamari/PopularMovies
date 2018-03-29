@@ -1,6 +1,7 @@
 package com.example.guest.popularmovies.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
+import com.example.guest.popularmovies.db.DatabaseTasks;
 import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
 import com.example.guest.popularmovies.di.modules.TrailerModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
@@ -29,6 +31,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+
+import static com.example.guest.popularmovies.db.DatabaseTasks.INSERT;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.TITLE;
 
 public class DetailActivity extends BaseActivity implements DetailView, AppBarLayout.OnOffsetChangedListener,
         YouTubePlayer.OnInitializedListener {
@@ -162,6 +168,16 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     @Override
     public void onTrailersLoaded(List<Result> trailers) {
         this.trailers = trailers;
+        Cursor cursor = getContentResolver().query(CONTENT_URI, null, null, null, null);
+        if (cursor.moveToFirst()){
+            do{
+                String data = cursor.getString(cursor.getColumnIndex(TITLE));
+                String data2 = cursor.getString(cursor.getColumnIndex(TITLE));
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+
     }
 
     @Override

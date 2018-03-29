@@ -1,5 +1,6 @@
 package com.example.guest.popularmovies.ui;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -17,6 +18,7 @@ import android.widget.FrameLayout;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
+import com.example.guest.popularmovies.db.DatabaseTasks;
 import com.example.guest.popularmovies.di.components.DaggerMovieComponent;
 import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
@@ -30,6 +32,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+
+import static com.example.guest.popularmovies.db.DatabaseTasks.INSERT;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.*;
 
 public class MainActivity extends BaseActivity implements MainView {
     private static final String LAST_POSITION = "last_position";
@@ -123,8 +128,27 @@ public class MainActivity extends BaseActivity implements MainView {
 //        MoviesDbHelper dbHelper = new MoviesDbHelper(this); //todo to background thread
 //        dbHelper.addMovies(movies);
         adapter.addMovies(movies);
-        //todo mapper to storage
+        DatabaseTasks dt = new DatabaseTasks(this);
+        dt.execute(INSERT, makeContentValues(movies));
         adapter.notifyItemInserted(adapter.getItemCount() - movies.size());
+    }
+
+    private ContentValues makeContentValues(List<SingleMovie> movies) {
+        ContentValues values = new ContentValues();
+        for (SingleMovie movie:movies) {
+            values.put(MOV_ID, movie.getTitle());
+            values.put(BACKDROP_PATH, movie.getBackdropPath());
+//        values.put(GENRE_IDS, movie.getGenreIds());
+//        values.put(IN_FAVORITES, true); //todo
+            values.put(ORIGINAL_TITLE, movie.getOriginalTitle());
+            values.put(OVERVIEW, movie.getOverview());
+            values.put(POPULARITY, movie.getPopularity());
+            values.put(POSTER_PATH, movie.getPosterPath());
+            values.put(RELEASE_DATE, movie.getReleaseDate());
+            values.put(VOTE_AVERAGE, movie.getVoteAverage());
+            values.put(VOTE_COUNT, movie.getVoteCount());
+        }
+        return values;
     }
 
     @Override

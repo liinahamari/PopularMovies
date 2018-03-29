@@ -26,7 +26,7 @@ public class MoviesContract {
         public static final String POPULARITY = "popularity";
         public static final String POSTER_PATH = "posterpath";
         public static final String ORIGINAL_TITLE = "otitle";
-        public static final String GENRE_IDS = "genres";
+//        public static final String GENRE_IDS = "genres";
         public static final String BACKDROP_PATH = "backdpath";
         public static final String OVERVIEW = "overview";
         public static final String RELEASE_DATE = "date";

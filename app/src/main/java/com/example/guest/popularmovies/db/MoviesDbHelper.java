@@ -95,19 +95,19 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) { //todo CHECK NOT NULL
         final String SQL_CREATE_WAITLIST_TABLE = "CREATE TABLE " + Entry.TABLE_NAME + " (" +
                 Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-//                Entry._ID + " INTEGER NOT NULL," +
-                MOV_ID + " INTEGER NOT NULL," +
-                BACKDROP_PATH + " TEXT NOT NULL, " +
-                GENRE_IDS + " TEXT NOT NULL, " +
-//                IN_FAVORITES + " INTEGER NOT NULL, " +
-                ORIGINAL_TITLE + " TEXT NOT NULL, " +
-                OVERVIEW + " TEXT NOT NULL, " +
-                POPULARITY + " DOUBLE NOT NULL, " +
-                POSTER_PATH + " TEXT NOT NULL, " +
-                RELEASE_DATE + " TEXT NOT NULL, " +
-                TITLE + " TEXT NOT NULL, " +
-                VOTE_AVERAGE + " DOUBLE NOT NULL, " +
-                VOTE_COUNT + " INTEGER NOT NULL" +
+//                Entry._ID + " INTEGER, " +
+                MOV_ID + " INTEGER, " +
+                BACKDROP_PATH + " TEXT, " +
+//                GENRE_IDS + " TEXT, " +
+//                IN_FAVORITES + " INTEGER, " +
+                ORIGINAL_TITLE + " TEXT, " +
+                OVERVIEW + " TEXT, " +
+                POPULARITY + " DOUBLE, " +
+                POSTER_PATH + " TEXT, " +
+                RELEASE_DATE + " TEXT, " +
+                TITLE + " TEXT, " +
+                VOTE_AVERAGE + " DOUBLE, " +
+                VOTE_COUNT + " INTEGER" +
                 "); ";
         sqLiteDatabase.execSQL(SQL_CREATE_WAITLIST_TABLE);
     }
