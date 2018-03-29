@@ -11,14 +11,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 
-public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
+public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener,
+        YouTubePlayer.OnInitializedListener {
     public static final String IDENTIFICATION = "extra_movie";
 
     @BindView(R.id.d_poster)
@@ -43,10 +48,17 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
     private int mMaxScrollSize;
     private boolean mIsImageHidden;
+    private YouTubePlayerFragment playerFragment;
+    private YouTubePlayer player;
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
+
+        playerFragment =
+                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
+        playerFragment.initialize(BuildConfig.YOUTUBE_KEY, this);
+
         SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
         setActionBarView(movie);
 
@@ -101,5 +113,24 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
                 ViewCompat.animate(floatingButton).scaleY(1).scaleX(1).start();
             }
         }
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+        player = youTubePlayer;
+        player.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION); //todo leak detected
+        player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
+        player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
+        if (!b) {
+            //player.cueVideo("9rLZYyMbJic");
+            player.cueVideo("9rLZYyMbJic");
+        } else {
+            player.play();
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+        player = null;
     }
 }
