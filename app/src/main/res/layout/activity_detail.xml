@@ -127,14 +127,21 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/d_mov_date"
-                    app:layout_constraintBottom_toTopOf="@+id/youtube_player"
                     />
+
                 <fragment
                     android:id="@+id/youtube_player"
                     android:name="com.google.android.youtube.player.YouTubePlayerFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/d_mov_synopsis"
+                    app:layout_constraintBottom_toTopOf="@id/reviews_label"/>
+
+                <TextView
+                    android:id="@+id/reviews_label"
+                    style="@style/LabelTextView"
+                    android:text="@string/reviews"
+                    app:layout_constraintTop_toBottomOf="@id/youtube_player"
                     app:layout_constraintBottom_toBottomOf="parent"/>
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>

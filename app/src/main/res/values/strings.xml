@@ -11,4 +11,5 @@
     <string name="connectionLack">lack_of_connection_pic</string>
     <string name="ma_poster">main_activity_poster</string>
     <string name="action_favorites">Favorites</string>
+    <string name="reviews">Reviews: </string>
 </resources>
