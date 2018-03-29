@@ -1,9 +1,12 @@
 package com.example.guest.popularmovies.mvp.presenter;
 
+import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
 import com.example.guest.popularmovies.mvp.model.MovieTrailers;
 import com.example.guest.popularmovies.mvp.view.DetailView;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 
 import javax.inject.Inject;
 
@@ -42,7 +45,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
             disposable.dispose();
     }
 
-    public void getTrailers2(String id){
+    public void getTrailers(String id, YouTubePlayerFragment fragment, YouTubePlayer.OnInitializedListener listener){
         apiService.getTrailers(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -64,7 +67,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
                     @Override
                     public void onComplete() {
-
+                        fragment.initialize(BuildConfig.YOUTUBE_KEY, listener);
                     }
                 });
     }

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
@@ -68,12 +67,11 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
 
-
-        SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
-        loadTrailers(String.valueOf(movie.getId()));
         playerFragment =
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
-        playerFragment.initialize(BuildConfig.YOUTUBE_KEY, this); //todo into OnComplete?
+
+        SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
+        loadTrailers(String.valueOf(movie.getId()), playerFragment);
 
         setActionBarView();
 
@@ -85,8 +83,8 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         titleTv.setText(movie.getTitle());
     }
 
-    private void loadTrailers(String id) {
-        presenter.getTrailers2(id);
+    private void loadTrailers(String id, YouTubePlayerFragment fragment) {
+        presenter.getTrailers(id, fragment, this);
     }
 
     private void setActionBarView() {
