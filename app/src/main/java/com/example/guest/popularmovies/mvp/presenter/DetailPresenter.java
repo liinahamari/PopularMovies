@@ -42,8 +42,8 @@ public class DetailPresenter extends BasePresenter<DetailView> {
             disposable.dispose();
     }
 
-    public void getTrailers2(){
-        apiService.getTrailers("131634")
+    public void getTrailers2(String id){
+        apiService.getTrailers(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MovieTrailers>() {

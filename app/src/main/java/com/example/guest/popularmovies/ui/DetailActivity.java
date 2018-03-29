@@ -73,7 +73,7 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         loadTrailers(String.valueOf(movie.getId()));
         playerFragment =
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
-        playerFragment.initialize(BuildConfig.YOUTUBE_KEY, this);
+        playerFragment.initialize(BuildConfig.YOUTUBE_KEY, this); //todo into OnComplete?
 
         setActionBarView();
 
@@ -86,7 +86,7 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     }
 
     private void loadTrailers(String id) {
-        presenter.getTrailers2();
+        presenter.getTrailers2(id);
     }
 
     private void setActionBarView() {
@@ -141,7 +141,7 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
         if (!b) {
-            player.cueVideo("9rLZYyMbJic");
+            player.cueVideo(trailers.get(0).getKey());
         } else {
             player.play();
         }
@@ -169,5 +169,11 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     @Override
     public void onClearItems() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.unsubscribe();
     }
 }
