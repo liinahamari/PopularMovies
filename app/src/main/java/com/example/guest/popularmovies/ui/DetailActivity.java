@@ -133,4 +133,9 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
         player = null;
     }
+
+    @Override
+    protected void resolveDaggerDependencies() {
+
+    }
 }

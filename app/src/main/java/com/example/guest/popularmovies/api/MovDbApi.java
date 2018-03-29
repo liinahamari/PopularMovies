@@ -5,10 +5,12 @@ package com.example.guest.popularmovies.api;
  */
 
 import com.example.guest.popularmovies.BuildConfig;
+import com.example.guest.popularmovies.mvp.model.MovieTrailers;
 import com.example.guest.popularmovies.mvp.model.MoviesArray;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -21,4 +23,8 @@ public interface MovDbApi {
 
     @GET("3/movie/top_rated?api_key=" + BuildConfig.API_KEY)
     Observable<MoviesArray> getTopRated(@Query("page") int page);
+
+    @GET("movie/{id}/videos" + BuildConfig.API_KEY)
+    Observable<MovieTrailers> getTrailers(@Path("id") String movieId);
+
 }
