@@ -16,7 +16,7 @@ public class MovieTrailers {
     private Integer id;
     @SerializedName("results")
     @Expose
-    private List<Trailer> trailers = new ArrayList<>();
+    private List<Result> results = null;
 
     public Integer getId() {
         return id;
@@ -26,11 +26,11 @@ public class MovieTrailers {
         this.id = id;
     }
 
-    public List<Trailer> getTrailers() {
-        return trailers;
+    public List<Result> getResults() {
+        return results;
     }
 
-    public void setTrailers(List<Trailer> results) {
-        this.trailers = results;
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 }

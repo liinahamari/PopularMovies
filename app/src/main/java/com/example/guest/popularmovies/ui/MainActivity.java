@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
-import com.example.guest.popularmovies.db.MoviesDbHelper;
 import com.example.guest.popularmovies.di.components.DaggerMovieComponent;
 import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;

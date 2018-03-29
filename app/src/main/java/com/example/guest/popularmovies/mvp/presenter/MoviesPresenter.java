@@ -45,7 +45,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         compositeDisposable.clear();
         compositeDisposable.add(paginationTool
                 .getPagingObservable()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread()) //todo subscribeon?
                 .subscribe(items -> getView().onMoviesLoaded(items.getResults())));
     }
 

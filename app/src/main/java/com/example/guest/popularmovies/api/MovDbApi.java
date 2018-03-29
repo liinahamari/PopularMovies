@@ -24,7 +24,6 @@ public interface MovDbApi {
     @GET("3/movie/top_rated?api_key=" + BuildConfig.API_KEY)
     Observable<MoviesArray> getTopRated(@Query("page") int page);
 
-    @GET("movie/{id}/videos" + BuildConfig.API_KEY)
+    @GET("3/movie/{id}/videos?api_key=" + BuildConfig.API_KEY)
     Observable<MovieTrailers> getTrailers(@Path("id") String movieId);
-
 }

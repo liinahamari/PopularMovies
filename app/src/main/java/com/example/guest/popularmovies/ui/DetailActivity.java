@@ -14,17 +14,29 @@ import android.widget.TextView;
 import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
+import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
+import com.example.guest.popularmovies.di.modules.TrailerModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
+import com.example.guest.popularmovies.mvp.model.Result;
+import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
+import com.example.guest.popularmovies.mvp.view.DetailView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
-public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener,
+public class DetailActivity extends BaseActivity implements DetailView, AppBarLayout.OnOffsetChangedListener,
         YouTubePlayer.OnInitializedListener {
     public static final String IDENTIFICATION = "extra_movie";
+
+    @Inject
+    protected DetailPresenter presenter;
 
     @BindView(R.id.d_poster)
     protected ImageView posterIv;
@@ -50,17 +62,20 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     private boolean mIsImageHidden;
     private YouTubePlayerFragment playerFragment;
     private YouTubePlayer player;
+    private List<Result> trailers;
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
 
+
+        SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
+        loadTrailers(String.valueOf(movie.getId()));
         playerFragment =
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
         playerFragment.initialize(BuildConfig.YOUTUBE_KEY, this);
 
-        SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
-        setActionBarView(movie);
+        setActionBarView();
 
         Picasso.with(this).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
                 .into(posterIv);
@@ -70,7 +85,11 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         titleTv.setText(movie.getTitle());
     }
 
-    private void setActionBarView(SingleMovie movie) {
+    private void loadTrailers(String id) {
+        presenter.getTrailers2();
+    }
+
+    private void setActionBarView() {
         getSupportActionBar().hide();
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         appbar.addOnOffsetChangedListener(this);
@@ -122,7 +141,6 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
         if (!b) {
-            //player.cueVideo("9rLZYyMbJic");
             player.cueVideo("9rLZYyMbJic");
         } else {
             player.play();
@@ -136,6 +154,20 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     @Override
     protected void resolveDaggerDependencies() {
+        DaggerTrailerComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .trailerModule(new TrailerModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
+    public void onTrailersLoaded(List<Result> trailers) {
+        this.trailers = trailers;
+    }
+
+    @Override
+    public void onClearItems() {
 
     }
 }

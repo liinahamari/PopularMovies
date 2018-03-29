@@ -7,7 +7,8 @@ import com.google.gson.annotations.SerializedName;
  * Created by l1maginaire on 3/29/18.
  */
 
-public class Trailer {
+public class Result{
+
     @SerializedName("id")
     @Expose
     private String id;
