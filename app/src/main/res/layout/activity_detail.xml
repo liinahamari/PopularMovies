@@ -124,7 +124,9 @@
                     android:lineSpacingExtra="8dp"
                     android:text="@string/lorem"
                     android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@id/d_mov_rate"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/d_mov_date"
                     app:layout_constraintBottom_toTopOf="@+id/youtube_player"
                     />
                 <fragment
@@ -132,6 +134,7 @@
                     android:name="com.google.android.youtube.player.YouTubePlayerFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/d_mov_synopsis"
                     app:layout_constraintBottom_toBottomOf="parent"/>
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
