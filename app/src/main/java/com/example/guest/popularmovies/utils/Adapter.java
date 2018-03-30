@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -65,6 +66,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         final SingleMovie movie = movies.get(position);
         holder.title.setText(movie.getTitle());
+        holder.bookmarkButton.setOnClickListener(v -> {
+            if (System.currentTimeMillis() % 2 == 0) {
+                holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
+            } else {
+                holder.bookmarkButton.setImageResource(R.drawable.bookmark);
+            }
+        });
         Picasso
                 .with(context)
                 .load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
@@ -101,6 +109,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         protected TextView title;
         @BindView(R.id.movie_item_progress)
         protected ProgressBar progressBar;
+        @BindView(R.id.movie_to_bookmarks)
+        protected ImageButton bookmarkButton;
         private final View view;
 
         public ViewHolder(View itemView) {
