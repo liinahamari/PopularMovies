@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.guest.popularmovies.db.MoviesContract.Entry;
@@ -37,7 +38,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         for (SingleMovie movie:movies) {
                 values.put(COLUMN_MOV_ID, movie.getTitle());
             values.put(COLUMN_BACKDROP_PATH, movie.getBackdropPath());
-//        values.put(GENRE_IDS, movie.getGenreIds());
+        values.put(COLUMN_GENRE_IDS, TextUtils.join(",", movie.getGenreIds()));
 //        values.put(IN_FAVORITES, true); //todo
             values.put(COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
             values.put(COLUMN_OVERVIEW, movie.getOverview());
@@ -92,12 +93,12 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) { //todo CHECK NOT NULL
-        final String SQL_CREATE_WAITLIST_TABLE = "CREATE TABLE " + Entry.TABLE_NAME + " (" +
+        final String SQL_CREATE_TABLE = "CREATE TABLE " + Entry.TABLE_NAME + " (" +
                 Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 //                Entry._ID + " INTEGER, " +
                 COLUMN_MOV_ID + " INTEGER, " +
                 COLUMN_BACKDROP_PATH + " TEXT, " +
-//                GENRE_IDS + " TEXT, " +
+                COLUMN_GENRE_IDS + " TEXT, " +
 //                IN_FAVORITES + " INTEGER, " +
                 COLUMN_ORIGINAL_TITLE + " TEXT, " +
                 COLUMN_OVERVIEW + " TEXT, " +
@@ -108,7 +109,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 COLUMN_VOTE_AVERAGE + " DOUBLE, " +
                 COLUMN_VOTE_COUNT + " INTEGER" +
                 "); ";
-        sqLiteDatabase.execSQL(SQL_CREATE_WAITLIST_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_TABLE);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.example.guest.popularmovies.ui;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -18,7 +17,6 @@ import android.widget.FrameLayout;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
-import com.example.guest.popularmovies.db.DatabaseTasks;
 import com.example.guest.popularmovies.di.components.DaggerMovieComponent;
 import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
@@ -32,9 +30,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-
-import static com.example.guest.popularmovies.db.DatabaseTasks.INSERT;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.*;
 
 public class MainActivity extends BaseActivity implements MainView {
     private static final String LAST_POSITION = "last_position";

@@ -23,7 +23,7 @@ public class MoviesContract {
         public static final String COLUMN_POPULARITY = "popularity";
         public static final String COLUMN_POSTER_PATH = "posterpath";
         public static final String COLUMN_ORIGINAL_TITLE = "otitle";
-//        public static final String GENRE_IDS = "genres";
+        public static final String COLUMN_GENRE_IDS = "genres";
         public static final String COLUMN_BACKDROP_PATH = "backdpath";
         public static final String COLUMN_OVERVIEW = "overview";
         public static final String COLUMN_RELEASE_DATE = "date";

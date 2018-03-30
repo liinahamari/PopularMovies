@@ -3,7 +3,6 @@ package com.example.guest.popularmovies.mvp.presenter;
 import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
-import com.example.guest.popularmovies.db.DatabaseTasks;
 import com.example.guest.popularmovies.mvp.model.MovieTrailers;
 import com.example.guest.popularmovies.mvp.view.DetailView;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -11,13 +10,10 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.example.guest.popularmovies.db.DatabaseTasks.INSERT;
 
 /**
  * Created by l1maginaire on 3/29/18.

@@ -4,7 +4,6 @@ package com.example.guest.popularmovies.utils;
  * Created by l1maginaire on 2/20/18.
  */
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
-import com.example.guest.popularmovies.db.DatabaseTasks;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailActivity;
 import com.squareup.picasso.Callback;
@@ -28,17 +26,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.guest.popularmovies.db.DatabaseTasks.INSERT;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_BACKDROP_PATH;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_MOV_ID;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_ORIGINAL_TITLE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_OVERVIEW;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_POPULARITY;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_POSTER_PATH;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_RELEASE_DATE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_VOTE_AVERAGE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_VOTE_COUNT;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<SingleMovie> movies = new ArrayList<>();

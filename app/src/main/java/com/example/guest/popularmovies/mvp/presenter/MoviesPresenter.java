@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
@@ -14,7 +15,6 @@ import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
@@ -33,6 +33,7 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_REL
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_VOTE_AVERAGE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_VOTE_COUNT;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_GENRE_IDS;
 
 /**
  * Created by l1maginaire on 2/25/18.
@@ -53,7 +54,8 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         Single.fromCallable(() -> {
             ContentResolver contentResolver = context.getContentResolver();
             int rowsNewlyCreated = contentResolver.bulkInsert(CONTENT_URI, MoviesPresenter.this.makeContentValues(movieList));
-            return rowsNewlyCreated;})
+            return rowsNewlyCreated;
+        })
                 .subscribeOn(Schedulers.io())
                 .subscribe();
     }
@@ -100,7 +102,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
             ContentValues values = new ContentValues();
             values.put(COLUMN_MOV_ID, movie.getTitle());
             values.put(COLUMN_BACKDROP_PATH, movie.getBackdropPath());
-//        values.put(GENRE_IDS, movie.getGenreIds());
+            values.put(COLUMN_GENRE_IDS, TextUtils.join(",", movie.getGenreIds()));
 //        values.put(IN_FAVORITES, true); //todo
             values.put(COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
             values.put(COLUMN_OVERVIEW, movie.getOverview());
