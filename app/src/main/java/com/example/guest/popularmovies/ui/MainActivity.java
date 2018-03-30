@@ -125,30 +125,9 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void onMoviesLoaded(List<SingleMovie> movies) {
-//        MoviesDbHelper dbHelper = new MoviesDbHelper(this); //todo to background thread
-//        dbHelper.addMovies(movies);
-        for (SingleMovie movie:movies) {
-            DatabaseTasks dt = new DatabaseTasks(this);
-            dt.execute(INSERT, makeContentValues(movie));
-        }
+        presenter.writeToDb(this, movies);
         adapter.addMovies(movies);
         adapter.notifyItemInserted(adapter.getItemCount() - movies.size());
-    }
-
-    private ContentValues makeContentValues(SingleMovie movie) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_MOV_ID, movie.getTitle());
-        values.put(COLUMN_BACKDROP_PATH, movie.getBackdropPath());
-//        values.put(GENRE_IDS, movie.getGenreIds());
-//        values.put(IN_FAVORITES, true); //todo
-        values.put(COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
-        values.put(COLUMN_OVERVIEW, movie.getOverview());
-        values.put(COLUMN_POPULARITY, movie.getPopularity());
-        values.put(COLUMN_POSTER_PATH, movie.getPosterPath());
-        values.put(COLUMN_RELEASE_DATE, movie.getReleaseDate());
-        values.put(COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
-        values.put(COLUMN_VOTE_COUNT, movie.getVoteCount());
-        return values;
     }
 
     @Override
