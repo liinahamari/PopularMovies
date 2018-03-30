@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
-import com.example.guest.popularmovies.db.DatabaseTasks;
 import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
 import com.example.guest.popularmovies.di.modules.TrailerModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
@@ -32,9 +31,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-import static com.example.guest.popularmovies.db.DatabaseTasks.INSERT;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_ORIGINAL_TITLE;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_POSTER_PATH;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.TITLE;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_VOTE_AVERAGE;
 
 public class DetailActivity extends BaseActivity implements DetailView, AppBarLayout.OnOffsetChangedListener,
         YouTubePlayer.OnInitializedListener {
@@ -168,21 +169,14 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     @Override
     public void onTrailersLoaded(List<Result> trailers) {
         this.trailers = trailers;
-        Cursor cursor = getContentResolver().query(CONTENT_URI, null, null, null, null);
-        if (cursor.moveToFirst()){
+        Cursor c = getContentResolver().query(CONTENT_URI, null, null, null, null);
+        if (c.moveToFirst()) {
             do{
-                String data = cursor.getString(cursor.getColumnIndex(TITLE));
-                String data2 = cursor.getString(cursor.getColumnIndex(TITLE));
-            }while(cursor.moveToNext());
+                String s = c.getString(c.getColumnIndex(COLUMN_ORIGINAL_TITLE));
+                  String s2 = c.getString(c.getColumnIndexOrThrow(COLUMN_TITLE));
+            }while(c.moveToNext());
+            c.close();
         }
-        cursor.close();
-
-
-    }
-
-    @Override
-    public void onClearItems() {
-
     }
 
     @Override

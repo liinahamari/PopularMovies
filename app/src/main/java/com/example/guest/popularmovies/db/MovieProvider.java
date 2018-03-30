@@ -36,11 +36,11 @@ public class MovieProvider extends ContentProvider {
     }
 
     private static UriMatcher buildUriMatcher() {
-        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = CONTENT_AUTHORITY;
-        matcher.addURI(authority, PATH_MOVIES, MOVIES);
-        matcher.addURI(authority, PATH_MOVIES + "/*", MOVIE_ITEM);
-        return matcher;
+        final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = MoviesContract.CONTENT_AUTHORITY;
+        sURIMatcher.addURI(authority, MoviesContract.PATH_MOVIES, MOVIES);
+        sURIMatcher.addURI(authority, MoviesContract.PATH_MOVIES + "/*", MOVIE_ITEM);
+        return sURIMatcher;
     }
 
     @Override
@@ -54,9 +54,9 @@ public class MovieProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
         switch (match) {
             case MOVIES:
-                return ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIES;
+                return MoviesContract.Entry.CONTENT_TYPE;
             case MOVIE_ITEM:
-                return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIES;
+                return MoviesContract.Entry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

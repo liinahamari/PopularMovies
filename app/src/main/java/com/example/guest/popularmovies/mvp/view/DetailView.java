@@ -11,5 +11,4 @@ import java.util.List;
 
 public interface DetailView extends BaseView {
     void onTrailersLoaded(List<Result> trailers);
-    void onClearItems();
 }

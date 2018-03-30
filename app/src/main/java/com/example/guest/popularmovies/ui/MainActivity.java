@@ -127,27 +127,27 @@ public class MainActivity extends BaseActivity implements MainView {
     public void onMoviesLoaded(List<SingleMovie> movies) {
 //        MoviesDbHelper dbHelper = new MoviesDbHelper(this); //todo to background thread
 //        dbHelper.addMovies(movies);
+        for (SingleMovie movie:movies) {
+            DatabaseTasks dt = new DatabaseTasks(this);
+            dt.execute(INSERT, makeContentValues(movie));
+        }
         adapter.addMovies(movies);
-        DatabaseTasks dt = new DatabaseTasks(this);
-        dt.execute(INSERT, makeContentValues(movies));
         adapter.notifyItemInserted(adapter.getItemCount() - movies.size());
     }
 
-    private ContentValues makeContentValues(List<SingleMovie> movies) {
+    private ContentValues makeContentValues(SingleMovie movie) {
         ContentValues values = new ContentValues();
-        for (SingleMovie movie:movies) {
-            values.put(MOV_ID, movie.getTitle());
-            values.put(BACKDROP_PATH, movie.getBackdropPath());
+        values.put(COLUMN_MOV_ID, movie.getTitle());
+        values.put(COLUMN_BACKDROP_PATH, movie.getBackdropPath());
 //        values.put(GENRE_IDS, movie.getGenreIds());
 //        values.put(IN_FAVORITES, true); //todo
-            values.put(ORIGINAL_TITLE, movie.getOriginalTitle());
-            values.put(OVERVIEW, movie.getOverview());
-            values.put(POPULARITY, movie.getPopularity());
-            values.put(POSTER_PATH, movie.getPosterPath());
-            values.put(RELEASE_DATE, movie.getReleaseDate());
-            values.put(VOTE_AVERAGE, movie.getVoteAverage());
-            values.put(VOTE_COUNT, movie.getVoteCount());
-        }
+        values.put(COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
+        values.put(COLUMN_OVERVIEW, movie.getOverview());
+        values.put(COLUMN_POPULARITY, movie.getPopularity());
+        values.put(COLUMN_POSTER_PATH, movie.getPosterPath());
+        values.put(COLUMN_RELEASE_DATE, movie.getReleaseDate());
+        values.put(COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
+        values.put(COLUMN_VOTE_COUNT, movie.getVoteCount());
         return values;
     }
 
