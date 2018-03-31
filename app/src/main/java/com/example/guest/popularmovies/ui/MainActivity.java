@@ -26,7 +26,6 @@ import com.example.guest.popularmovies.utils.Adapter;
 import com.example.guest.popularmovies.utils.NetworkChecker;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,7 +33,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainView {
-    private static final String LAST_POSITION = "last_position";
+    private static final String LAST_POSITION = "last_visible_position";
+    private static final String LAST_SORT_ORDER = "last_chosen_sort_order";
+    private static final String SORT_ORDER_POPULAR = "order_popular";
+    private static final String SORT_ORDER_TOP_RATED = "order_top_rated";
+    private static final String SORT_ORDER_FAVORITES = "order_favorites";
 
     @Inject
     protected MoviesPresenter presenter;
@@ -50,22 +53,32 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private Adapter adapter;
     private int lastVisiblePosition = 0;
-    private ArrayList<SingleMovie> savedList = new ArrayList<>();
+    private ArrayList<SingleMovie> savedList;
+    private SharedPreferences preferences;
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
         setupAdapter();
-        if(savedInstanceState!=null)
+        init();
+        if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList("list"));
             recyclerView.scrollToPosition(lastVisiblePosition);
+        }
         loadNews();
+    }
+
+    private void init() {
+        savedList = new ArrayList<>();
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     private void loadNews() {
         if (networkChecker.isNetAvailable(this)) {
             errorLayout.setVisibility(View.INVISIBLE);
-            presenter.getPopular(recyclerView); //todo sharedpreferences
+
+            if ()
+                presenter.getPopular(recyclerView);
         } else {
             errorLayout.setVisibility(View.VISIBLE);
             repeatButton.setOnClickListener(v -> loadNews());
@@ -99,16 +112,13 @@ public class MainActivity extends BaseActivity implements MainView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                onClearItems();
-                presenter.getPopular(recyclerView);
+                doWorkOnChangingSortOrder(SORT_ORDER_POPULAR);
                 return true;
             case R.id.action_top_rated:
-                onClearItems();
-                presenter.getTopRated(recyclerView);
+                doWorkOnChangingSortOrder(SORT_ORDER_TOP_RATED);
                 return true;
             case R.id.action_favorites:
-                onClearItems();
-                presenter.getFavorites(this);
+                doWorkOnChangingSortOrder(SORT_ORDER_FAVORITES);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -126,7 +136,6 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void onMoviesLoaded(List<SingleMovie> movies) {
-//        presenter.writeToDb(this, movies);
         savedList.addAll(movies);
         adapter.addMovies(movies);
         adapter.notifyItemInserted(adapter.getItemCount() - movies.size());
@@ -157,5 +166,24 @@ public class MainActivity extends BaseActivity implements MainView {
     protected void onDestroy() {
         super.onDestroy();
         presenter.unsubscribe();
+    }
+
+    private void doWorkOnChangingSortOrder(String sortOrder) {
+        savedList.clear();
+        preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();
+        onClearItems();
+        switch (sortOrder) {
+            case SORT_ORDER_POPULAR:
+                presenter.getPopular(recyclerView);
+                break;
+            case SORT_ORDER_TOP_RATED:
+                presenter.getTopRated(recyclerView);
+                break;
+            case SORT_ORDER_FAVORITES:
+                presenter.getFavorites(this);
+                break;
+            default:
+                throw new IllegalArgumentException("There's only 3 options to go...");
+        }
     }
 }
