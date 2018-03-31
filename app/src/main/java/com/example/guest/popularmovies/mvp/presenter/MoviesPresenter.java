@@ -59,6 +59,9 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                 .subscribeOn(Schedulers.io())
                 .subscribe();
     }*/
+    public void getPopular(List<SingleMovie> movies){
+
+    }
 
     public void getPopular(RecyclerView recyclerView) {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,

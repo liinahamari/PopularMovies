@@ -76,7 +76,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         final SingleMovie movie = movies.get(position);
         holder.title.setText(movie.getTitle());
         holder.bookmarkButton.setOnClickListener(v -> {
-            if (!(movie.isInFavorites())) {
+            if (!(movie.isInFavorites())) //todo другая проверка. возможно, нужно изменить автоинкремент на mov_id
+                 {
                 Single.fromCallable(() -> {
                     ContentResolver contentResolver = context.getContentResolver();
                     Uri returnUri = contentResolver.insert(CONTENT_URI,

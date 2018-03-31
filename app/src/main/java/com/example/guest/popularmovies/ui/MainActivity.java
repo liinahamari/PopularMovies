@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
@@ -26,6 +25,8 @@ import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.Adapter;
 import com.example.guest.popularmovies.utils.NetworkChecker;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,12 +49,16 @@ public class MainActivity extends BaseActivity implements MainView {
     protected Button repeatButton;
 
     private Adapter adapter;
-    private int lastFirstVisiblePosition = 1;
+    private int lastVisiblePosition = 0;
+    private ArrayList<SingleMovie> savedList = new ArrayList<>();
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
         setupAdapter();
+        if(savedInstanceState!=null)
+            onMoviesLoaded(savedInstanceState.getParcelableArrayList("list"));
+            recyclerView.scrollToPosition(lastVisiblePosition);
         loadNews();
     }
 
@@ -122,6 +127,7 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void onMoviesLoaded(List<SingleMovie> movies) {
 //        presenter.writeToDb(this, movies);
+        savedList.addAll(movies);
         adapter.addMovies(movies);
         adapter.notifyItemInserted(adapter.getItemCount() - movies.size());
     }
@@ -135,19 +141,16 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        lastFirstVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-        Log.d("POSITION", String.valueOf(lastFirstVisiblePosition));
-        outState.putInt(LAST_POSITION, lastFirstVisiblePosition);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        preferences.edit().putInt("last_position", lastFirstVisiblePosition).apply();
+        lastVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+        Log.d("POSITION", String.valueOf(lastVisiblePosition));
+        outState.putInt(LAST_POSITION, lastVisiblePosition);
+        outState.putParcelableArrayList("list", savedList);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        lastFirstVisiblePosition = savedInstanceState.getInt(LAST_POSITION);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        lastFirstVisiblePosition = preferences.getInt("last_position", 0);
+        lastVisiblePosition = savedInstanceState.getInt(LAST_POSITION);
     }
 
     @Override
