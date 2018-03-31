@@ -61,6 +61,7 @@ public class SingleMovie implements Parcelable {
         overview = in.readString();
         voteAverage = in.readDouble();
         releaseDate = in.readString();
+        genreIds = in.readArrayList(SingleMovie.class.getClassLoader());
     }
 
     public SingleMovie() {
@@ -177,12 +178,13 @@ public class SingleMovie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeInt(id); //todo rest of
         dest.writeString(title);
         dest.writeString(posterPath);
         dest.writeString(overview);
         dest.writeDouble(voteAverage);
         dest.writeString(releaseDate);
+        dest.writeList(genreIds);
     }
 
     public static final Creator<SingleMovie> CREATOR = new Creator<SingleMovie>() {

@@ -1,14 +1,9 @@
 package com.example.guest.popularmovies.utils.pagination;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.text.TextUtils;
 
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
-
-import java.util.List;
-
-import javax.inject.Inject;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.*;
 
@@ -19,17 +14,18 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.*;
 public class MakeContentValues {
 
     public ContentValues makeContentValues(SingleMovie movie) {
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_MOV_ID, movie.getTitle());
-            values.put(COLUMN_BACKDROP_PATH, movie.getBackdropPath());
-            values.put(COLUMN_GENRE_IDS, TextUtils.join(",", movie.getGenreIds()));
-            values.put(COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
-            values.put(COLUMN_OVERVIEW, movie.getOverview());
-            values.put(COLUMN_POPULARITY, movie.getPopularity());
-            values.put(COLUMN_POSTER_PATH, movie.getPosterPath());
-            values.put(COLUMN_RELEASE_DATE, movie.getReleaseDate());
-            values.put(COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
-            values.put(COLUMN_VOTE_COUNT, movie.getVoteCount());
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_MOV_ID, movie.getId());
+        values.put(COLUMN_BACKDROP_PATH, movie.getBackdropPath());
+        values.put(COLUMN_GENRE_IDS, TextUtils.join(",", movie.getGenreIds()));
+        values.put(COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
+        values.put(COLUMN_OVERVIEW, movie.getOverview());
+        values.put(COLUMN_POPULARITY, movie.getPopularity());
+        values.put(COLUMN_POSTER_PATH, movie.getPosterPath());
+        values.put(COLUMN_RELEASE_DATE, movie.getReleaseDate());
+        values.put(COLUMN_TITLE, movie.getTitle());
+        values.put(COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
+        values.put(COLUMN_VOTE_COUNT, movie.getVoteCount());
         return values;
     }
 }
