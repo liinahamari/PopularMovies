@@ -76,9 +76,11 @@ public class MainActivity extends BaseActivity implements MainView {
     private void loadNews() {
         if (networkChecker.isNetAvailable(this)) {
             errorLayout.setVisibility(View.INVISIBLE);
-
-            if ()
-                presenter.getPopular(recyclerView);
+            if (preferences.contains(LAST_SORT_ORDER)) {
+                presenterSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR));
+            } else {
+                presenterSwitcher(SORT_ORDER_POPULAR);//todo check default value with null in sharedPref (1st launch)
+            }
         } else {
             errorLayout.setVisibility(View.VISIBLE);
             repeatButton.setOnClickListener(v -> loadNews());
@@ -172,6 +174,10 @@ public class MainActivity extends BaseActivity implements MainView {
         savedList.clear();
         preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();
         onClearItems();
+        presenterSwitcher(sortOrder);
+    }
+
+    private void presenterSwitcher(String sortOrder) {
         switch (sortOrder) {
             case SORT_ORDER_POPULAR:
                 presenter.getPopular(recyclerView);
