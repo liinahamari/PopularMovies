@@ -50,7 +50,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public MoviesPresenter() {
     }
 
-    public void writeToDb(Context context, List<SingleMovie> movieList) {
+    /*public void writeToDb(Context context, List<SingleMovie> movieList) {
         Single.fromCallable(() -> {
             ContentResolver contentResolver = context.getContentResolver();
             int rowsNewlyCreated = contentResolver.bulkInsert(CONTENT_URI, MoviesPresenter.this.makeContentValues(movieList));
@@ -58,7 +58,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         })
                 .subscribeOn(Schedulers.io())
                 .subscribe();
-    }
+    }*/
 
     public void getPopular(RecyclerView recyclerView) {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
@@ -93,26 +93,5 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public void unsubscribe() {
         if (compositeDisposable != null)
             compositeDisposable.dispose();
-    }
-
-    private ContentValues[] makeContentValues(List<SingleMovie> movies) { //todo move to utils
-        ContentValues[] valuesArray = new ContentValues[movies.size()]; //todo analyze circumstances which cause less amount
-        for (int i = 0; i < movies.size(); i++) {
-            SingleMovie movie = movies.get(i);
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_MOV_ID, movie.getTitle());
-            values.put(COLUMN_BACKDROP_PATH, movie.getBackdropPath());
-            values.put(COLUMN_GENRE_IDS, TextUtils.join(",", movie.getGenreIds()));
-//        values.put(IN_FAVORITES, true); //todo
-            values.put(COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
-            values.put(COLUMN_OVERVIEW, movie.getOverview());
-            values.put(COLUMN_POPULARITY, movie.getPopularity());
-            values.put(COLUMN_POSTER_PATH, movie.getPosterPath());
-            values.put(COLUMN_RELEASE_DATE, movie.getReleaseDate());
-            values.put(COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
-            values.put(COLUMN_VOTE_COUNT, movie.getVoteCount());
-            valuesArray[i] = values;
-        }
-        return valuesArray;
     }
 }

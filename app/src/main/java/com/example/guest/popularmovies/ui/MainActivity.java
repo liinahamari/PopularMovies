@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void onMoviesLoaded(List<SingleMovie> movies) {
-        presenter.writeToDb(this, movies);
+//        presenter.writeToDb(this, movies);
         adapter.addMovies(movies);
         adapter.notifyItemInserted(adapter.getItemCount() - movies.size());
     }

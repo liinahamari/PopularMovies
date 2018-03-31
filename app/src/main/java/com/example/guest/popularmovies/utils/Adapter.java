@@ -4,8 +4,10 @@ package com.example.guest.popularmovies.utils;
  * Created by l1maginaire on 2/20/18.
  */
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -18,7 +20,9 @@ import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
+import com.example.guest.popularmovies.mvp.presenter.MoviesPresenter;
 import com.example.guest.popularmovies.ui.DetailActivity;
+import com.example.guest.popularmovies.utils.pagination.MakeContentValues;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -27,6 +31,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<SingleMovie> movies = new ArrayList<>();
@@ -67,10 +76,28 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         final SingleMovie movie = movies.get(position);
         holder.title.setText(movie.getTitle());
         holder.bookmarkButton.setOnClickListener(v -> {
-            if (System.currentTimeMillis() % 2 == 0) {
-                holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
-            } else {
+            if (!(movie.isInFavorites())) {
+                Single.fromCallable(() -> {
+                    ContentResolver contentResolver = context.getContentResolver();
+                    Uri returnUri = contentResolver.insert(CONTENT_URI,
+                            (new MakeContentValues().makeContentValues(movies.get(position))));
+                    return returnUri;
+                })
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(); //todo toast callback
                 holder.bookmarkButton.setImageResource(R.drawable.bookmark);
+                movie.setInFavorites(true);
+            } else {
+                Single.fromCallable(() -> {
+                    ContentResolver contentResolver = context.getContentResolver();
+                    int rowsDeleted = contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
+                            new String[]{(new MakeContentValues().makeContentValues(movies.get(position))).getAsString(COLUMN_TITLE)});
+                    return rowsDeleted;
+                })
+                        .subscribeOn(Schedulers.io())
+                        .subscribe();
+                holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
+                movie.setInFavorites(false);
             }
         });
         Picasso
