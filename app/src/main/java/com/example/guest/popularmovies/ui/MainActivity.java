@@ -3,6 +3,7 @@ package com.example.guest.popularmovies.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,6 +34,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainView {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private static final String LAST_POSITION = "last_visible_position";
     private static final String LAST_SORT_ORDER = "last_chosen_sort_order";
     private static final String SORT_ORDER_POPULAR = "order_popular";
@@ -148,6 +150,15 @@ public class MainActivity extends BaseActivity implements MainView {
         adapter.clearItems();
     }
 
+    @Override
+    public void bookmarkAddedCallback(Uri uri) {
+        Log.d(TAG, "Added bookmark: " + uri.toString());
+    }
+
+    @Override
+    public void bookmarkDeletedCallback(Integer rowsDeleted){
+        Log.d(TAG, String.valueOf(rowsDeleted)+" rows deleted.");
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

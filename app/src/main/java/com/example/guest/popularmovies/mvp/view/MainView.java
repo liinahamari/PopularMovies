@@ -1,5 +1,7 @@
 package com.example.guest.popularmovies.mvp.view;
 
+import android.net.Uri;
+
 import com.example.guest.popularmovies.base.BaseView;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 
@@ -12,4 +14,6 @@ import java.util.List;
 public interface MainView extends BaseView {
     void onMoviesLoaded(List<SingleMovie> movies);
     void onClearItems();
+    void bookmarkAddedCallback(Uri uri);
+    void bookmarkDeletedCallback(Integer rowsAmount);
 }

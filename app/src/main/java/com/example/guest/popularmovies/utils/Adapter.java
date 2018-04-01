@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailActivity;
+import com.example.guest.popularmovies.ui.MainActivity;
 import com.example.guest.popularmovies.utils.pagination.MakeContentValues;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -32,6 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
@@ -99,19 +101,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     return context.getContentResolver().insert(CONTENT_URI,
                             (new MakeContentValues().makeContentValues(movies.get(position)))); //todo class optimization
                 })
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
-                        .subscribe(); //todo toast callback
+                        .subscribe(uri -> ((MainActivity)context).bookmarkAddedCallback(uri));
                 holder.bookmarkButton.setImageResource(R.drawable.bookmark);
                 movie.setInFavorites(true);
             } else {
                 Single.fromCallable(() -> { //todo LEAK!
                     ContentResolver contentResolver = context.getContentResolver();
-                    int rowsDeleted = contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
+                    return contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
                             new String[]{(new MakeContentValues().makeContentValues(movies.get(position))).getAsString(COLUMN_TITLE)});
-                    return rowsDeleted;
                 })
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
-                        .subscribe();
+                        .subscribe(rowsDeleted -> ((MainActivity)context).bookmarkDeletedCallback(rowsDeleted));
                 holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
                 movie.setInFavorites(false);
             }
