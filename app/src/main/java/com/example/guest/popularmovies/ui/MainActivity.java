@@ -64,12 +64,8 @@ public class MainActivity extends BaseActivity implements MainView {
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
         init();
-        Single.fromCallable(() -> presenter.getFavoritesList(MainActivity.this))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(favList -> {
-                    setupAdapter(favList);
-                    loadNews();
-                });
+        setupAdapter();
+        loadNews();
         /*if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList("list"));
             recyclerView.scrollToPosition(lastVisiblePosition);
@@ -95,14 +91,14 @@ public class MainActivity extends BaseActivity implements MainView {
         }
     }
 
-    private void setupAdapter(List<String> favList) {
+    private void setupAdapter() {
         recyclerView.setHasFixedSize(true); //todo necessity
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         }
-        adapter = new Adapter(getLayoutInflater(), this, favList);
+        adapter = new Adapter(getLayoutInflater(), this);
         recyclerView.setAdapter(adapter);
     }
 

@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_GENRE_IDS;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_MOV_ID;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_ORIGINAL_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 
@@ -171,6 +172,7 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         if (c.moveToFirst()) {
             do {
                 String s2 = c.getString(c.getColumnIndex(COLUMN_ORIGINAL_TITLE));
+                String s3 = String.valueOf(c.getInt(c.getColumnIndex(COLUMN_MOV_ID)));
                 String s = c.getString(c.getColumnIndex(COLUMN_GENRE_IDS));
             } while (c.moveToNext());
             c.close();

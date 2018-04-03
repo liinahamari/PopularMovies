@@ -41,11 +41,10 @@
         android:background="@color/lightLight">
 
         <ImageButton
-            android:id="@+id/movie_to_bookmarks"
+            android:id="@+id/favorite_icon"
             android:background="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/unbookmarked"
             android:padding="4dp"/>
     </FrameLayout>
 

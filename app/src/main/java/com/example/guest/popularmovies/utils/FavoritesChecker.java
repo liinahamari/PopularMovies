@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_MOV_ID;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry._ID;
 
@@ -14,21 +15,16 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry._ID;
  */
 
 public class FavoritesChecker { //todo допустимость использования в MainThread >?<
-    public boolean isFavorite(Context context, SingleMovie movie) {
+    public static boolean isFavorite(Context context, SingleMovie movie) {
         ContentResolver contentResolver = context.getContentResolver();
         Cursor c = null;
         if (movie.getId() != 0) {
-            c = contentResolver.query(CONTENT_URI,
-                    null,
-                    _ID + " = ?",
-                    new String[]{String.valueOf(movie.getId())},
-                    null);
+            c = contentResolver.query(CONTENT_URI,null,COLUMN_MOV_ID + " = ?",
+                    new String[]{String.valueOf(movie.getId())},null);
         }
         if (c != null) {
             c.moveToFirst();
-            int index = c.getColumnIndex(_ID);
-
-            if (c.getCount() > 0 && c.getLong(index) == movie.getId()) {
+            if (c.getCount() > 0 && c.getInt(c.getColumnIndex(COLUMN_MOV_ID)) == movie.getId()) {
                 c.close();
                 return true;
             }

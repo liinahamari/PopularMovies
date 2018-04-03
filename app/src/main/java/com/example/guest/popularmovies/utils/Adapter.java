@@ -39,18 +39,17 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TIT
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    private List<String> favlist;
-    private List<SingleMovie> movies = new ArrayList<>();
+    private List<SingleMovie> movies;
     private Context context;
     private LayoutInflater layoutInflater;
     private float dpHeight;
     private float dpWidth;
 
 
-    public Adapter(LayoutInflater layoutInflater, Context context, List<String> favlist) {
-        this.favlist = favlist;
+    public Adapter(LayoutInflater layoutInflater, Context context) {
         this.layoutInflater = layoutInflater;
         this.context = context;
+        movies = new ArrayList<>();
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         dpWidth = displayMetrics.widthPixels / displayMetrics.density;
@@ -76,12 +75,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final SingleMovie movie = movies.get(position);
         holder.title.setText(movie.getTitle());
-        for (String title : favlist) {
-            if (title.equals(movie.getTitle())) {
-                movie.setInFavorites(true);
-                holder.bookmarkButton.setImageResource(R.drawable.bookmark);
-            }
-        }
         holder.bookmarkButton.setOnClickListener(v ->
         {
             if (!(movie.isInFavorites())) {
@@ -95,7 +88,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         .subscribe(uri -> {
                             ((MainActivity) context).bookmarkAddedCallback(uri);
                             movie.setInFavorites(true);
-                            holder.bookmarkButton.setImageResource(R.drawable.bookmark);
+                            holder.bookmarkButton.setImageResource(R.drawable.bookmarked);
                             holder.bookmarkButton.setClickable(true);
                         });
             } else {
@@ -116,8 +109,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             }
         });
 
-        Picasso
-                .with(context)
+        Picasso.with(context)
                 .load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
                 .error(R.drawable.broken_image) //todo: tests in the middle of smth / maybe empty drawable?
                 .into(holder.poster, new Callback() {
@@ -131,6 +123,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         holder.progressBar.setVisibility(View.GONE);
                     }
                 });
+
+        if (FavoritesChecker.isFavorite(context, movie)) {
+            Picasso.with(context)
+                    .load(R.drawable.bookmarked)
+                    .into(holder.bookmarkButton);
+        } else {
+            Picasso.with(context)
+                    .load(R.drawable.unbookmarked)
+                    .into(holder.bookmarkButton);
+        }
+
         holder.view.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra(DetailActivity.IDENTIFICATION, movie);
@@ -140,9 +143,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        if (movies == null)
-            return 0;
-        return movies.size();
+        return (movies == null) ? 0 : movies.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -152,7 +153,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         protected TextView title;
         @BindView(R.id.movie_item_progress)
         protected ProgressBar progressBar;
-        @BindView(R.id.movie_to_bookmarks)
+        @BindView(R.id.favorite_icon)
         protected ImageButton bookmarkButton;
         private final View view;
 
