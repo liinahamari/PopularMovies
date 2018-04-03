@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,7 +78,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.title.setText(movie.getTitle());
         holder.bookmarkButton.setOnClickListener(v ->
         {
-            if (!(movie.isInFavorites())) {
+            if (/*!(movie.isInFavorites())*/true) {
                 holder.bookmarkButton.setClickable(false);
                 Single.fromCallable(() -> {//todo leak
                     return context.getContentResolver().insert(CONTENT_URI,
@@ -87,7 +88,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         .subscribeOn(Schedulers.io())
                         .subscribe(uri -> {
                             ((MainActivity) context).bookmarkAddedCallback(uri);
-                            movie.setInFavorites(true);
                             holder.bookmarkButton.setImageResource(R.drawable.bookmarked);
                             holder.bookmarkButton.setClickable(true);
                         });
@@ -103,7 +103,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         .subscribe(rowsDeleted -> {
                             ((MainActivity) context).bookmarkDeletedCallback(rowsDeleted);
                             holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
-                            movie.setInFavorites(false);
                             holder.bookmarkButton.setClickable(true);
                         });
             }
@@ -124,15 +123,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     }
                 });
 
-        if (FavoritesChecker.isFavorite(context, movie)) {
-            Picasso.with(context)
-                    .load(R.drawable.bookmarked)
-                    .into(holder.bookmarkButton);
-        } else {
-            Picasso.with(context)
-                    .load(R.drawable.unbookmarked)
-                    .into(holder.bookmarkButton);
-        }
+        Single.fromCallable(() -> FavoritesChecker.isFavorite(context, movie))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(isFavorite -> Picasso.with(context)
+                        .load(isFavorite ? R.drawable.bookmarked : R.drawable.unbookmarked)
+                        .into(holder.bookmarkButton));
 
         holder.view.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);

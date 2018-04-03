@@ -8,7 +8,6 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_MOV_ID;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry._ID;
 
 /**
  * Created by l1maginaire on 4/3/18.
