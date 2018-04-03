@@ -1,10 +1,8 @@
 package com.example.guest.popularmovies.mvp.presenter;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
@@ -14,26 +12,16 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_BACKDROP_PATH;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_MOV_ID;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_ORIGINAL_TITLE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_OVERVIEW;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_POPULARITY;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_POSTER_PATH;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_RELEASE_DATE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_VOTE_AVERAGE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_VOTE_COUNT;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_GENRE_IDS;
 
 /**
  * Created by l1maginaire on 2/25/18.
@@ -59,7 +47,20 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                 .subscribeOn(Schedulers.io())
                 .subscribe();
     }*/
-    public void getPopular(List<SingleMovie> movies){
+
+    public List<String> getFavoritesList(Context context) {
+        ArrayList<String> favlist = new ArrayList<>();
+        Cursor c = context.getContentResolver().query(CONTENT_URI, null, null, null, null);//todo selection NAME
+        if (c.moveToFirst()) {
+            do {
+                favlist.add(c.getString(c.getColumnIndex(COLUMN_TITLE)));
+            } while (c.moveToNext());
+            c.close();
+        }
+        return favlist;
+    }
+
+    public void getPopular(List<SingleMovie> movies) {
 
     }
 

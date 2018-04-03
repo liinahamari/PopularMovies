@@ -32,6 +32,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity implements MainView {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -61,13 +63,17 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
-        setupAdapter();
         init();
-        if (savedInstanceState != null) {
+        Single.fromCallable(() -> presenter.getFavoritesList(MainActivity.this))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(favList -> {
+                    setupAdapter(favList);
+                    loadNews();
+                });
+        /*if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList("list"));
             recyclerView.scrollToPosition(lastVisiblePosition);
-        }
-        loadNews();
+        }*/
     }
 
     private void init() {
@@ -79,9 +85,9 @@ public class MainActivity extends BaseActivity implements MainView {
         if (networkChecker.isNetAvailable(this)) {
             errorLayout.setVisibility(View.INVISIBLE);
             if (preferences.contains(LAST_SORT_ORDER)) {
-                presenterSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR));
+                sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR));
             } else {
-                presenterSwitcher(SORT_ORDER_POPULAR);//todo check default value with null in sharedPref (1st launch)
+                sortingSwitcher(SORT_ORDER_POPULAR);//todo check default value with null in sharedPref (1st launch)
             }
         } else {
             errorLayout.setVisibility(View.VISIBLE);
@@ -89,14 +95,14 @@ public class MainActivity extends BaseActivity implements MainView {
         }
     }
 
-    private void setupAdapter() {
+    private void setupAdapter(List<String> favList) {
         recyclerView.setHasFixedSize(true); //todo necessity
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         }
-        adapter = new Adapter(getLayoutInflater(), this);
+        adapter = new Adapter(getLayoutInflater(), this, favList);
         recyclerView.setAdapter(adapter);
     }
 
@@ -156,8 +162,8 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public void bookmarkDeletedCallback(Integer rowsDeleted){
-        Log.d(TAG, String.valueOf(rowsDeleted)+" rows deleted.");
+    public void bookmarkDeletedCallback(Integer rowsDeleted) {
+        Log.d(TAG, String.valueOf(rowsDeleted) + " rows deleted.");
     }
 
     @Override
@@ -185,10 +191,10 @@ public class MainActivity extends BaseActivity implements MainView {
         savedList.clear();
         preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();
         onClearItems();
-        presenterSwitcher(sortOrder);
+        sortingSwitcher(sortOrder);
     }
 
-    private void presenterSwitcher(String sortOrder) {
+    private void sortingSwitcher(String sortOrder) {
         switch (sortOrder) {
             case SORT_ORDER_POPULAR:
                 presenter.getPopular(recyclerView);

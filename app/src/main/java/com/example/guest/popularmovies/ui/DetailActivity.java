@@ -16,8 +16,8 @@ import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
 import com.example.guest.popularmovies.di.modules.TrailerModule;
-import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.model.Result;
+import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
 import com.example.guest.popularmovies.mvp.view.DetailView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -31,10 +31,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_GENRE_IDS;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_ORIGINAL_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_GENRE_IDS;
 
 public class DetailActivity extends BaseActivity implements DetailView, AppBarLayout.OnOffsetChangedListener,
         YouTubePlayer.OnInitializedListener {
@@ -170,10 +169,10 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         this.trailers = trailers;
         Cursor c = getContentResolver().query(CONTENT_URI, null, null, null, null);
         if (c.moveToFirst()) {
-            do{
-                  String s2 = c.getString(c.getColumnIndex(COLUMN_ORIGINAL_TITLE));
+            do {
+                String s2 = c.getString(c.getColumnIndex(COLUMN_ORIGINAL_TITLE));
                 String s = c.getString(c.getColumnIndex(COLUMN_GENRE_IDS));
-            }while(c.moveToNext());
+            } while (c.moveToNext());
             c.close();
         }
     }

@@ -48,24 +48,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private float dpWidth;
 
 
-    public Adapter(LayoutInflater layoutInflater, Context context) {
+    public Adapter(LayoutInflater layoutInflater, Context context, List<String> favlist) {
+        this.favlist = favlist;
         this.layoutInflater = layoutInflater;
         this.context = context;
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        f();
-    }
-
-    private void f() {
-        favlist = new ArrayList<>();
-        Cursor c = context.getContentResolver().query(CONTENT_URI, null, null, null, null);
-        if (c.moveToFirst()) {
-            do {
-                favlist.add(c.getString(c.getColumnIndex(COLUMN_TITLE)));
-            } while (c.moveToNext());
-            c.close();
-        }
     }
 
     @Override
@@ -97,16 +86,21 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.bookmarkButton.setOnClickListener(v ->
         {
             if (!(movie.isInFavorites())) {
+                holder.bookmarkButton.setClickable(false);
                 Single.fromCallable(() -> {//todo leak
                     return context.getContentResolver().insert(CONTENT_URI,
                             (new MakeContentValues().makeContentValues(movies.get(position)))); //todo class optimization
                 })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
-                        .subscribe(uri -> ((MainActivity)context).bookmarkAddedCallback(uri));
-                holder.bookmarkButton.setImageResource(R.drawable.bookmark);
-                movie.setInFavorites(true);
+                        .subscribe(uri -> {
+                            ((MainActivity) context).bookmarkAddedCallback(uri);
+                            movie.setInFavorites(true);
+                            holder.bookmarkButton.setImageResource(R.drawable.bookmark);
+                            holder.bookmarkButton.setClickable(true);
+                        });
             } else {
+                holder.bookmarkButton.setClickable(false);
                 Single.fromCallable(() -> { //todo LEAK!
                     ContentResolver contentResolver = context.getContentResolver();
                     return contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
@@ -114,9 +108,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
-                        .subscribe(rowsDeleted -> ((MainActivity)context).bookmarkDeletedCallback(rowsDeleted));
-                holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
-                movie.setInFavorites(false);
+                        .subscribe(rowsDeleted -> {
+                            ((MainActivity) context).bookmarkDeletedCallback(rowsDeleted);
+                            holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
+                            movie.setInFavorites(false);
+                            holder.bookmarkButton.setClickable(true);
+                        });
             }
         });
 
