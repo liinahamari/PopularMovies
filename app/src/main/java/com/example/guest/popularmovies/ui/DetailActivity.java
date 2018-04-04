@@ -1,10 +1,14 @@
 package com.example.guest.popularmovies.ui;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
@@ -23,7 +28,8 @@ import com.example.guest.popularmovies.mvp.model.reviews.Review;
 import com.example.guest.popularmovies.mvp.model.trailers.Result;
 import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
 import com.example.guest.popularmovies.mvp.view.DetailView;
-import com.example.guest.popularmovies.utils.ReviewsAdapter;
+import com.example.guest.popularmovies.adapters.ReviewsAdapter;
+import com.example.guest.popularmovies.utils.MakeContentValues;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
@@ -34,10 +40,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_GENRE_IDS;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_MOV_ID;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_ORIGINAL_TITLE;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 
 public class DetailActivity extends BaseActivity implements DetailView, AppBarLayout.OnOffsetChangedListener,
@@ -50,7 +60,7 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     @BindView(R.id.d_poster)
     protected ImageView posterIv;
     @BindView(R.id.fab)
-    protected View floatingButton;
+    protected FloatingActionButton floatingButton;
     @BindView(R.id.my_collapsing_toolbar)
     protected CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.d_mov_rate)
@@ -74,14 +84,15 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     private YouTubePlayer player;
     private List<Result> trailers;
     private ReviewsAdapter reviewsAdapter;
+    private SingleMovie movie;
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
+        movie = getIntent().getParcelableExtra(IDENTIFICATION);
         setupAdapter();
         YouTubePlayerFragment playerFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
-
-        SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
+        setupListeners();
         loadData(String.valueOf(movie.getId()), playerFragment);
 
         setActionBarView();
@@ -93,6 +104,43 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         synopsisTv.setText(movie.getOverview());
         titleTv.setText(movie.getTitle());
     }
+
+    private void setupListeners() {
+        floatingButton.setBackgroundTintList((movie.isInFavorites()!=0) ?
+                (ColorStateList.valueOf(getResources().getColor(R.color.colorAccent))) : //todo check <21
+                ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
+        floatingButton.setOnClickListener(v -> {
+            if (movie.isInFavorites()!=0) {
+                floatingButton.setClickable(false);
+                Single.fromCallable(() -> {
+                    return getContentResolver().insert(CONTENT_URI, (new MakeContentValues().makeContentValues(movie))); //todo class optimization
+                })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(uri -> {
+                            movie.setInFavorites(1);
+                            Toast.makeText(this, movie.getTitle() + " added to Favorites!", Toast.LENGTH_SHORT).show();
+                            floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                            floatingButton.setClickable(true);
+                        });
+            } else {
+                floatingButton.setClickable(false);
+                Single.fromCallable(() -> {
+                    ContentResolver contentResolver = getContentResolver();
+                    return contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
+                            new String[]{(new MakeContentValues().makeContentValues(movie)).getAsString(COLUMN_TITLE)});
+                })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(rowsDeleted -> {
+                            movie.setInFavorites(0);
+                            Toast.makeText(this, movie.getTitle() + " removed from Favorites!", Toast.LENGTH_SHORT).show();
+                            floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightLight))); //todo check versions <21
+                            floatingButton.setClickable(true);
+                        });
+            }
+        });
+   }
 
     private void setupAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -194,7 +242,7 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     }
 
     @Override
-    public void     onReviewsLoaded(List<Review> reviews) {
+    public void onReviewsLoaded(List<Review> reviews) {
         reviewsAdapter.addReviews(reviews);
     }
 

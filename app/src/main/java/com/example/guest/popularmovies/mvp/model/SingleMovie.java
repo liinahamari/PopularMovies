@@ -52,7 +52,7 @@ public class SingleMovie implements Parcelable {
     @Expose
     private String releaseDate;
 
-    private boolean inFavorites = false;
+    private Integer inFavorites = 0;
 
     protected SingleMovie(Parcel in) {
         id = in.readInt();
@@ -66,16 +66,17 @@ public class SingleMovie implements Parcelable {
         backdropPath = in.readString();
         originalTitle = in.readString();
         voteCount = in.readInt();
+        inFavorites = in.readInt();
     }
 
     public SingleMovie() {
     }
 
-    public boolean isInFavorites() {
+    public Integer isInFavorites() {
         return inFavorites;
     }
 
-    public void setInFavorites(boolean inFavorites) {
+    public void setInFavorites(Integer inFavorites) {
         this.inFavorites = inFavorites;
     }
 
@@ -189,11 +190,11 @@ public class SingleMovie implements Parcelable {
         dest.writeDouble(voteAverage);
         dest.writeString(releaseDate);
         dest.writeList(genreIds);
-
         dest.writeDouble(popularity);
         dest.writeString(backdropPath);
         dest.writeString(originalTitle);
         dest.writeInt(voteCount);
+        dest.writeInt(inFavorites);
     }
 
     public static final Creator<SingleMovie> CREATOR = new Creator<SingleMovie>() {

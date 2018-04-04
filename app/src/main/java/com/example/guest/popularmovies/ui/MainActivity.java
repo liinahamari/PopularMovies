@@ -22,7 +22,7 @@ import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.MoviesPresenter;
 import com.example.guest.popularmovies.mvp.view.MainView;
-import com.example.guest.popularmovies.utils.MovieListAdapter;
+import com.example.guest.popularmovies.adapters.MovieListAdapter;
 import com.example.guest.popularmovies.utils.NetworkChecker;
 
 import java.util.ArrayList;

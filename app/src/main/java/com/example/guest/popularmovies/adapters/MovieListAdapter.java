@@ -1,4 +1,4 @@
-package com.example.guest.popularmovies.utils;
+package com.example.guest.popularmovies.adapters;
 
 /**
  * Created by l1maginaire on 2/20/18.
@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailActivity;
+import com.example.guest.popularmovies.utils.FavoritesChecker;
+import com.example.guest.popularmovies.utils.MakeContentValues;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +45,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     private float dpHeight;
     private float dpWidth;
 
-
     public MovieListAdapter(LayoutInflater layoutInflater, Context context) {
         this.layoutInflater = layoutInflater;
         this.context = context;
@@ -53,6 +54,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         dpWidth = displayMetrics.widthPixels / displayMetrics.density;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = layoutInflater.inflate(R.layout.gallery_item, parent, false);
@@ -75,7 +77,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         holder.title.setText(movie.getTitle());
         holder.bookmarkButton.setOnClickListener(v ->
         {
-            if (!(movie.isInFavorites())) {
+            if (movie.isInFavorites()!=0) {
                 holder.bookmarkButton.setClickable(false);
                 Single.fromCallable(() -> {//todo leak
                     return context.getContentResolver().insert(CONTENT_URI,
@@ -122,8 +124,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(isFavorite -> {
+                    movie.setInFavorites(isFavorite);
                     Picasso.with(context)
-                            .load(isFavorite ? R.drawable.bookmarked : R.drawable.unbookmarked)
+                            .load(isFavorite!=0 ? R.drawable.bookmarked : R.drawable.unbookmarked)
                             .into(holder.bookmarkButton);
                     movie.setInFavorites(isFavorite);
                 });

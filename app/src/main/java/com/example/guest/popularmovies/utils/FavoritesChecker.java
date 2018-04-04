@@ -14,7 +14,7 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_UR
  */
 
 public class FavoritesChecker { //todo допустимость использования в MainThread >?<
-    public static boolean isFavorite(Context context, SingleMovie movie) {
+    public static Integer isFavorite(Context context, SingleMovie movie) {
         ContentResolver contentResolver = context.getContentResolver();
         Cursor c = null;
         if (movie.getId() != 0) {
@@ -25,10 +25,10 @@ public class FavoritesChecker { //todo допустимость использо
             c.moveToFirst();
             if (c.getCount() > 0 && c.getInt(c.getColumnIndex(COLUMN_MOV_ID)) == movie.getId()) {
                 c.close();
-                return true;
+                return 1;
             }
             c.close();
         }
-        return false;
+        return 0;
     }
 }

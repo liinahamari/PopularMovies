@@ -1,4 +1,4 @@
-package com.example.guest.popularmovies.utils;
+package com.example.guest.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -42,9 +42,9 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         holder.review.setText(reviews.get(position).getContent());
     }
 
-    public void addReviews(List<Review> reviews2) {
-        if (reviews2.size() > 0) {
-            reviews.addAll(reviews2);
+    public void addReviews(List<Review> newReviews) {
+        if (newReviews.size() > 0) {
+            reviews.addAll(newReviews);
         } else {
             Review review = new Review();
             review.setContent("No reviews found...");
