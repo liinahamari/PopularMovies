@@ -1,6 +1,7 @@
 package com.example.guest.popularmovies.mvp.view;
 
 import com.example.guest.popularmovies.base.BaseView;
+import com.example.guest.popularmovies.mvp.model.reviews.Review;
 import com.example.guest.popularmovies.mvp.model.trailers.Result;
 
 import java.util.List;
@@ -11,4 +12,5 @@ import java.util.List;
 
 public interface DetailView extends BaseView {
     void onTrailersLoaded(List<Result> trailers);
+    void onReviewsLoaded(List<Review> reviews);
 }

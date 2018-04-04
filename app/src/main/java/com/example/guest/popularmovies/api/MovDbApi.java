@@ -28,6 +28,6 @@ public interface MovDbApi {
     @GET("3/movie/{id}/videos?api_key=" + BuildConfig.API_KEY)
     Observable<MovieTrailers> getTrailers(@Path("id") String movieId);
 
-    @GET("movie/{id}/reviews" + BuildConfig.API_KEY)
+    @GET("3/movie/{id}/reviews?api_key=" + BuildConfig.API_KEY)
     Observable<MovieReviews> getMovieReviews(@Path("id") String movieId);
 }

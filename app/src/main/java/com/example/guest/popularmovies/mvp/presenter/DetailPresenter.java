@@ -3,6 +3,7 @@ package com.example.guest.popularmovies.mvp.presenter;
 import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
+import com.example.guest.popularmovies.mvp.model.reviews.MovieReviews;
 import com.example.guest.popularmovies.mvp.model.trailers.MovieTrailers;
 import com.example.guest.popularmovies.mvp.view.DetailView;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -14,6 +15,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -77,7 +79,10 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                 });
     }
 
-    public void getReviews(){
-
+    public void getReviews(String id){
+        compositeDisposable.add(apiService.getMovieReviews(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movieReviews -> getView().onReviewsLoaded(movieReviews.getReviews())));
     }
 }

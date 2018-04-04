@@ -16,6 +16,7 @@ import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
 import com.example.guest.popularmovies.di.modules.TrailerModule;
+import com.example.guest.popularmovies.mvp.model.reviews.Review;
 import com.example.guest.popularmovies.mvp.model.trailers.Result;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
@@ -77,7 +78,7 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         YouTubePlayerFragment playerFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
 
         SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
-        loadTrailers(String.valueOf(movie.getId()), playerFragment);
+        loadData(String.valueOf(movie.getId()), playerFragment);
 
         setActionBarView();
 
@@ -89,8 +90,9 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         titleTv.setText(movie.getTitle());
     }
 
-    private void loadTrailers(String id, YouTubePlayerFragment fragment) {
+    private void loadData(String id, YouTubePlayerFragment fragment) {
         presenter.getTrailers(id, fragment, this);
+        presenter.getReviews(id);
     }
 
     private void setActionBarView() {
@@ -176,6 +178,14 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
                 String s = c.getString(c.getColumnIndex(COLUMN_GENRE_IDS));
             } while (c.moveToNext());
             c.close();
+        }
+    }
+
+    @Override
+    public void onReviewsLoaded(List<Review> reviews){
+        for (Review review:reviews) {
+            String s = review.getContent();
+            String s2 = review.getContent();
         }
     }
 
