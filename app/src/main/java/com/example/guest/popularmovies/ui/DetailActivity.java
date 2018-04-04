@@ -194,7 +194,7 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     }
 
     @Override
-    public void onReviewsLoaded(List<Review> reviews) {
+    public void     onReviewsLoaded(List<Review> reviews) {
         reviewsAdapter.addReviews(reviews);
     }
 

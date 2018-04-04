@@ -61,6 +61,9 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                     }
                 }
             }
+            if (cursor != null) {
+                cursor.close();
+            }
         } catch (SQLException e) {
             Log.d(TAG, e.getMessage());
         }

@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by l1maginaire on 4/4/18.
  */
@@ -28,6 +30,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         reviews = new ArrayList<>();
     }
 
+    @NonNull
     @Override
     public ReviewsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.reviews_item, parent, false);
@@ -36,17 +39,17 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Review review = reviews.get(position);
-        holder.review.setText(review.getContent());
+        holder.review.setText(reviews.get(position).getContent());
     }
 
     public void addReviews(List<Review> reviews2) {
-        reviews.addAll(reviews2);
-        notifyDataSetChanged();
-    }
-
-    public void clearItems() {
-        reviews.clear();
+        if (reviews2.size() > 0) {
+            reviews.addAll(reviews2);
+        } else {
+            Review review = new Review();
+            review.setContent("No reviews found...");
+            reviews.add(review);
+        }
         notifyDataSetChanged();
     }
 
@@ -55,14 +58,13 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         return (reviews == null) ? 0 : reviews.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-//        @BindView(R.id.single_review)
-        protected TextView review;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.single_review)
+        TextView review;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-//            ButterKnife.bind(this, itemView);
-            review = (TextView) itemView.findViewById(R.id.single_review);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
