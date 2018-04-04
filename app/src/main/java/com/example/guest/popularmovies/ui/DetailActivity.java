@@ -30,6 +30,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.disposables.CompositeDisposable;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_GENRE_IDS;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_MOV_ID;
@@ -62,19 +63,18 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     @BindView(R.id.my_appbar)
     protected AppBarLayout appbar;
 
+    private CompositeDisposable compositeDisposable;
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
     private int mMaxScrollSize;
     private boolean mIsImageHidden;
-    private YouTubePlayerFragment playerFragment;
     private YouTubePlayer player;
     private List<Result> trailers;
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
-
-        playerFragment =
-                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
+        compositeDisposable = new CompositeDisposable();
+        YouTubePlayerFragment playerFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
 
         SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
         loadTrailers(String.valueOf(movie.getId()), playerFragment);

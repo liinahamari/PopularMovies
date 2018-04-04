@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -22,7 +23,8 @@ import io.reactivex.schedulers.Schedulers;
 public class DetailPresenter extends BasePresenter<DetailView> {
     @Inject
     protected MovDbApi apiService;
-    private Disposable disposable;
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     public DetailPresenter() {
@@ -30,7 +32,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
     /*public void getTrailers(Integer id) {
         Observable<MovieTrailers> observable = apiService.getTrailers(id);
-        disposable = observable.subscribeOn(Schedulers.io())
+        compositeDisposable = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     getView().onTrailersLoaded(response.getResults());
@@ -40,8 +42,8 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     }*/
 
     public void unsubscribe() {
-        if (disposable != null)
-            disposable.dispose();
+        if (compositeDisposable != null)
+            compositeDisposable.dispose();
     }
 
     //todo
@@ -49,13 +51,13 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
 
     public void getTrailers(String id, YouTubePlayerFragment fragment, YouTubePlayer.OnInitializedListener listener){
-        /*disposable = todo*/apiService.getTrailers(id)
+        apiService.getTrailers(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MovieTrailers>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -73,5 +75,9 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                         fragment.initialize(BuildConfig.YOUTUBE_KEY, listener);
                     }
                 });
+    }
+
+    public void getReviews(){
+
     }
 }
