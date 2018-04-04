@@ -44,6 +44,10 @@ public class DetailPresenter extends BasePresenter<DetailView> {
             disposable.dispose();
     }
 
+    //todo
+//    04-03 23:12:06.864 25819-25819/com.example.guest.popularmovies E/ActivityThread: Activity com.example.guest.popularmovies.ui.DetailActivity has leaked ServiceConnection com.google.android.youtube.player.internal.r$e@f7c4314 that was originally bound here
+
+
     public void getTrailers(String id, YouTubePlayerFragment fragment, YouTubePlayer.OnInitializedListener listener){
         /*disposable = todo*/apiService.getTrailers(id)
                 .subscribeOn(Schedulers.io())

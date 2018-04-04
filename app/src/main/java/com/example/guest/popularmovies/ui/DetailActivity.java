@@ -144,11 +144,11 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         player.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION); //todo leak detected
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
-        if (!b) {
-            player.cueVideo(trailers.get(0).getKey());
-        } else {
-            player.play();
-        }
+//        if (!b) {
+                player.cueVideo(trailers.get(0).getKey());
+//        } else {
+//            player.play();
+//        }
     }
 
     @Override

@@ -52,7 +52,7 @@ public class SingleMovie implements Parcelable {
     @Expose
     private String releaseDate;
 
-//    private boolean inFavorites = false;
+    private boolean inFavorites = false;
 
     protected SingleMovie(Parcel in) {
         id = in.readInt();
@@ -71,13 +71,13 @@ public class SingleMovie implements Parcelable {
     public SingleMovie() {
     }
 
-//    public boolean isInFavorites() {
-//        return inFavorites;
-//    }
-//
-//    public void setInFavorites(boolean inFavorites) {
-//        this.inFavorites = inFavorites;
-//    }
+    public boolean isInFavorites() {
+        return inFavorites;
+    }
+
+    public void setInFavorites(boolean inFavorites) {
+        this.inFavorites = inFavorites;
+    }
 
     public Integer getVoteCount() {
         return voteCount;

@@ -28,7 +28,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,7 +77,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.title.setText(movie.getTitle());
         holder.bookmarkButton.setOnClickListener(v ->
         {
-            if (/*!(movie.isInFavorites())*/true) {
+            if (!(movie.isInFavorites())) {
                 holder.bookmarkButton.setClickable(false);
                 Single.fromCallable(() -> {//todo leak
                     return context.getContentResolver().insert(CONTENT_URI,
@@ -126,9 +125,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         Single.fromCallable(() -> FavoritesChecker.isFavorite(context, movie))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(isFavorite -> Picasso.with(context)
-                        .load(isFavorite ? R.drawable.bookmarked : R.drawable.unbookmarked)
-                        .into(holder.bookmarkButton));
+                .subscribe(isFavorite -> {
+                    Picasso.with(context)
+                            .load(isFavorite ? R.drawable.bookmarked : R.drawable.unbookmarked)
+                            .into(holder.bookmarkButton);
+                    movie.setInFavorites(isFavorite);
+                });
 
         holder.view.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
