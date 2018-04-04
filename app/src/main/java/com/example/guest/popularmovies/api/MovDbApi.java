@@ -5,7 +5,8 @@ package com.example.guest.popularmovies.api;
  */
 
 import com.example.guest.popularmovies.BuildConfig;
-import com.example.guest.popularmovies.mvp.model.MovieTrailers;
+import com.example.guest.popularmovies.mvp.model.reviews.MovieReviews;
+import com.example.guest.popularmovies.mvp.model.trailers.MovieTrailers;
 import com.example.guest.popularmovies.mvp.model.MoviesArray;
 
 import io.reactivex.Observable;
@@ -26,4 +27,7 @@ public interface MovDbApi {
 
     @GET("3/movie/{id}/videos?api_key=" + BuildConfig.API_KEY)
     Observable<MovieTrailers> getTrailers(@Path("id") String movieId);
+
+    @GET("movie/{id}/reviews" + BuildConfig.API_KEY)
+    Observable<MovieReviews> getMovieReviews(@Path("id") String movieId);
 }

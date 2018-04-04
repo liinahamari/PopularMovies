@@ -16,7 +16,7 @@ import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
 import com.example.guest.popularmovies.di.modules.TrailerModule;
-import com.example.guest.popularmovies.mvp.model.Result;
+import com.example.guest.popularmovies.mvp.model.trailers.Result;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
 import com.example.guest.popularmovies.mvp.view.DetailView;

@@ -1,4 +1,4 @@
-package com.example.guest.popularmovies.mvp.model;
+package com.example.guest.popularmovies.mvp.model.trailers;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -3,7 +3,7 @@ package com.example.guest.popularmovies.mvp.presenter;
 import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
-import com.example.guest.popularmovies.mvp.model.MovieTrailers;
+import com.example.guest.popularmovies.mvp.model.trailers.MovieTrailers;
 import com.example.guest.popularmovies.mvp.view.DetailView;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;

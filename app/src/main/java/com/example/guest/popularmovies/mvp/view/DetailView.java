@@ -1,7 +1,7 @@
 package com.example.guest.popularmovies.mvp.view;
 
 import com.example.guest.popularmovies.base.BaseView;
-import com.example.guest.popularmovies.mvp.model.Result;
+import com.example.guest.popularmovies.mvp.model.trailers.Result;
 
 import java.util.List;
 
