@@ -35,34 +35,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     protected MovDbApi apiService;
 
     @Inject
-    public MoviesPresenter() {
-    }
-
-    /*public void writeToDb(Context context, List<SingleMovie> movieList) {
-        Single.fromCallable(() -> {
-            ContentResolver contentResolver = context.getContentResolver();
-            int rowsNewlyCreated = contentResolver.bulkInsert(CONTENT_URI, MoviesPresenter.this.makeContentValues(movieList));
-            return rowsNewlyCreated;
-        })
-                .subscribeOn(Schedulers.io())
-                .subscribe();
-    }*/
-
-    public List<String> getFavoritesList(Context context) {
-        ArrayList<String> favlist = new ArrayList<>();
-        Cursor c = context.getContentResolver().query(CONTENT_URI, null, null, null, null);//todo selection NAME
-        if (c.moveToFirst()) {
-            do {
-                favlist.add(c.getString(c.getColumnIndex(COLUMN_TITLE)));
-            } while (c.moveToNext());
-            c.close();
-        }
-        return favlist;
-    }
-
-    public void getPopular(List<SingleMovie> movies) {
-
-    }
+    public MoviesPresenter() {}
 
     public void getPopular(RecyclerView recyclerView) {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
@@ -71,11 +44,10 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         compositeDisposable.clear();
         compositeDisposable.add(paginationTool
                 .getPagingObservable()
-                .observeOn(AndroidSchedulers.mainThread()) //todo subscribeon?
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items ->
                         getView().onMoviesLoaded(items.getResults())));
     }
-
 
     public void getTopRated(RecyclerView recyclerView) {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,

@@ -3,7 +3,6 @@ package com.example.guest.popularmovies.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,7 +22,7 @@ import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.MoviesPresenter;
 import com.example.guest.popularmovies.mvp.view.MainView;
-import com.example.guest.popularmovies.utils.Adapter;
+import com.example.guest.popularmovies.utils.MovieListAdapter;
 import com.example.guest.popularmovies.utils.NetworkChecker;
 
 import java.util.ArrayList;
@@ -32,8 +31,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity implements MainView {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -55,7 +52,7 @@ public class MainActivity extends BaseActivity implements MainView {
     @BindView(R.id.btn_repeat)
     protected Button repeatButton;
 
-    private Adapter adapter;
+    private MovieListAdapter adapter;
     private int lastVisiblePosition = 0;
     private ArrayList<SingleMovie> savedList;
     private SharedPreferences preferences;
@@ -65,11 +62,12 @@ public class MainActivity extends BaseActivity implements MainView {
         super.onViewReady(savedInstanceState, intent);
         init();
         setupAdapter();
-        loadNews();
-        /*if (savedInstanceState != null) {
+        if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList("list"));
             recyclerView.scrollToPosition(lastVisiblePosition);
-        }*/
+        } else {
+            loadNews();
+        }
     }
 
     private void init() {
@@ -98,7 +96,7 @@ public class MainActivity extends BaseActivity implements MainView {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         }
-        adapter = new Adapter(getLayoutInflater(), this);
+        adapter = new MovieListAdapter(getLayoutInflater(), this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -150,16 +148,6 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void onClearItems() {
         adapter.clearItems();
-    }
-
-    @Override
-    public void bookmarkAddedCallback(Uri uri) {
-        Log.d(TAG, "Added bookmark: " + uri.toString());
-    }
-
-    @Override
-    public void bookmarkDeletedCallback(Integer rowsDeleted) {
-        Log.d(TAG, String.valueOf(rowsDeleted) + " rows deleted.");
     }
 
     @Override

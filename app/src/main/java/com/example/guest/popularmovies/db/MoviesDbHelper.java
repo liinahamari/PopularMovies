@@ -40,16 +40,14 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                     if (cursor.moveToFirst()) {
                         do {
                             SingleMovie movie = new SingleMovie();
-                            movie.setId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_MOV_ID)))); //todo catch error
-                            movie.setBackdropPath(cursor.getString(cursor.getColumnIndex(COLUMN_BACKDROP_PATH)));
-
                             ArrayList<Integer> genreIds = new ArrayList<>();
                             List<String> list = Arrays.asList(cursor.getString(cursor.getColumnIndex(COLUMN_GENRE_IDS)).split("\\s*,\\s*"));
                             for (String s : list) {
                                 genreIds.add(Integer.valueOf(s));
                             }
-
                             movie.setGenreIds(genreIds);
+                            movie.setId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_MOV_ID))));
+                            movie.setBackdropPath(cursor.getString(cursor.getColumnIndex(COLUMN_BACKDROP_PATH)));
                             movie.setOriginalTitle(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGINAL_TITLE)));
                             movie.setOverview(cursor.getString(cursor.getColumnIndex(COLUMN_OVERVIEW)));
                             movie.setPopularity(Double.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_POPULARITY))));
@@ -70,10 +68,9 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) { //todo CHECK NOT NULL
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_TABLE = "CREATE TABLE " + Entry.TABLE_NAME + " (" +
-                Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-//                Entry._ID + " INTEGER, " +
+                Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + //todo necessity
                 COLUMN_MOV_ID + " INTEGER, " +
                 COLUMN_BACKDROP_PATH + " TEXT, " +
                 COLUMN_GENRE_IDS + " TEXT, " +

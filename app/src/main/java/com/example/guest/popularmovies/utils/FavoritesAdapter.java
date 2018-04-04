@@ -16,7 +16,7 @@ import com.example.guest.popularmovies.R;
  *//*
 
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesHolder> {
+public class FavoritesAdapter extends RecyclerView.MovieListAdapter<FavoritesAdapter.FavoritesHolder> {
     private Cursor mCursor;
     private Context context;
 

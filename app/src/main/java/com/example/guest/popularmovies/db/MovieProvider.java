@@ -1,7 +1,6 @@
 package com.example.guest.popularmovies.db;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -12,15 +11,12 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import static com.example.guest.popularmovies.db.MoviesContract.CONTENT_AUTHORITY;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.TABLE_NAME;
-import static com.example.guest.popularmovies.db.MoviesContract.PATH_MOVIES;
 
 /**
  * Created by l1maginaire on 3/27/18.
  */
-
 
 public class MovieProvider extends ContentProvider {
     private static final UriMatcher uriMatcher = buildUriMatcher();
@@ -28,12 +24,6 @@ public class MovieProvider extends ContentProvider {
 
     private static final int MOVIES = 100;
     private static final int MOVIE_ITEM = 200;
-
-    private static final SQLiteQueryBuilder sMoviesBuilder;
-
-    static{
-        sMoviesBuilder = new SQLiteQueryBuilder();
-    }
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -107,7 +97,7 @@ public class MovieProvider extends ContentProvider {
         switch (match) {
             case MOVIES: {
                 long id = db.insert(TABLE_NAME, null, values);
-                if ( id > 0 )
+                if (id > 0)
                     returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -127,7 +117,9 @@ public class MovieProvider extends ContentProvider {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int match = uriMatcher.match(uri);
         int rowsDeleted;
-        if (selection == null) { selection = "1"; }
+        if (selection == null) {
+            selection = "1";
+        }
         switch (match) {
             case MOVIES: {
                 rowsDeleted = db.delete(TABLE_NAME, selection, selectionArgs);

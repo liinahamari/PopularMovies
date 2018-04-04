@@ -3,7 +3,6 @@ package com.example.guest.popularmovies.mvp.presenter;
 import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
-import com.example.guest.popularmovies.mvp.model.reviews.MovieReviews;
 import com.example.guest.popularmovies.mvp.model.trailers.MovieTrailers;
 import com.example.guest.popularmovies.mvp.view.DetailView;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -15,7 +14,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -24,7 +22,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DetailPresenter extends BasePresenter<DetailView> {
     @Inject
-    protected MovDbApi apiService;
+    MovDbApi apiService;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -32,27 +30,14 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     public DetailPresenter() {
     }
 
-    /*public void getTrailers(Integer id) {
-        Observable<MovieTrailers> observable = apiService.getTrailers(id);
-        compositeDisposable = observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    getView().onTrailersLoaded(response.getResults());
-                }, throwable -> {
-                }, () -> {
-                });
-    }*/
-
     public void unsubscribe() {
         if (compositeDisposable != null)
             compositeDisposable.dispose();
     }
 
-    //todo
-//    04-03 23:12:06.864 25819-25819/com.example.guest.popularmovies E/ActivityThread: Activity com.example.guest.popularmovies.ui.DetailActivity has leaked ServiceConnection com.google.android.youtube.player.internal.r$e@f7c4314 that was originally bound here
+//todo: 04-03 23:12:06.864 25819-25819/com.example.guest.popularmovies E/ActivityThread: Activity com.example.guest.popularmovies.ui.DetailActivity has leaked ServiceConnection com.google.android.youtube.player.internal.r$e@f7c4314 that was originally bound here
 
-
-    public void getTrailers(String id, YouTubePlayerFragment fragment, YouTubePlayer.OnInitializedListener listener){
+    public void getTrailers(String id, YouTubePlayerFragment fragment, YouTubePlayer.OnInitializedListener listener) {
         apiService.getTrailers(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -79,7 +64,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                 });
     }
 
-    public void getReviews(String id){
+    public void getReviews(String id) {
         compositeDisposable.add(apiService.getMovieReviews(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

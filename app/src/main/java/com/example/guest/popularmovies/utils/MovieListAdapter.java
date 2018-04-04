@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailActivity;
-import com.example.guest.popularmovies.ui.MainActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +36,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
     private List<SingleMovie> movies;
     private Context context;
     private LayoutInflater layoutInflater;
@@ -45,7 +44,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private float dpWidth;
 
 
-    public Adapter(LayoutInflater layoutInflater, Context context) {
+    public MovieListAdapter(LayoutInflater layoutInflater, Context context) {
         this.layoutInflater = layoutInflater;
         this.context = context;
         movies = new ArrayList<>();
@@ -85,7 +84,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(uri -> {
-                            ((MainActivity) context).bookmarkAddedCallback(uri);
                             holder.bookmarkButton.setImageResource(R.drawable.bookmarked);
                             holder.bookmarkButton.setClickable(true);
                         });
@@ -99,7 +97,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(rowsDeleted -> {
-                            ((MainActivity) context).bookmarkDeletedCallback(rowsDeleted);
                             holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
                             holder.bookmarkButton.setClickable(true);
                         });

@@ -14,6 +14,4 @@ import java.util.List;
 public interface MainView extends BaseView {
     void onMoviesLoaded(List<SingleMovie> movies);
     void onClearItems();
-    void bookmarkAddedCallback(Uri uri);
-    void bookmarkDeletedCallback(Integer rowsAmount);
 }

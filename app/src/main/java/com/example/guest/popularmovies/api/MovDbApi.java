@@ -1,13 +1,9 @@
 package com.example.guest.popularmovies.api;
 
-/**
- * Created by l1maginaire on 3/1/18.
- */
-
 import com.example.guest.popularmovies.BuildConfig;
+import com.example.guest.popularmovies.mvp.model.MoviesArray;
 import com.example.guest.popularmovies.mvp.model.reviews.MovieReviews;
 import com.example.guest.popularmovies.mvp.model.trailers.MovieTrailers;
-import com.example.guest.popularmovies.mvp.model.MoviesArray;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
