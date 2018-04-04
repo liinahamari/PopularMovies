@@ -22,7 +22,6 @@ import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailActivity;
 import com.example.guest.popularmovies.ui.MainActivity;
-import com.example.guest.popularmovies.utils.pagination.MakeContentValues;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

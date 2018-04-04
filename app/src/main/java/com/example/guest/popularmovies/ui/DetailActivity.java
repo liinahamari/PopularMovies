@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +18,12 @@ import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
 import com.example.guest.popularmovies.di.modules.TrailerModule;
+import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.model.reviews.Review;
 import com.example.guest.popularmovies.mvp.model.trailers.Result;
-import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
 import com.example.guest.popularmovies.mvp.view.DetailView;
+import com.example.guest.popularmovies.utils.ReviewsAdapter;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
@@ -31,7 +34,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import io.reactivex.disposables.CompositeDisposable;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_GENRE_IDS;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_MOV_ID;
@@ -63,18 +65,20 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     protected Toolbar toolbar;
     @BindView(R.id.my_appbar)
     protected AppBarLayout appbar;
+    @BindView(R.id.reviews_recycler)
+    protected RecyclerView reviewsRecyclerView;
 
-    private CompositeDisposable compositeDisposable;
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
     private int mMaxScrollSize;
     private boolean mIsImageHidden;
     private YouTubePlayer player;
     private List<Result> trailers;
+    private ReviewsAdapter reviewsAdapter;
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
-        compositeDisposable = new CompositeDisposable();
+        setupAdapter();
         YouTubePlayerFragment playerFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
 
         SingleMovie movie = getIntent().getParcelableExtra(IDENTIFICATION);
@@ -88,6 +92,14 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         ratingTv.setText(String.valueOf(movie.getVoteAverage()));
         synopsisTv.setText(movie.getOverview());
         titleTv.setText(movie.getTitle());
+    }
+
+    private void setupAdapter() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        reviewsRecyclerView.setLayoutManager(linearLayoutManager);
+        reviewsAdapter = new ReviewsAdapter(this);
+        reviewsRecyclerView.setAdapter(reviewsAdapter);
     }
 
     private void loadData(String id, YouTubePlayerFragment fragment) {
@@ -147,7 +159,7 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
 //        if (!b) {
-                player.cueVideo(trailers.get(0).getKey());
+        player.cueVideo(trailers.get(0).getKey());
 //        } else {
 //            player.play();
 //        }
@@ -182,11 +194,8 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     }
 
     @Override
-    public void onReviewsLoaded(List<Review> reviews){
-        for (Review review:reviews) {
-            String s = review.getContent();
-            String s2 = review.getContent();
-        }
+    public void onReviewsLoaded(List<Review> reviews) {
+        reviewsAdapter.addReviews(reviews);
     }
 
     @Override

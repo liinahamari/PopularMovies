@@ -1,4 +1,4 @@
-package com.example.guest.popularmovies.utils.pagination;
+package com.example.guest.popularmovies.utils;
 
 import android.content.ContentValues;
 import android.text.TextUtils;
