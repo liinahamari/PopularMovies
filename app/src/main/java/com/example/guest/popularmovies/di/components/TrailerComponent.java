@@ -2,8 +2,7 @@ package com.example.guest.popularmovies.di.components;
 
 import com.example.guest.popularmovies.di.modules.TrailerModule;
 import com.example.guest.popularmovies.di.scope.PerActivity;
-import com.example.guest.popularmovies.ui.DetailActivity;
-import com.example.guest.popularmovies.ui.MainActivity;
+import com.example.guest.popularmovies.ui.DetailFragment;
 
 import dagger.Component;
 
@@ -13,5 +12,5 @@ import dagger.Component;
 @PerActivity
 @Component(modules = TrailerModule.class, dependencies = ApplicationComponent.class)
 public interface TrailerComponent {
-    void inject(DetailActivity activity);
+    void inject(DetailFragment fragment);
 }

@@ -1,9 +1,9 @@
 package com.example.guest.popularmovies.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -65,10 +65,10 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
 
     @Override
     public void onItemClicked(SingleMovie movie) {
+        Log.d(TAG, movie.getTitle() + " element clicked.");
+
         if (findViewById(R.id.detailFragmentContainer) == null) {
-            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-            intent.putExtra(DetailActivity.IDENTIFICATION, movie);
-            startActivity(intent);
+            startActivity(DetailActivity.newIntent(this, movie));
         } /*else {
             Fragment newDetail = DetailFragment.newInstance(movie);
             getSupportFragmentManager().beginTransaction();
