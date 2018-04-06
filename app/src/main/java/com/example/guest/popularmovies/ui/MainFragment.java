@@ -1,5 +1,6 @@
 package com.example.guest.popularmovies.ui;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -64,6 +65,7 @@ public class MainFragment extends BaseFragment implements MainView {
     private int lastVisiblePosition = 0;
     private ArrayList<SingleMovie> savedList;
     private SharedPreferences preferences;
+    private Callbacks callbacks;
 
     @Nullable
     @Override
@@ -102,7 +104,7 @@ public class MainFragment extends BaseFragment implements MainView {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         }
-        adapter = new MovieListAdapter(getLayoutInflater(), getActivity());
+        adapter = new MovieListAdapter(getLayoutInflater(), getActivity(), callbacks);
         recyclerView.setAdapter(adapter);
 
     }
@@ -168,9 +170,16 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callbacks = (Callbacks) context;
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         presenter.getPopular(recyclerView); //todo: or onDestroy?
+        callbacks = null;
     }
 
     @Override
@@ -179,5 +188,9 @@ public class MainFragment extends BaseFragment implements MainView {
         if (savedInstanceState != null) {
             lastVisiblePosition = savedInstanceState.getInt(LAST_POSITION);
         }
+    }
+
+    public interface Callbacks {
+        void onItemClicked(SingleMovie movie);
     }
 }

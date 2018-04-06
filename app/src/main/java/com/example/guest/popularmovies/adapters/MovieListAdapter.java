@@ -6,7 +6,6 @@ package com.example.guest.popularmovies.adapters;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -20,7 +19,7 @@ import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
-import com.example.guest.popularmovies.ui.DetailActivity;
+import com.example.guest.popularmovies.ui.MainFragment;
 import com.example.guest.popularmovies.utils.FavoritesChecker;
 import com.example.guest.popularmovies.utils.MakeContentValues;
 import com.squareup.picasso.Callback;
@@ -44,10 +43,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     private LayoutInflater layoutInflater;
     private float dpHeight;
     private float dpWidth;
+    private MainFragment.Callbacks callbacks;
 
-    public MovieListAdapter(LayoutInflater layoutInflater, Context context) {
+    public MovieListAdapter(LayoutInflater layoutInflater, Context context, MainFragment.Callbacks callbacks) {
         this.layoutInflater = layoutInflater;
         this.context = context;
+        this.callbacks = callbacks;
         movies = new ArrayList<>();
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         dpHeight = displayMetrics.heightPixels / displayMetrics.density;
@@ -77,7 +78,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         holder.title.setText(movie.getTitle());
         holder.bookmarkButton.setOnClickListener(v ->
         {
-            if (movie.isInFavorites()!=0) {
+            if (movie.isInFavorites() != 0) {
                 holder.bookmarkButton.setClickable(false);
                 Single.fromCallable(() -> {//todo leak
                     return context.getContentResolver().insert(CONTENT_URI,
@@ -126,15 +127,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                 .subscribe(isFavorite -> {
                     movie.setInFavorites(isFavorite);
                     Picasso.with(context)
-                            .load(isFavorite!=0 ? R.drawable.bookmarked : R.drawable.unbookmarked)
+                            .load(isFavorite != 0 ? R.drawable.bookmarked : R.drawable.unbookmarked)
                             .into(holder.bookmarkButton);
                     movie.setInFavorites(isFavorite);
                 });
 
         holder.view.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DetailActivity.class);
-            intent.putExtra(DetailActivity.IDENTIFICATION, movie);
-            context.startActivity(intent);
+            callbacks.onItemClicked(movie);
         });
     }
 

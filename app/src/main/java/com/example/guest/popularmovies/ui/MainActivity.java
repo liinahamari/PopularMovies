@@ -1,5 +1,6 @@
 package com.example.guest.popularmovies.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -9,12 +10,13 @@ import android.view.MenuItem;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
+import com.example.guest.popularmovies.mvp.model.SingleMovie;
 
 import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_FAVORITES;
 import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_POPULAR;
 import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_TOP_RATED;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MainFragment.Callbacks {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private MainFragment fragment;
@@ -59,5 +61,17 @@ public class MainActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onItemClicked(SingleMovie movie) {
+        if (findViewById(R.id.detailFragmentContainer) == null) {
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra(DetailActivity.IDENTIFICATION, movie);
+            startActivity(intent);
+        } /*else {
+            Fragment newDetail = DetailFragment.newInstance(movie);
+            getSupportFragmentManager().beginTransaction();
+        }*/
     }
 }
