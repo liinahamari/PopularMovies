@@ -13,7 +13,7 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_UR
  * Created by l1maginaire on 4/3/18.
  */
 
-public class FavoritesChecker { //todo допустимость использования в MainThread >?<
+public class FavoritesChecker {
     public static Integer isFavorite(Context context, SingleMovie movie) {
         ContentResolver contentResolver = context.getContentResolver();
         Cursor c = null;

@@ -9,6 +9,7 @@ import com.example.guest.popularmovies.mvp.model.trailers.MovieTrailers;
 import com.example.guest.popularmovies.mvp.view.DetailView;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import javax.inject.Inject;
 
@@ -35,7 +36,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
 //todo: 04-03 23:12:06.864 25819-25819/com.example.guest.popularmovies E/ActivityThread: Activity com.example.guest.popularmovies.ui.DetailActivity has leaked ServiceConnection com.google.android.youtube.player.internal.r$e@f7c4314 that was originally bound here
 
-    public void getTrailers(String id, YouTubePlayerFragment fragment, YouTubePlayer.OnInitializedListener listener) {
+    public void getTrailers(String id, YouTubePlayerSupportFragment fragment, YouTubePlayer.OnInitializedListener listener) {
         apiService.getTrailers(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

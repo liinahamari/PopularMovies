@@ -67,9 +67,9 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
     public void onItemClicked(SingleMovie movie) {
         Log.d(TAG, movie.getTitle() + " element clicked.");
 
-        if (findViewById(R.id.detailFragmentContainer) == null) {
+//        if (findViewById(R.id.detailFragmentContainer) == null) {
             startActivity(DetailActivity.newIntent(this, movie));
-        } /*else {
+        /*}*/ /*else {
             Fragment newDetail = DetailFragment.newInstance(movie);
             getSupportFragmentManager().beginTransaction();
         }*/

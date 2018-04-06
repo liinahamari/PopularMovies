@@ -1,22 +1,34 @@
 package com.example.guest.popularmovies.ui;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
+import com.example.guest.popularmovies.utils.MakeContentValues;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 
 public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
     public static final String IDENTIFICATION = "extra_movie";
@@ -26,16 +38,21 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     protected AppBarLayout appbar;
     @BindView(R.id.fab)
     protected FloatingActionButton floatingButton;
-
+    @BindView(R.id.my_collapsing_toolbar)
+    protected CollapsingToolbarLayout collapsingToolbarLayout;
 
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
     private int mMaxScrollSize;
     private boolean mIsImageHidden;
+    private SingleMovie movie;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        movie = getIntent().getParcelableExtra(IDENTIFICATION);
+        ButterKnife.bind(this);
         setActionBarView();
+        setupListeners();
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.fragmentContainer);
         if (fragment == null) {
@@ -53,7 +70,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     }
 
     private void setActionBarView() {
-        setSupportActionBar(toolbar);
+        getSupportActionBar().hide();
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         appbar.addOnOffsetChangedListener(this);
     }
@@ -95,5 +112,42 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
                 ViewCompat.animate(floatingButton).scaleY(1).scaleX(1).start();
             }
         }
+    }
+
+    private void setupListeners() {
+        floatingButton.setBackgroundTintList((movie.isInFavorites() != 0) ?
+                (ColorStateList.valueOf(getResources().getColor(R.color.colorAccent))) : //todo check <21
+                ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
+        floatingButton.setOnClickListener(v -> {
+            if (movie.isInFavorites() != 0) {
+                floatingButton.setClickable(false);
+                Single.fromCallable(() -> {
+                    return getContentResolver().insert(CONTENT_URI, (new MakeContentValues().makeContentValues(movie))); //todo class optimization
+                })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(uri -> {
+                            movie.setInFavorites(1);
+                            Toast.makeText(this, movie.getTitle() + " added to Favorites!", Toast.LENGTH_SHORT).show();
+                            floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                            floatingButton.setClickable(true);
+                        });
+            } else {
+                floatingButton.setClickable(false);
+                Single.fromCallable(() -> {
+                    ContentResolver contentResolver = this.getContentResolver();
+                    return contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
+                            new String[]{(new MakeContentValues().makeContentValues(movie)).getAsString(COLUMN_TITLE)});
+                })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(rowsDeleted -> {
+                            movie.setInFavorites(0);
+                            Toast.makeText(this, movie.getTitle() + " removed from Favorites!", Toast.LENGTH_SHORT).show();
+                            floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightLight))); //todo check versions <21
+                            floatingButton.setClickable(true);
+                        });
+            }
+        });
     }
 }
