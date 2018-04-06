@@ -40,11 +40,12 @@ import butterknife.ButterKnife;
 public class MainFragment extends BaseFragment implements MainView {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private static final String LAST_SORT_ORDER = "last_chosen_sort_order";
     public static final String SORT_ORDER_POPULAR = "order_popular";
     public static final String SORT_ORDER_TOP_RATED = "order_top_rated";
     public static final String SORT_ORDER_FAVORITES = "order_favorites";
+
     private static final String LAST_POSITION = "last_position";
+    private static final String LAST_SORT_ORDER = "last_chosen_sort_order";
     private static final String SAVED_LIST = "list";
 
     @Inject
@@ -72,11 +73,6 @@ public class MainFragment extends BaseFragment implements MainView {
         }
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        setRetainInstance(true);
-    }
 
     @Nullable
     @Override
@@ -95,7 +91,7 @@ public class MainFragment extends BaseFragment implements MainView {
         return v;
     }
 
-    public void get(String choice) {
+    public void getData(String choice) {
         switch (choice) {
             case SORT_ORDER_POPULAR:
                 preferences.edit().putString(LAST_SORT_ORDER, choice).apply();
@@ -196,7 +192,7 @@ public class MainFragment extends BaseFragment implements MainView {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         lastVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-        Log.d("POSITION", String.valueOf(lastVisiblePosition));
+        Log.d(LAST_POSITION, ": " + String.valueOf(lastVisiblePosition));
         outState.putInt(LAST_POSITION, lastVisiblePosition);
         outState.putParcelableArrayList(SAVED_LIST, savedList); //todo until 1 mb
     }

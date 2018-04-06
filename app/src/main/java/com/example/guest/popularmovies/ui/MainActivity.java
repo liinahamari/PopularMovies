@@ -10,27 +10,14 @@ import android.view.MenuItem;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 
-import static com.example.guest.popularmovies.ui.MainFragment.*;
+import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_FAVORITES;
+import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_POPULAR;
+import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_TOP_RATED;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private MainFragment fragment;
-
-    /*@Override //todo saveRetainInstanceState?
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        lastVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-        Log.d("POSITION", String.valueOf(lastVisiblePosition));
-        outState.putInt(LAST_POSITION, lastVisiblePosition);
-        outState.putParcelableArrayList("list", savedList);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        lastVisiblePosition = savedInstanceState.getInt(LAST_POSITION);
-    }*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,23 +48,16 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                fragment.get(SORT_ORDER_POPULAR);
+                fragment.getData(SORT_ORDER_POPULAR);
                 return true;
             case R.id.action_top_rated:
-                fragment.get(SORT_ORDER_TOP_RATED);
+                fragment.getData(SORT_ORDER_TOP_RATED);
                 return true;
             case R.id.action_favorites:
-                fragment.get(SORT_ORDER_FAVORITES);
+                fragment.getData(SORT_ORDER_FAVORITES);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    /*private void doWorkOnChangingSortOrder(String sortOrder) {
-//        savedList.clear();
-        preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();
-        onClearItems();
-        sortingSwitcher(sortOrder);
-    }*/
 }

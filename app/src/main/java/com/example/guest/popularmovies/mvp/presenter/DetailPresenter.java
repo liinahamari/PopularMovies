@@ -52,7 +52,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "Failed to get trailers data: "+e.toString());
+                        Log.e(TAG, "Failed to getData trailers data: "+e.toString());
                     }
 
                     @Override
