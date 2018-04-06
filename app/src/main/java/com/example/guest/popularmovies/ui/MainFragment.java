@@ -99,14 +99,17 @@ public class MainFragment extends BaseFragment implements MainView {
         switch (choice) {
             case SORT_ORDER_POPULAR:
                 preferences.edit().putString(LAST_SORT_ORDER, choice).apply();
+                onClearItems();
                 presenter.getPopular(recyclerView);
                 break;
             case SORT_ORDER_TOP_RATED:
                 preferences.edit().putString(LAST_SORT_ORDER, choice).apply();
+                onClearItems();
                 presenter.getTopRated(recyclerView);
                 break;
             case SORT_ORDER_FAVORITES:
                 preferences.edit().putString(LAST_SORT_ORDER, choice).apply();
+                onClearItems();
                 presenter.getFavorites(getActivity());
                 break;
             default:
@@ -195,6 +198,6 @@ public class MainFragment extends BaseFragment implements MainView {
         lastVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
         Log.d("POSITION", String.valueOf(lastVisiblePosition));
         outState.putInt(LAST_POSITION, lastVisiblePosition);
-        outState.putParcelableArrayList(SAVED_LIST, savedList);
+        outState.putParcelableArrayList(SAVED_LIST, savedList); //todo until 1 mb
     }
 }
