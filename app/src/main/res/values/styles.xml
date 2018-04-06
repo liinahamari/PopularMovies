@@ -26,4 +26,10 @@
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/thron_demo</item>
     </style>
+
+    <style name="Containers">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
 </resources>
