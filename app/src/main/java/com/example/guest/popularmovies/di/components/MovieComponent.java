@@ -7,11 +7,12 @@ package com.example.guest.popularmovies.di.components;
 import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.di.scope.PerActivity;
 import com.example.guest.popularmovies.ui.MainActivity;
+import com.example.guest.popularmovies.ui.MainFragment;
 
 import dagger.Component;
 
 @PerActivity
 @Component(modules = MovieModule.class, dependencies = ApplicationComponent.class)
 public interface MovieComponent {
-    void inject(MainActivity activity);
+    void inject(MainFragment fragment);
 }

@@ -86,9 +86,9 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
     private ReviewsAdapter reviewsAdapter;
     private SingleMovie movie;
 
-    @Override
+//    @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
-        super.onViewReady(savedInstanceState, intent);
+//        super.onViewReady(savedInstanceState, intent);
         movie = getIntent().getParcelableExtra(IDENTIFICATION);
         setupAdapter();
         YouTubePlayerFragment playerFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
@@ -218,14 +218,14 @@ public class DetailActivity extends BaseActivity implements DetailView, AppBarLa
         player = null;
     }
 
-    @Override
+   /* @Override
     protected void resolveDaggerDependencies() {
         DaggerTrailerComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .trailerModule(new TrailerModule(this))
                 .build()
                 .inject(this);
-    }
+    }*/
 
     @Override
     public void onTrailersLoaded(List<Result> trailers) {
