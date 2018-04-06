@@ -65,55 +65,23 @@ public class MainFragment extends BaseFragment implements MainView {
     private ArrayList<SingleMovie> savedList;
     private SharedPreferences preferences;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            lastVisiblePosition = savedInstanceState.getInt(LAST_POSITION);
-        }
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_main, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        View v = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, v);
-        resolveDaggerDependencies();
-        init();
         setupAdapter();
         if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList(SAVED_LIST));
             recyclerView.scrollToPosition(lastVisiblePosition);
         } else {
-            loadNews();
+            loadNew();
         }
         return v;
     }
 
-    public void getData(String choice) {
-        switch (choice) {
-            case SORT_ORDER_POPULAR:
-                preferences.edit().putString(LAST_SORT_ORDER, choice).apply();
-                onClearItems();
-                presenter.getPopular(recyclerView);
-                break;
-            case SORT_ORDER_TOP_RATED:
-                preferences.edit().putString(LAST_SORT_ORDER, choice).apply();
-                onClearItems();
-                presenter.getTopRated(recyclerView);
-                break;
-            case SORT_ORDER_FAVORITES:
-                preferences.edit().putString(LAST_SORT_ORDER, choice).apply();
-                onClearItems();
-                presenter.getFavorites(getActivity());
-                break;
-            default:
-                throw new IllegalArgumentException("There's only 3 options to go...");
-        }
-    }
-
-    private void loadNews() {
+    private void loadNew() {
         if (networkChecker.isNetAvailable(getActivity())) {
             errorLayout.setVisibility(View.INVISIBLE);
             if (preferences.contains(LAST_SORT_ORDER)) {
@@ -123,10 +91,9 @@ public class MainFragment extends BaseFragment implements MainView {
             }
         } else {
             errorLayout.setVisibility(View.VISIBLE);
-            repeatButton.setOnClickListener(v -> loadNews());
+            repeatButton.setOnClickListener(v -> loadNew());
         }
     }
-
 
     private void setupAdapter() {
         recyclerView.setHasFixedSize(true);
@@ -140,7 +107,32 @@ public class MainFragment extends BaseFragment implements MainView {
 
     }
 
-    private void init() {
+
+    private void sortingSwitcher(String sortOrder) {
+        switch (sortOrder) {
+            case SORT_ORDER_POPULAR:
+                presenter.getPopular(recyclerView);
+                break;
+            case SORT_ORDER_TOP_RATED:
+                presenter.getTopRated(recyclerView);
+                break;
+            case SORT_ORDER_FAVORITES:
+                presenter.getFavorites(getActivity());
+                break;
+            default:
+                throw new IllegalArgumentException("There's only 3 options to go...");
+        }
+    }
+
+    public void doWorkOnChangingSortOrder(String sortOrder) {
+        savedList.clear();
+        preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();
+        onClearItems();
+        sortingSwitcher(sortOrder);
+    }
+
+    @Override
+    protected void init() {
         savedList = new ArrayList<>();
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
@@ -167,33 +159,25 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        presenter.getPopular(recyclerView); //todo: or onDestroy?
-    }
-
-    private void sortingSwitcher(String sortOrder) {
-        switch (sortOrder) {
-            case SORT_ORDER_POPULAR:
-                presenter.getPopular(recyclerView);
-                break;
-            case SORT_ORDER_TOP_RATED:
-                presenter.getTopRated(recyclerView);
-                break;
-            case SORT_ORDER_FAVORITES:
-                presenter.getFavorites(getActivity());
-                break;
-            default:
-                throw new IllegalArgumentException("There's only 3 options to go...");
-        }
-    }
-
-    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         lastVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
         Log.d(LAST_POSITION, ": " + String.valueOf(lastVisiblePosition));
         outState.putInt(LAST_POSITION, lastVisiblePosition);
         outState.putParcelableArrayList(SAVED_LIST, savedList); //todo until 1 mb
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        presenter.getPopular(recyclerView); //todo: or onDestroy?
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            lastVisiblePosition = savedInstanceState.getInt(LAST_POSITION);
+        }
     }
 }

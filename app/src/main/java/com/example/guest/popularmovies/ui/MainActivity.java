@@ -48,13 +48,13 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                fragment.getData(SORT_ORDER_POPULAR);
+                fragment.doWorkOnChangingSortOrder(SORT_ORDER_POPULAR);
                 return true;
             case R.id.action_top_rated:
-                fragment.getData(SORT_ORDER_TOP_RATED);
+                fragment.doWorkOnChangingSortOrder(SORT_ORDER_TOP_RATED);
                 return true;
             case R.id.action_favorites:
-                fragment.getData(SORT_ORDER_FAVORITES);
+                fragment.doWorkOnChangingSortOrder(SORT_ORDER_FAVORITES);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
