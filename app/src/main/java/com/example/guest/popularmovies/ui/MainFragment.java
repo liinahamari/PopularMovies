@@ -1,5 +1,6 @@
 package com.example.guest.popularmovies.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -170,9 +171,9 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        callbacks = (Callbacks) context;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        callbacks = (Callbacks) activity;
     }
 
     @Override

@@ -58,7 +58,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
                     @Override
                     public void onComplete() {
-                        fragment.initialize(BuildConfig.YOUTUBE_KEY, listener);
+//                        fragment.initialize(BuildConfig.YOUTUBE_KEY, listener);
                     }
                 });
     }

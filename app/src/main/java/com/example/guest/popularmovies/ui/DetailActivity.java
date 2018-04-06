@@ -14,12 +14,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.utils.MakeContentValues;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +42,8 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     protected FloatingActionButton floatingButton;
     @BindView(R.id.my_collapsing_toolbar)
     protected CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.d_poster)
+    protected ImageView posterIv;
 
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
     private int mMaxScrollSize;
@@ -51,14 +55,18 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         super.onCreate(savedInstanceState);
         movie = getIntent().getParcelableExtra(IDENTIFICATION);
         ButterKnife.bind(this);
+
+        Picasso.with(this).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
+                .into(posterIv);
+
         setActionBarView();
         setupListeners();
         FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentById(R.id.fragmentContainer);
+        Fragment fragment = manager.findFragmentById(R.id.empty_space);
         if (fragment == null) {
-            fragment = new MainFragment();
+            fragment = new DetailFragment();
             manager.beginTransaction()
-                    .add(R.id.fragmentContainer, fragment)
+                    .add(R.id.empty_space, fragment)
                     .commit();
         }
     }
@@ -77,7 +85,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_fragment;
+        return R.layout.activity_detail;
     }
 
     @Override

@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/annonce.main.coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     android:paddingBottom="5dp"
-    tools:ignore="RtlHardcoded"
-    android:background="@color/colorPrimaryLight">
+    tools:ignore="RtlHardcoded">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/my_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        >
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/my_collapsing_toolbar"
@@ -26,13 +24,12 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:contentDescription="@string/d_poster"
                 android:id="@+id/d_poster"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/d_poster"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"
-                />
+                android:src="@drawable/ic_launcher_background" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/mytoolbar"
@@ -40,130 +37,22 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@null"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/abc_ic_ab_back_material"
-                />
+                app:navigationIcon="@drawable/abc_ic_ab_back_material" />
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <FrameLayout
+        android:id="@+id/empty_space"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="4dp"
-        android:scrollbars="none"
         app:behavior_overlapTop="78dp"
-        android:layout_marginBottom="5dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/flexible.example.cardview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="4dp"
-            app:cardUseCompatPadding="true">
-
-            <android.support.constraint.ConstraintLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:background="@color/lightLight">
-
-                <TextView
-                    android:id="@+id/d_mov_title"
-                    style="@style/CustomTextView"
-                    android:textSize="45sp"
-                    android:fontFamily="@font/birds_of_paradise"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <TextView
-                    android:id="@+id/rateLabel"
-                    android:text="@string/rate"
-                    style="@style/LabelTextView"
-                    app:layout_constraintTop_toBottomOf="@id/d_mov_title"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/dateLabel"
-                    app:layout_constraintHorizontal_chainStyle="spread"/>
-
-                <TextView
-                    android:id="@+id/dateLabel"
-                    android:text="@string/date"
-                    style="@style/LabelTextView"
-                    app:layout_constraintTop_toBottomOf="@id/d_mov_title"
-                    app:layout_constraintLeft_toRightOf="@+id/rateLabel"
-                    app:layout_constraintRight_toRightOf="parent"/>
-
-                <TextView
-                    android:textSize="22sp"
-                    android:id="@+id/d_mov_rate"
-                    style="@style/ValueTextView"
-                    app:layout_constraintTop_toBottomOf="@id/rateLabel"
-                    app:layout_constraintRight_toLeftOf="@id/d_mov_date"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
-
-                <TextView
-                    android:textSize="22sp"
-                    android:id="@+id/d_mov_date"
-                    style="@style/ValueTextView"
-                    app:layout_constraintTop_toBottomOf="@id/dateLabel"
-                    app:layout_constraintLeft_toRightOf="@id/d_mov_rate"
-                    app:layout_constraintRight_toRightOf="parent"/>
-
-                <TextView
-                    android:id="@+id/d_mov_synopsis"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:fontFamily="@font/thron_demo"
-                    android:lineSpacingExtra="8dp"
-                    android:text="@string/lorem"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/d_mov_date"
-                    />
-
-                <fragment
-                    android:id="@+id/youtube_player"
-                    android:name="com.google.android.youtube.player.YouTubePlayerFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/d_mov_synopsis"
-                    app:layout_constraintBottom_toTopOf="@id/reviews_label"/>
-
-                <TextView
-                    android:id="@+id/reviews_label"
-                    style="@style/LabelTextView"
-                    android:text="@string/reviews"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/youtube_player"
-                    app:layout_constraintBottom_toTopOf="@id/reviews_recycler"/>
-
-                    <android.support.v7.widget.RecyclerView
-                    android:id="@+id/reviews_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/reviews_label"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v7.widget.CardView>
-    </android.support.v4.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@drawable/like2"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        android:src="@drawable/like2" />
 </android.support.design.widget.CoordinatorLayout>

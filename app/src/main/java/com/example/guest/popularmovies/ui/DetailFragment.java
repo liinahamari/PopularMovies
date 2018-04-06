@@ -44,8 +44,6 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @Inject
     protected DetailPresenter presenter;
 
-    @BindView(R.id.d_poster)
-    protected ImageView posterIv;
     @BindView(R.id.d_mov_rate)
     protected TextView ratingTv;
     @BindView(R.id.d_mov_date)
@@ -73,7 +71,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View v = inflater.inflate(R.layout.activity_detail, container, false);
+        View v = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, v);
         setupAdapter();
         loadData(String.valueOf(movie.getId()), playerFragment);
@@ -82,8 +80,6 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     }
 
     private void setView() {
-        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
-                .into(posterIv);
         releaseDateTv.setText(movie.getReleaseDate());
         ratingTv.setText(String.valueOf(movie.getVoteAverage()));
         synopsisTv.setText(movie.getOverview());
