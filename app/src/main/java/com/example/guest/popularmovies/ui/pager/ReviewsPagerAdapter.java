@@ -10,6 +10,8 @@ import com.example.guest.popularmovies.ui.ReviewFragment;
 
 import java.util.List;
 
+import static com.example.guest.popularmovies.ui.ReviewFragment.REVIEW_DATA;
+
 /**
  * Created by l1maginaire on 4/7/18.
  */
@@ -29,7 +31,7 @@ public class ReviewsPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Bundle args = new Bundle();
-        args.putString("DATA", reviewsList.get(position).getContent());
+        args.putString(REVIEW_DATA, reviewsList.get(position).getContent());
         ReviewFragment fragment = new ReviewFragment();
         fragment.setArguments(args);
         return fragment;

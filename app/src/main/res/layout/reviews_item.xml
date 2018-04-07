@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:id="@+id/flexible.example.cardview"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="true"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView
-        android:id="@+id/single_review"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="5dp"
+    android:paddingBottom="4dp"
+    android:scrollbars="none">
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="13dp"
-        android:background="@color/forReviews"
-        android:textSize="18sp" />
-</android.support.v7.widget.CardView>
+        android:layout_marginBottom="2dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
+
+        <TextView
+            android:id="@+id/single_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/forReviews"
+            android:padding="13dp"
+            android:textSize="18sp" />
+    </android.support.v7.widget.CardView>
+</android.support.v4.widget.NestedScrollView>

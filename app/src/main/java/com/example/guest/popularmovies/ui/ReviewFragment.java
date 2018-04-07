@@ -17,15 +17,16 @@ import butterknife.ButterKnife;
  */
 
 public class ReviewFragment extends Fragment {
-    @BindView(R.id.pagers_review)
+    public static final String REVIEW_DATA = "data";
+    @BindView(R.id.single_review)
     protected TextView reviewTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.pager_item_review, container, false);
+        View view = inflater.inflate(R.layout.reviews_item, container, false);
         ButterKnife.bind(this, view);
-        reviewTv.setText(getArguments().getString("DATA"));
+        reviewTv.setText(getArguments().getString(REVIEW_DATA));
         return view;
     }
 }
