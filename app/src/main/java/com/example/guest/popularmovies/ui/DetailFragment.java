@@ -1,14 +1,13 @@
 package com.example.guest.popularmovies.ui;
 
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import com.example.guest.popularmovies.mvp.model.reviews.Review;
 import com.example.guest.popularmovies.mvp.model.trailers.Result;
 import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
 import com.example.guest.popularmovies.mvp.view.DetailView;
+import com.example.guest.popularmovies.ui.pager.ReviewsPagerAdapter;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -54,16 +54,17 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     protected TextView synopsisTv;
     @BindView(R.id.d_mov_title)
     protected TextView titleTv;
-    @BindView(R.id.reviews_recycler)
-    protected RecyclerView reviewsRecyclerView;
     @BindView(R.id.youtube_frame)
     protected FrameLayout youtubeFrame;
+    @BindView(R.id.pager)
+    protected ViewPager viewPager;
 
     private YouTubePlayer player;
     private YouTubePlayerSupportFragment playerFragment;
     private List<Result> trailers;
     private ReviewsAdapter reviewsAdapter;
     private SingleMovie movie;
+    private PagerAdapter pagerAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, v);
-        setupAdapter();
+        viewPager.setAdapter(pagerAdapter);
         loadData(String.valueOf(movie.getId()), playerFragment);
         setView();
         return v;
@@ -92,6 +93,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
 
     @Override
     protected void init() {
+        pagerAdapter = new ReviewsPagerAdapter(getChildFragmentManager());
     }
 
     @Override
@@ -125,17 +127,9 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         presenter.getReviews(id);
     }
 
-    private void setupAdapter() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        reviewsRecyclerView.setLayoutManager(linearLayoutManager);
-        reviewsAdapter = new ReviewsAdapter(getActivity());
-        reviewsRecyclerView.setAdapter(reviewsAdapter);
-    }
-
     @Override
     public void onReviewsLoaded(List<Review> reviews) {
-        reviewsAdapter.addReviews(reviews);
+//        reviewsAdapter.addReviews(reviews);
     }
 
     @Override
