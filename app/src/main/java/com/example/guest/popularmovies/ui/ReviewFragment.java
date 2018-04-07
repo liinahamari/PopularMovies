@@ -23,22 +23,9 @@ public class ReviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int position = getArguments().getInt("position");
         View view = inflater.inflate(R.layout.pager_item_review, container, false);
         ButterKnife.bind(this, view);
-
-        if (position == 0) {
-            reviewTv.setText("00000000000000");
-        }
-        if (position == 1) {
-            reviewTv.setText("11111111111");
-        }
-        if (position == 2) {
-            reviewTv.setText("222222222222");
-        }
-        if (position == 3) {
-            reviewTv.setText("333333333333");
-        }
+        reviewTv.setText(getArguments().getString("DATA"));
         return view;
     }
 }

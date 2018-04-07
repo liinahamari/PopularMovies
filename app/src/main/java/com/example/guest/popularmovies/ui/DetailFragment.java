@@ -64,7 +64,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     private List<Result> trailers;
     private ReviewsAdapter reviewsAdapter;
     private SingleMovie movie;
-    private PagerAdapter pagerAdapter;
+    private ReviewsPagerAdapter pagerAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,7 +129,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
 
     @Override
     public void onReviewsLoaded(List<Review> reviews) {
-//        reviewsAdapter.addReviews(reviews);
+        pagerAdapter.setData(reviews);
     }
 
     @Override
