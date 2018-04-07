@@ -127,7 +127,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
                 (ColorStateList.valueOf(getResources().getColor(R.color.colorAccent))) : //todo check <21
                 ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
         floatingButton.setOnClickListener(v -> {
-            if (movie.isInFavorites() != 0) {
+            if (movie.isInFavorites() == 0) {
                 floatingButton.setClickable(false);
                 Single.fromCallable(() -> {
                     return getContentResolver().insert(CONTENT_URI, (new MakeContentValues().makeContentValues(movie))); //todo class optimization
