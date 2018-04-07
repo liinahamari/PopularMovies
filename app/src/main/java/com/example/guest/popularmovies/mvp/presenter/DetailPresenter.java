@@ -1,8 +1,12 @@
 package com.example.guest.popularmovies.mvp.presenter;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.FrameLayout;
 
 import com.example.guest.popularmovies.BuildConfig;
+import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
 import com.example.guest.popularmovies.mvp.model.trailers.MovieTrailers;
@@ -36,7 +40,8 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
 //todo: 04-03 23:12:06.864 25819-25819/com.example.guest.popularmovies E/ActivityThread: Activity com.example.guest.popularmovies.ui.DetailActivity has leaked ServiceConnection com.google.android.youtube.player.internal.r$e@f7c4314 that was originally bound here
 
-    public void getTrailers(String id, YouTubePlayerSupportFragment fragment, YouTubePlayer.OnInitializedListener listener) {
+    public void getTrailers(String id, YouTubePlayerSupportFragment fragment, YouTubePlayer.OnInitializedListener listener,
+                            FragmentManager fragmentManager) {
         apiService.getTrailers(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -59,6 +64,8 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                     @Override
                     public void onComplete() {
                         fragment.initialize(BuildConfig.YOUTUBE_KEY, listener);
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.add(R.id.youtube_frame, fragment).commit();
                     }
                 });
     }

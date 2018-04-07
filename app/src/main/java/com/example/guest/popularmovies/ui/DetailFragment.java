@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
@@ -52,6 +53,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     protected TextView titleTv;
     @BindView(R.id.reviews_recycler)
     protected RecyclerView reviewsRecyclerView;
+    @BindView(R.id.youtube_frame)
+    protected FrameLayout youtubeFrame;
 
     private YouTubePlayer player;
     private YouTubePlayerSupportFragment playerFragment;
@@ -86,7 +89,6 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
 
     @Override
     protected void init() {
-        playerFragment = (YouTubePlayerSupportFragment) getFragmentManager().findFragmentById(R.id.youtube_frame);
     }
 
     @Override
@@ -115,7 +117,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     }
 
     private void loadData(String id, YouTubePlayerSupportFragment fragment) {
-        presenter.getTrailers(id, fragment, this);
+        fragment = new YouTubePlayerSupportFragment();
+        presenter.getTrailers(id, fragment, this, getFragmentManager());
         presenter.getReviews(id);
     }
 
