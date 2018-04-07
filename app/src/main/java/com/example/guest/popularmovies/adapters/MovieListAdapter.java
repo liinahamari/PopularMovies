@@ -78,7 +78,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         holder.title.setText(movie.getTitle());
         holder.bookmarkButton.setOnClickListener(v ->
         {
-            if (movie.isInFavorites() != 0) {
+            if (movie.isInFavorites() == 0) {
                 holder.bookmarkButton.setClickable(false);
                 Single.fromCallable(() -> {//todo leak
                     return context.getContentResolver().insert(CONTENT_URI,
@@ -87,6 +87,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(uri -> {
+                            movie.setInFavorites(1);
                             holder.bookmarkButton.setImageResource(R.drawable.bookmarked);
                             holder.bookmarkButton.setClickable(true);
                         });
@@ -100,6 +101,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(rowsDeleted -> {
+                            movie.setInFavorites(0);
                             holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
                             holder.bookmarkButton.setClickable(true);
                         });
