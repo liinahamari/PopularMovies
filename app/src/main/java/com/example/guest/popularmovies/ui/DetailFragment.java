@@ -1,11 +1,14 @@
 package com.example.guest.popularmovies.ui;
 
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,11 +141,22 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
         player = youTubePlayer;
-        player.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION); //todo leak detected
-        player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
-        player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
+        /*if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+            TypedValue tv = new TypedValue();
+            int actionBarHeight = 0;
+            if (getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+            {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+            }
+            ViewGroup.LayoutParams layoutParams = youtubeFrame.getLayoutParams();
+            layoutParams.height = ((getActivity().getResources().getDisplayMetrics().heightPixels) - (3 * actionBarHeight));
+            layoutParams.width = (getActivity().getResources().getDisplayMetrics().widthPixels);
+            youtubeFrame.setLayoutParams(layoutParams);
+        }*/
 //        if (!b) {
-        player.cueVideo(trailers.get(0).getKey());
+        if (trailers.size() > 0)
+            player.cueVideo(trailers.get(0).getKey());
 //        } else {
 //            player.play();
 //        }

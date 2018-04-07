@@ -62,7 +62,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                     }
 
                     @Override
-                    public void onComplete() {
+                    public void onComplete() { //todo callback?
                         fragment.initialize(BuildConfig.YOUTUBE_KEY, listener);
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.add(R.id.youtube_frame, fragment).commit();
