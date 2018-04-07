@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
@@ -25,7 +24,6 @@ import com.example.guest.popularmovies.mvp.view.DetailView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -56,10 +54,10 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     protected RecyclerView reviewsRecyclerView;
 
     private YouTubePlayer player;
+    private YouTubePlayerSupportFragment playerFragment;
     private List<Result> trailers;
     private ReviewsAdapter reviewsAdapter;
     private SingleMovie movie;
-    private YouTubePlayerSupportFragment playerFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,7 +86,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
 
     @Override
     protected void init() {
-        playerFragment = (YouTubePlayerSupportFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
+        playerFragment = (YouTubePlayerSupportFragment) getFragmentManager().findFragmentById(R.id.youtube_frame);
     }
 
     @Override

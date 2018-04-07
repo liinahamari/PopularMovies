@@ -79,11 +79,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/d_mov_date" />
 
-            <fragment
-                android:id="@+id/youtube_player"
-                android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+            <FrameLayout
+                android:id="@+id/youtube_frame"
+                android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@id/reviews_label"
                 app:layout_constraintTop_toBottomOf="@id/d_mov_synopsis" />
 
@@ -95,7 +96,7 @@
                 app:layout_constraintBottom_toTopOf="@id/reviews_recycler"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/youtube_player" />
+                app:layout_constraintTop_toBottomOf="@id/youtube_frame" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/reviews_recycler"

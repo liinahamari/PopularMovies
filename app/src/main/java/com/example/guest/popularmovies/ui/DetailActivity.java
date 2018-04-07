@@ -27,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
@@ -49,10 +50,12 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     private int mMaxScrollSize;
     private boolean mIsImageHidden;
     private SingleMovie movie;
+    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        compositeDisposable = new CompositeDisposable();
         movie = getIntent().getParcelableExtra(IDENTIFICATION);
         ButterKnife.bind(this);
 
@@ -129,7 +132,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         floatingButton.setOnClickListener(v -> {
             if (movie.isInFavorites() == 0) {
                 floatingButton.setClickable(false);
-                Single.fromCallable(() -> {
+                compositeDisposable.add(Single.fromCallable(() -> {
                     return getContentResolver().insert(CONTENT_URI, (new MakeContentValues().makeContentValues(movie))); //todo class optimization
                 })
                         .observeOn(AndroidSchedulers.mainThread())
@@ -139,10 +142,10 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
                             Toast.makeText(this, movie.getTitle() + " added to Favorites!", Toast.LENGTH_SHORT).show();
                             floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                             floatingButton.setClickable(true);
-                        });
+                        }));
             } else {
                 floatingButton.setClickable(false);
-                Single.fromCallable(() -> {
+                compositeDisposable.add(Single.fromCallable(() -> {
                     ContentResolver contentResolver = this.getContentResolver();
                     return contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
                             new String[]{(new MakeContentValues().makeContentValues(movie)).getAsString(COLUMN_TITLE)});
@@ -154,8 +157,15 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
                             Toast.makeText(this, movie.getTitle() + " removed from Favorites!", Toast.LENGTH_SHORT).show();
                             floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightLight))); //todo check versions <21
                             floatingButton.setClickable(true);
-                        });
+                        }));
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (compositeDisposable != null)
+            compositeDisposable.dispose();
     }
 }
