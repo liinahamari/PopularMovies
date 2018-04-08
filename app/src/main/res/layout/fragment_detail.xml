@@ -62,23 +62,10 @@
                 android:id="@+id/d_mov_date"
                 style="@style/ValueTextView"
                 android:textSize="22sp"
+                android:paddingBottom="15dp"
                 app:layout_constraintLeft_toRightOf="@id/d_mov_rate"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateLabel" />
-
-            <TextView
-                android:id="@+id/d_mov_synopsis"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:paddingBottom="10dp"
-                android:fontFamily="@font/oregon_ldo"
-                android:lineSpacingExtra="8dp"
-                android:text="@string/lorem"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/d_mov_date" />
 
             <FrameLayout
                 android:id="@+id/youtube_frame"
@@ -86,8 +73,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/d_mov_date" />
+
+            <TextView
+                android:id="@+id/d_mov_synopsis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp"
+                android:fontFamily="@font/oregon_ldo"
+                android:lineSpacingExtra="8dp"
+                android:text="@string/lorem"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/reviews_label"
-                app:layout_constraintTop_toBottomOf="@id/d_mov_synopsis" />
+                app:layout_constraintTop_toBottomOf="@id/youtube_frame" />
 
             <TextView
                 android:id="@+id/reviews_label"
@@ -98,7 +100,7 @@
                 app:layout_constraintBottom_toTopOf="@id/pager"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/youtube_frame" />
+                app:layout_constraintTop_toBottomOf="@id/d_mov_synopsis" />
 
             <android.support.v4.view.ViewPager
                 android:theme="@style/Theme.AppCompat.Light"
