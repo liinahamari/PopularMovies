@@ -1,9 +1,11 @@
 package com.example.guest.popularmovies.ui;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,6 +74,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         movie = getActivity().getIntent().getParcelableExtra(IDENTIFICATION);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,6 +82,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, v);
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setNestedScrollingEnabled(false);
         loadData(String.valueOf(movie.getId()), playerFragment);
         setView();
         return v;

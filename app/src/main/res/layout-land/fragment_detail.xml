@@ -16,110 +16,128 @@
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="top"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_weight="1">
+            <TextView
+                android:id="@+id/d_mov_title"
+                style="@style/CustomTextView"
+                android:fontFamily="@font/birds_of_paradise"
+                android:paddingBottom="10dp"
+                android:textSize="45sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <FrameLayout
-                    android:id="@+id/youtube_frame"
-                    android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+            <TextView
+                android:id="@+id/rateLabel"
+                style="@style/LabelTextView"
+                android:text="@string/rate"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/dateLabel"
+                app:layout_constraintTop_toBottomOf="@id/d_mov_title" />
+
+            <TextView
+                android:id="@+id/dateLabel"
+                style="@style/LabelTextView"
+                android:text="@string/date"
+                app:layout_constraintLeft_toRightOf="@+id/rateLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/d_mov_title" />
+
+            <TextView
+                android:id="@+id/d_mov_rate"
+                style="@style/ValueTextView"
+                android:textSize="22sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/d_mov_date"
+                app:layout_constraintTop_toBottomOf="@id/rateLabel" />
+
+            <TextView
+                android:id="@+id/d_mov_date"
+                style="@style/ValueTextView"
+                android:textSize="22sp"
+                app:layout_constraintLeft_toRightOf="@id/d_mov_rate"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dateLabel" />
+
+            <FrameLayout
+                android:id="@+id/youtube_frame"
+                android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/laal"
+                app:layout_constraintEnd_toEndOf="@id/end_padder"
+                app:layout_constraintStart_toStartOf="@id/start_padder"
+                app:layout_constraintTop_toBottomOf="@id/d_mov_date" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/laal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/youtube_frame"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <TextView
                     android:id="@+id/reviews_label"
                     style="@style/LabelTextView"
                     android:layout_margin="10dp"
                     android:text="@string/reviews"
-                    android:visibility="visible"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/youtube_frame" />
-
-                <android.support.v4.view.ViewPager
-                    android:theme="@style/Theme.AppCompat.Light"
-                    android:id="@+id/pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="208dp"
-                    android:background="@color/colorAccent"
-                    app:layout_constraintTop_toBottomOf="@id/reviews_label"
-                    />
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_marginRight="12dp"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/d_mov_title"
-                    style="@style/CustomTextView"
-                    android:fontFamily="@font/birds_of_paradise"
-                    android:paddingBottom="10dp"
-                    android:textSize="45sp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/center_padder"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/rateLabel"
-                    style="@style/LabelTextView"
-                    android:text="@string/rate"
-                    app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/dateLabel"
-                    app:layout_constraintTop_toBottomOf="@id/d_mov_title" />
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="0dp"
+                    android:layout_height="208dp"
+                    android:background="@color/colorAccent"
+                    android:theme="@style/Theme.AppCompat.Light"
+                    app:layout_constraintRight_toRightOf="@id/center_padder"
+                    app:layout_constraintEnd_toStartOf="@id/center_padder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/reviews_label"
+                    android:layout_alignParentTop="true"/>
 
-                <TextView
-                    android:id="@+id/dateLabel"
-                    style="@style/LabelTextView"
-                    android:text="@string/date"
-                    app:layout_constraintLeft_toRightOf="@+id/rateLabel"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/d_mov_title" />
-
-                <TextView
-                    android:id="@+id/d_mov_rate"
-                    style="@style/ValueTextView"
-                    android:textSize="22sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/d_mov_date"
-                    app:layout_constraintTop_toBottomOf="@id/rateLabel" />
-
-                <TextView
-                    android:id="@+id/d_mov_date"
-                    style="@style/ValueTextView"
-                    android:textSize="22sp"
-                    app:layout_constraintLeft_toRightOf="@id/d_mov_rate"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/dateLabel" />
 
                 <TextView
                     android:id="@+id/d_mov_synopsis"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:fontFamily="@font/thron_demo"
                     android:lineSpacingExtra="8dp"
                     android:text="@string/lorem"
                     android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@id/center_padder"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/d_mov_date" />
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/center_padder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
             </android.support.constraint.ConstraintLayout>
-        </LinearLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/start_padder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.15" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/end_padder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </android.support.v4.widget.NestedScrollView>
