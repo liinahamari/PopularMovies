@@ -12,5 +12,5 @@
     <string name="ma_poster">main_activity_poster</string>
     <string name="action_favorites">Favorites</string>
     <string name="reviews">Reviews: </string>
-    <string name="read_all">Load more...</string>
+    <string name="read_all">Read more…</string>
 </resources>

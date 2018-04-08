@@ -1,5 +1,6 @@
 package com.example.guest.popularmovies.ui;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +22,7 @@ import static android.content.DialogInterface.BUTTON_NEGATIVE;
 
 public class ReviewFragment extends Fragment {
     public static final String REVIEW_DATA = "data";
+    public static final String REVIEW_AUTHOR = "author";
     @BindView(R.id.single_review)
     protected TextView reviewTv;
     @BindView(R.id.load_more_label)
@@ -31,21 +33,26 @@ public class ReviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.reviews_item, container, false);
         ButterKnife.bind(this, view);
-        reviewTv.setText(getArguments().getString(REVIEW_DATA));
+        String message = getArguments().getString(REVIEW_DATA) + "\n\n by: " + getArguments().getString(REVIEW_AUTHOR);
+        reviewTv.setText(message);
         reviewTv.post(() -> {
-            if (reviewTv.getLineCount() > 11) {
+            if (reviewTv.getLineCount() > 10) {
                 loadMoreTv.setVisibility(View.VISIBLE);
                 loadMoreTv.setOnClickListener(v -> {
-                    AlertDialog ad = new AlertDialog.Builder(getActivity())
-                            .create();
+                    AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
                     ad.setCancelable(true);
-                    ad.setTitle("Author: ");
-                    ad.setMessage(getArguments().getString(REVIEW_DATA));
+                    ad.setMessage(message);
                     ad.setButton(BUTTON_NEGATIVE, "Close", (dialog, which) -> dialog.dismiss());
                     ad.show();
+                    TextView textView = (TextView) ad.getWindow().findViewById(android.R.id.message);
+                    Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "oregon_ldo.ttf");
+                    textView.setTypeface(face);
+                    textView.setTextSize(22);
                 });
             }
         });
         return view;
     }
+
+
 }

@@ -17,7 +17,7 @@ By LeoSupply.co<br>
 Taken from:<br>
 http://www.fontspace.com/leosupplyco/thron-demo 
 
-*  Husky Giggle DEMO font<br>
-By Konstantine Studio<br>
+*   Canela Bark Personal Use font<br>
+By Måns Grebäck <br>
 Taken from:<br>
-http://www.fontspace.com/konstantine-studio/husky-giggle-demo
+http://www.fontspace.com/m%C3%A5ns-greb%C3%A4ck/canela-bark-personal-use

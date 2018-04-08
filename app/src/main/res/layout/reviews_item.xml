@@ -14,7 +14,8 @@
         android:layout_height="match_parent"
         android:background="@color/forReviews"
         android:padding="13dp"
-        android:textSize="18sp" />
+        android:fontFamily="@font/oregon_ldo"
+        android:textSize="20sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
