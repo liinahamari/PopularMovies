@@ -92,7 +92,6 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     private YouTubePlayer player;
     private YouTubePlayerSupportFragment playerFragment;
     private List<Result> trailers;
-    private ReviewsAdapter reviewsAdapter;
     private SingleMovie movie;
     private ReviewsPagerAdapter pagerAdapter;
     private Callbacks callbacks;
