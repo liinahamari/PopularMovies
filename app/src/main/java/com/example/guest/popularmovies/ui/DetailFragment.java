@@ -36,6 +36,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Single;
 
 import static android.view.View.GONE;
 
@@ -71,10 +72,22 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     private SingleMovie movie;
     private ReviewsPagerAdapter pagerAdapter;
 
+    public static DetailFragment newInstance(SingleMovie movie) {
+        Bundle args = new Bundle();
+        args.putParcelable(IDENTIFICATION, movie);
+        DetailFragment fragment = new DetailFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        movie = getActivity().getIntent().getParcelableExtra(IDENTIFICATION);
+        if (getActivity() != null) {
+            movie = getActivity().getIntent().getParcelableExtra(IDENTIFICATION);
+        } else {
+            movie = getArguments().getParcelable(IDENTIFICATION);
+        }
     }
 
     @Nullable
@@ -153,7 +166,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
             }
             ViewGroup.LayoutParams layoutParams = youtubeFrame.getLayoutParams();
             layoutParams.height = ((getActivity().getResources().getDisplayMetrics().heightPixels) - (3 * actionBarHeight));
-            layoutParams.width = ((getActivity().getResources().getDisplayMetrics().widthPixels) -  (2 * actionBarHeight));
+            layoutParams.width = ((getActivity().getResources().getDisplayMetrics().widthPixels) - (2 * actionBarHeight));
             youtubeFrame.setLayoutParams(layoutParams);
         }
 //        if (!b) {

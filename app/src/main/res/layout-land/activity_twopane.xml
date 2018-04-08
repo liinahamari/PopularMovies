@@ -4,17 +4,14 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle">
-
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
-
     <FrameLayout
-        android:id="@+id/detailFragmentContainer"
+        android:id="@+id/twopane_detail_container"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1" />
-
 </LinearLayout>
