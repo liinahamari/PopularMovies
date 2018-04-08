@@ -165,7 +165,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
                 actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
             }
             ViewGroup.LayoutParams layoutParams = youtubeFrame.getLayoutParams();
-            layoutParams.height = ((getActivity().getResources().getDisplayMetrics().heightPixels) - (3 * actionBarHeight));
+            layoutParams.height = (3 * actionBarHeight);
             layoutParams.width = ((getActivity().getResources().getDisplayMetrics().widthPixels) - (2 * actionBarHeight));
             youtubeFrame.setLayoutParams(layoutParams);
         }
