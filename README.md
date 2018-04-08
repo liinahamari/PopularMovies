@@ -17,7 +17,7 @@ By LeoSupply.co<br>
 Taken from:<br>
 http://www.fontspace.com/leosupplyco/thron-demo 
 
-*   Canela Bark Personal Use font<br>
-By Måns Grebäck <br>
+*   Oregon LDO font<br>
+By Luke Owens<br>
 Taken from:<br>
-http://www.fontspace.com/m%C3%A5ns-greb%C3%A4ck/canela-bark-personal-use
+http://www.fontspace.com/luke-owens/oregon-ldo
