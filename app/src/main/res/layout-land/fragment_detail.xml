@@ -18,7 +18,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/lightLight">
 
             <TextView
                 android:id="@+id/d_mov_title"
@@ -68,19 +69,19 @@
                 android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/endd"
+                app:layout_constraintStart_toStartOf="@id/startt"
                 app:layout_constraintBottom_toTopOf="@id/laal"
-                app:layout_constraintEnd_toEndOf="@id/end_padder"
-                app:layout_constraintStart_toStartOf="@id/start_padder"
                 app:layout_constraintTop_toBottomOf="@id/d_mov_date" />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/laal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/youtube_frame"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/youtube_frame">
 
                 <TextView
                     android:id="@+id/reviews_label"
@@ -95,13 +96,12 @@
                     android:id="@+id/pager"
                     android:layout_width="0dp"
                     android:layout_height="208dp"
-                    android:background="@color/colorAccent"
+                    android:layout_alignParentTop="true"
                     android:theme="@style/Theme.AppCompat.Light"
-                    app:layout_constraintRight_toRightOf="@id/center_padder"
                     app:layout_constraintEnd_toStartOf="@id/center_padder"
+                    app:layout_constraintRight_toRightOf="@id/center_padder"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/reviews_label"
-                    android:layout_alignParentTop="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/reviews_label" />
 
 
                 <TextView
@@ -113,9 +113,11 @@
                     android:lineSpacingExtra="8dp"
                     android:text="@string/lorem"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@id/center_padder"
+                    app:layout_constraintLeft_toLeftOf="@id/center_padder"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="@id/center_padder"
+                    app:layout_constraintTop_toBottomOf="@id/reviews_label"/>
 
                 <android.support.constraint.Guideline
                     android:id="@+id/center_padder"
@@ -123,21 +125,21 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.5" />
+
             </android.support.constraint.ConstraintLayout>
-
             <android.support.constraint.Guideline
-                android:id="@+id/start_padder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.15" />
-
-            <android.support.constraint.Guideline
-                android:id="@+id/end_padder"
+                android:id="@+id/endd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.85" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/startt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.15" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </android.support.v4.widget.NestedScrollView>

@@ -1,15 +1,14 @@
 package com.example.guest.popularmovies.ui;
 
 
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +77,6 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         movie = getActivity().getIntent().getParcelableExtra(IDENTIFICATION);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,7 +84,6 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, v);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setNestedScrollingEnabled(false);
         loadData(String.valueOf(movie.getId()), playerFragment);
         setView();
         return v;
@@ -148,19 +145,17 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
         player = youTubePlayer;
-        /*if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             TypedValue tv = new TypedValue();
             int actionBarHeight = 0;
-            if (getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-            {
-                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+            if (getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
             }
             ViewGroup.LayoutParams layoutParams = youtubeFrame.getLayoutParams();
             layoutParams.height = ((getActivity().getResources().getDisplayMetrics().heightPixels) - (3 * actionBarHeight));
-            layoutParams.width = (getActivity().getResources().getDisplayMetrics().widthPixels);
+            layoutParams.width = ((getActivity().getResources().getDisplayMetrics().widthPixels) -  (2 * actionBarHeight));
             youtubeFrame.setLayoutParams(layoutParams);
-        }*/
+        }
 //        if (!b) {
         if (trailers.size() > 0)
             player.cueVideo(trailers.get(0).getKey());
