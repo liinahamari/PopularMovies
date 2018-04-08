@@ -16,3 +16,8 @@ http://www.fontspace.com/billy-argel/calling-angels-personal-use
 By LeoSupply.co<br>
 Taken from:<br>
 http://www.fontspace.com/leosupplyco/thron-demo 
+
+*  Husky Giggle DEMO font<br>
+By Konstantine Studio<br>
+Taken from:<br>
+http://www.fontspace.com/konstantine-studio/husky-giggle-demo
