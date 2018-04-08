@@ -38,6 +38,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+
 /**
  * Created by l1maginaire on 4/6/18.
  */
@@ -60,6 +62,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     protected FrameLayout youtubeFrame;
     @BindView(R.id.pager)
     protected ViewPager viewPager;
+    @BindView(R.id.reviews_label)
+    protected TextView reviewsLabel;
 
     private YouTubePlayer player;
     private YouTubePlayerSupportFragment playerFragment;
@@ -133,7 +137,12 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
 
     @Override
     public void onReviewsLoaded(List<Review> reviews) {
-        pagerAdapter.setData(reviews);
+        if (reviews.size() == 0) {
+            reviewsLabel.setVisibility(GONE);
+            viewPager.setVisibility(GONE);
+        } else {
+            pagerAdapter.setData(reviews);
+        }
     }
 
     @Override
