@@ -33,22 +33,8 @@ import io.reactivex.schedulers.Schedulers;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 
-public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
+public class DetailActivity extends BaseActivity implements DetailFragment.Callbacks{
     public static final String IDENTIFICATION = "extra_movie";
-    @BindView(R.id.mytoolbar)
-    protected Toolbar toolbar;
-    @BindView(R.id.my_appbar)
-    protected AppBarLayout appbar;
-    @BindView(R.id.fab)
-    protected FloatingActionButton floatingButton;
-    @BindView(R.id.my_collapsing_toolbar)
-    protected CollapsingToolbarLayout collapsingToolbarLayout;
-    @BindView(R.id.d_poster)
-    protected ImageView posterIv;
-
-    private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
-    private int mMaxScrollSize;
-    private boolean mIsImageHidden;
     private SingleMovie movie;
     private CompositeDisposable compositeDisposable;
 
@@ -56,20 +42,15 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         compositeDisposable = new CompositeDisposable();
+        getSupportActionBar().hide();
         movie = getIntent().getParcelableExtra(IDENTIFICATION);
-        ButterKnife.bind(this);
 
-        Picasso.with(this).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
-                .into(posterIv);
-
-        setActionBarView();
-        setupListeners();
         FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentById(R.id.empty_space);
+        Fragment fragment = manager.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
-            fragment = new DetailFragment();
+            fragment = DetailFragment.newInstance(movie);
             manager.beginTransaction()
-                    .add(R.id.empty_space, fragment)
+                    .add(R.id.fragment_container, fragment)
                     .commit();
         }
     }
@@ -80,15 +61,9 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         return intent;
     }
 
-    private void setActionBarView() {
-        getSupportActionBar().hide();
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-        appbar.addOnOffsetChangedListener(this);
-    }
-
     @Override
     protected int getContentView() {
-        return R.layout.activity_detail;
+        return R.layout.activity_fragment;
     }
 
     @Override
@@ -101,35 +76,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-        if (mMaxScrollSize == 0)
-            mMaxScrollSize = appBarLayout.getTotalScrollRange();
-
-        int currentScrollPercentage = (Math.abs(i)) * 100
-                / mMaxScrollSize;
-
-        if (currentScrollPercentage >= PERCENTAGE_TO_SHOW_IMAGE) {
-            if (!mIsImageHidden) {
-                mIsImageHidden = true;
-
-                ViewCompat.animate(floatingButton).scaleY(0).scaleX(0).start();
-            }
-        }
-
-        if (currentScrollPercentage < PERCENTAGE_TO_SHOW_IMAGE) {
-            if (mIsImageHidden) {
-                mIsImageHidden = false;
-                ViewCompat.animate(floatingButton).scaleY(1).scaleX(1).start();
-            }
-        }
-    }
-
-    private void setupListeners() {
-        floatingButton.setBackgroundTintList((movie.isInFavorites() != 0) ?
-                (ColorStateList.valueOf(getResources().getColor(R.color.colorAccent))) : //todo check <21
-                ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
-        floatingButton.setOnClickListener(v -> {
+    public void onLikeClicked(SingleMovie movie, FloatingActionButton floatingButton) {
             if (movie.isInFavorites() == 0) {
                 floatingButton.setClickable(false);
                 compositeDisposable.add(Single.fromCallable(() -> {
@@ -159,7 +106,6 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
                             floatingButton.setClickable(true);
                         }));
             }
-        });
     }
 
     @Override

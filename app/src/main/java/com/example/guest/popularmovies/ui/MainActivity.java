@@ -26,11 +26,11 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FragmentManager manager = getSupportFragmentManager();
-        fragment = (MainFragment) manager.findFragmentById(R.id.fragmentContainer);
+        fragment = (MainFragment) manager.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
             fragment = new MainFragment();
             manager.beginTransaction()
-                    .add(R.id.fragmentContainer, fragment)
+                    .add(R.id.fragment_container, fragment)
                     .commit();
         }
     }

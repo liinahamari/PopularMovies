@@ -1,18 +1,26 @@
 package com.example.guest.popularmovies.ui;
 
 
+import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
@@ -29,6 +37,7 @@ import com.example.guest.popularmovies.ui.pager.ReviewsPagerAdapter;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,7 +53,8 @@ import static android.view.View.GONE;
  * Created by l1maginaire on 4/6/18.
  */
 
-public class DetailFragment extends BaseFragment implements DetailView, YouTubePlayer.OnInitializedListener {
+public class DetailFragment extends BaseFragment implements DetailView, YouTubePlayer.OnInitializedListener,
+        AppBarLayout.OnOffsetChangedListener {
     public static final String IDENTIFICATION = "extra_movie";
 
     @Inject
@@ -64,6 +74,20 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     protected ViewPager viewPager;
     @BindView(R.id.reviews_label)
     protected TextView reviewsLabel;
+    @BindView(R.id.mytoolbar)
+    protected Toolbar toolbar;
+    @BindView(R.id.my_appbar)
+    protected AppBarLayout appbar;
+    @BindView(R.id.fab)
+    protected FloatingActionButton floatingButton;
+    @BindView(R.id.my_collapsing_toolbar)
+    protected CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.d_poster)
+    protected ImageView posterIv;
+
+    private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
+    private int mMaxScrollSize;
+    private boolean mIsImageHidden;
 
     private YouTubePlayer player;
     private YouTubePlayerSupportFragment playerFragment;
@@ -71,6 +95,13 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     private ReviewsAdapter reviewsAdapter;
     private SingleMovie movie;
     private ReviewsPagerAdapter pagerAdapter;
+    private Callbacks callbacks;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        callbacks = (Callbacks) activity;
+    }
 
     public static DetailFragment newInstance(SingleMovie movie) {
         Bundle args = new Bundle();
@@ -83,10 +114,28 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getActivity() != null) {
-            movie = getActivity().getIntent().getParcelableExtra(IDENTIFICATION);
-        } else {
-            movie = getArguments().getParcelable(IDENTIFICATION);
+        movie = getArguments().getParcelable(IDENTIFICATION);
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+        if (mMaxScrollSize == 0)
+            mMaxScrollSize = appBarLayout.getTotalScrollRange();
+
+        int currentScrollPercentage = (Math.abs(i)) * 100 / mMaxScrollSize;
+
+        if (currentScrollPercentage >= PERCENTAGE_TO_SHOW_IMAGE) {
+            if (!mIsImageHidden) {
+                mIsImageHidden = true;
+                ViewCompat.animate(floatingButton).scaleY(0).scaleX(0).start();
+            }
+        }
+
+        if (currentScrollPercentage < PERCENTAGE_TO_SHOW_IMAGE) {
+            if (mIsImageHidden) {
+                mIsImageHidden = false;
+                ViewCompat.animate(floatingButton).scaleY(1).scaleX(1).start();
+            }
         }
     }
 
@@ -96,10 +145,28 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, v);
+        setActionBarView();
+        setupListeners();
+        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
+                .into(posterIv);
         viewPager.setAdapter(pagerAdapter);
         loadData(String.valueOf(movie.getId()), playerFragment);
         setView();
         return v;
+    }
+
+    private void setupListeners() {
+        floatingButton.setBackgroundTintList((movie.isInFavorites() != 0) ?
+                (ColorStateList.valueOf(getResources().getColor(R.color.colorAccent))) : //todo check <21
+                ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
+        floatingButton.setOnClickListener(v -> {
+            callbacks.onLikeClicked(movie, floatingButton);
+        });
+        }
+
+    private void setActionBarView() {
+        toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+        appbar.addOnOffsetChangedListener(this);
     }
 
     private void setView() {
@@ -186,5 +253,9 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     public void onDetach() {
         super.onDetach();
         presenter.unsubscribe();
+    }
+
+    public interface Callbacks{
+        void onLikeClicked(SingleMovie movie, FloatingActionButton floatingButton);
     }
 }
