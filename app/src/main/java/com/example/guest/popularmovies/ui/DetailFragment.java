@@ -4,11 +4,9 @@ package com.example.guest.popularmovies.ui;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -24,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
-import com.example.guest.popularmovies.adapters.ReviewsAdapter;
 import com.example.guest.popularmovies.base.BaseFragment;
 import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
 import com.example.guest.popularmovies.di.modules.TrailerModule;
@@ -45,7 +42,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Single;
 
 import static android.view.View.GONE;
 
@@ -161,10 +157,11 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         floatingButton.setOnClickListener(v -> {
             callbacks.onLikeClicked(movie, floatingButton);
         });
-        }
+    }
 
     private void setActionBarView() {
-        toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+
+        toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed()); //todo hide in twopane
         appbar.addOnOffsetChangedListener(this);
     }
 
@@ -192,17 +189,6 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @Override
     public void onTrailersLoaded(List<Result> trailers) {
         this.trailers = trailers;
-/*
-        Cursor c = getContext().getContentResolver().query(CONTENT_URI, null, null, null, null);
-        if (c.moveToFirst()) {
-            do {
-                String s2 = c.getString(c.getColumnIndex(COLUMN_ORIGINAL_TITLE));
-                String s3 = String.valueOf(c.getInt(c.getColumnIndex(COLUMN_MOV_ID)));
-                String s = c.getString(c.getColumnIndex(COLUMN_GENRE_IDS));
-            } while (c.moveToNext());
-            c.close();
-        }
-*/
     }
 
     private void loadData(String id, YouTubePlayerSupportFragment fragment) {
@@ -236,7 +222,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
             youtubeFrame.setLayoutParams(layoutParams);
         }
 //        if (!b) {
-        if (trailers.size() > 0)
+        if (trailers.size() > 0) //todo save time on rotate
             player.cueVideo(trailers.get(0).getKey());
 //        } else {
 //            player.play();
@@ -254,7 +240,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         presenter.unsubscribe();
     }
 
-    public interface Callbacks{
+    public interface Callbacks {
         void onLikeClicked(SingleMovie movie, FloatingActionButton floatingButton);
     }
 }
