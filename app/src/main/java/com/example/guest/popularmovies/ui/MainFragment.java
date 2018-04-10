@@ -1,7 +1,6 @@
 package com.example.guest.popularmovies.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -67,6 +66,13 @@ public class MainFragment extends BaseFragment implements MainView {
     private ArrayList<SingleMovie> savedList;
     private SharedPreferences preferences;
     private Callbacks callbacks;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter != null)
+            adapter.notifyDataSetChanged(); //todo: optimization, itemChanged
+    }
 
     @Nullable
     @Override
@@ -191,7 +197,7 @@ public class MainFragment extends BaseFragment implements MainView {
         }
     }
 
-    public void notifyItemChanged(int position){
+    public void notifyItemChanged(int position) {
         adapter.notifyItemChanged(position);
     }
 

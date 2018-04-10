@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.MainFragment;
-import com.example.guest.popularmovies.utils.FavoritesChecker;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -34,6 +33,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
+import static com.example.guest.popularmovies.utils.FavoritesChecker.isFavorite;
 import static com.example.guest.popularmovies.utils.MakeContentValues.makeContentValues;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
@@ -116,10 +116,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                     }
                 });
 
-        Single.fromCallable(() -> FavoritesChecker.isFavorite(context, movie))
+        Single.fromCallable(() -> {
+            holder.bookmarkButton.setClickable(false);
+            return isFavorite(context, movie);
+        })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(isFavorite -> {
+                    holder.bookmarkButton.setClickable(true);
                     movie.setInFavorites(isFavorite);
                     Picasso.with(context)
                             .load(isFavorite != 0 ? R.drawable.bookmarked : R.drawable.unbookmarked)
