@@ -18,8 +18,7 @@ public class PaginationTool<T> {
     private RecyclerView recyclerView;
     private PagingListener<T> pagingListener;
 
-    private PaginationTool() { //todo: savedinstancestate and position of scrolling
-    }
+    private PaginationTool() {}
 
     public Observable<T> getPagingObservable() {
         return getScrollObservable()

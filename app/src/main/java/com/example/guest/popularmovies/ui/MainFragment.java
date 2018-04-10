@@ -179,7 +179,7 @@ public class MainFragment extends BaseFragment implements MainView {
     @Override
     public void onDetach() {
         super.onDetach();
-        presenter.getPopular(recyclerView); //todo: or onDestroy?
+        presenter.unsubscribe(); //todo: or onDestroy?
         callbacks = null;
     }
 
