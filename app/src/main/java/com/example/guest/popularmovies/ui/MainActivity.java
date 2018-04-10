@@ -1,5 +1,6 @@
 package com.example.guest.popularmovies.ui;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_TOP_RAT
 public class MainActivity extends BaseActivity implements MainFragment.Callbacks, DetailFragment.Callbacks {
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private int position;
     private MainFragment fragment;
 
     @Override
@@ -49,8 +51,10 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
     }
 
     @Override
-    public void onItemClicked(SingleMovie movie) {
+    public void onItemClicked(SingleMovie movie, int position) {
         Log.d(TAG, movie.getTitle() + " element clicked.");
+
+        this.position = position;
 
         if (findViewById(R.id.twopane_detail_container) == null) {
             startActivity(DetailActivity.newIntent(this, movie));
@@ -67,5 +71,11 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
     protected Fragment getFragment() {
         fragment = new MainFragment();
         return fragment;
+    }
+
+    @Override
+    public void onLikeClicked(SingleMovie movie, FloatingActionButton floatingButton) {
+        super.onLikeClicked(movie, floatingButton);
+        fragment.notifyItemChanged(position);
     }
 }

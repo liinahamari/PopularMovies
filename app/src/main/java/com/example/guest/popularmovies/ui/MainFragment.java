@@ -191,7 +191,11 @@ public class MainFragment extends BaseFragment implements MainView {
         }
     }
 
+    public void notifyItemChanged(int position){
+        adapter.notifyItemChanged(position);
+    }
+
     public interface Callbacks {
-        void onItemClicked(SingleMovie movie);
+        void onItemClicked(SingleMovie movie, int position);
     }
 }

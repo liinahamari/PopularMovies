@@ -127,7 +127,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                     movie.setInFavorites(isFavorite);
                 });
 
-        holder.view.setOnClickListener(v -> callbacks.onItemClicked(movie));
+        holder.view.setOnClickListener(v -> callbacks.onItemClicked(movie, position));
     }
 
     @Override
