@@ -13,7 +13,7 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.*;
 
 public class MakeContentValues {
 
-    public ContentValues makeContentValues(SingleMovie movie) {
+    public static ContentValues makeContentValues(SingleMovie movie) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_MOV_ID, movie.getId());
         values.put(COLUMN_BACKDROP_PATH, movie.getBackdropPath());

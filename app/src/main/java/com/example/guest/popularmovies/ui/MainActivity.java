@@ -28,6 +28,7 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_UR
 import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_FAVORITES;
 import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_POPULAR;
 import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_TOP_RATED;
+import static com.example.guest.popularmovies.utils.MakeContentValues.makeContentValues;
 
 public class MainActivity extends BaseActivity implements MainFragment.Callbacks, DetailFragment.Callbacks {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -97,7 +98,7 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
         if (movie.isInFavorites() == 0) {
             floatingButton.setClickable(false);
             compositeDisposable.add(Single.fromCallable(() -> {
-                return getContentResolver().insert(CONTENT_URI, (new MakeContentValues().makeContentValues(movie))); //todo class optimization
+                return getContentResolver().insert(CONTENT_URI, (makeContentValues(movie))); //todo class optimization
             })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
@@ -112,7 +113,7 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
             compositeDisposable.add(Single.fromCallable(() -> {
                 ContentResolver contentResolver = this.getContentResolver();
                 return contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
-                        new String[]{(new MakeContentValues().makeContentValues(movie)).getAsString(COLUMN_TITLE)});
+                        new String[]{(makeContentValues(movie)).getAsString(COLUMN_TITLE)});
             })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())

@@ -30,7 +30,7 @@ import com.example.guest.popularmovies.mvp.model.reviews.Review;
 import com.example.guest.popularmovies.mvp.model.trailers.Result;
 import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
 import com.example.guest.popularmovies.mvp.view.DetailView;
-import com.example.guest.popularmovies.ui.pager.ReviewsPagerAdapter;
+import com.example.guest.popularmovies.adapters.ReviewsPagerAdapter;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;

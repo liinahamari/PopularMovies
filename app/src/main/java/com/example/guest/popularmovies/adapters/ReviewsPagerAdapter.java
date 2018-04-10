@@ -1,4 +1,4 @@
-package com.example.guest.popularmovies.ui.pager;
+package com.example.guest.popularmovies.adapters;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

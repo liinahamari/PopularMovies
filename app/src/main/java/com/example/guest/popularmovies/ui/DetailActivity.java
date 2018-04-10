@@ -32,6 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
+import static com.example.guest.popularmovies.utils.MakeContentValues.makeContentValues;
 
 public class DetailActivity extends BaseActivity implements DetailFragment.Callbacks{
     public static final String IDENTIFICATION = "extra_movie";
@@ -80,7 +81,7 @@ public class DetailActivity extends BaseActivity implements DetailFragment.Callb
             if (movie.isInFavorites() == 0) {
                 floatingButton.setClickable(false);
                 compositeDisposable.add(Single.fromCallable(() -> {
-                    return getContentResolver().insert(CONTENT_URI, (new MakeContentValues().makeContentValues(movie))); //todo class optimization
+                    return getContentResolver().insert(CONTENT_URI, (makeContentValues(movie))); //todo class optimization
                 })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
@@ -95,7 +96,7 @@ public class DetailActivity extends BaseActivity implements DetailFragment.Callb
                 compositeDisposable.add(Single.fromCallable(() -> {
                     ContentResolver contentResolver = this.getContentResolver();
                     return contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
-                            new String[]{(new MakeContentValues().makeContentValues(movie)).getAsString(COLUMN_TITLE)});
+                            new String[]{(makeContentValues(movie)).getAsString(COLUMN_TITLE)});
                 })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())

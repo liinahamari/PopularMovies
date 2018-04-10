@@ -4,7 +4,6 @@ package com.example.guest.popularmovies.adapters;
  * Created by l1maginaire on 2/20/18.
  */
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +20,6 @@ import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.MainFragment;
 import com.example.guest.popularmovies.utils.FavoritesChecker;
-import com.example.guest.popularmovies.utils.MakeContentValues;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +34,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
+import static com.example.guest.popularmovies.utils.MakeContentValues.makeContentValues;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
     private List<SingleMovie> movies;
@@ -80,10 +79,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         {
             if (movie.isInFavorites() == 0) {
                 holder.bookmarkButton.setClickable(false);
-                Single.fromCallable(() -> {//todo leak
-                    return context.getContentResolver().insert(CONTENT_URI,
-                            (new MakeContentValues().makeContentValues(movies.get(position)))); //todo class optimization
-                })
+                Single.fromCallable(() -> context.getContentResolver().insert(CONTENT_URI, (makeContentValues(movies.get(position)))))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(uri -> {
@@ -93,11 +89,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                         });
             } else {
                 holder.bookmarkButton.setClickable(false);
-                Single.fromCallable(() -> { //todo LEAK!
-                    ContentResolver contentResolver = context.getContentResolver();
-                    return contentResolver.delete(CONTENT_URI, COLUMN_TITLE + " = ?",
-                            new String[]{(new MakeContentValues().makeContentValues(movies.get(position))).getAsString(COLUMN_TITLE)});
-                })
+                Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
+                        new String[]{(makeContentValues(movies.get(position))).getAsString(COLUMN_TITLE)}))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(rowsDeleted -> {
@@ -134,9 +127,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                     movie.setInFavorites(isFavorite);
                 });
 
-        holder.view.setOnClickListener(v -> {
-            callbacks.onItemClicked(movie);
-        });
+        holder.view.setOnClickListener(v -> callbacks.onItemClicked(movie));
     }
 
     @Override
