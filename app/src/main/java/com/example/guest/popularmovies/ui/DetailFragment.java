@@ -4,6 +4,7 @@ package com.example.guest.popularmovies.ui;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -43,6 +44,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static android.view.View.GONE;
 
 /**
@@ -151,17 +153,12 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     }
 
     private void setupListeners() {
-        floatingButton.setBackgroundTintList((movie.isInFavorites() != 0) ?
-                (ColorStateList.valueOf(getResources().getColor(R.color.colorAccent))) : //todo check <21
-                ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
-        floatingButton.setOnClickListener(v -> {
-            callbacks.onLikeClicked(movie, floatingButton);
-        });
+        floatingButton.setOnClickListener(v -> callbacks.onLikeClicked(movie, floatingButton));
     }
 
     private void setActionBarView() {
         if (getActivity().getLocalClassName().equals("ui.DetailActivity")) {
-            toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed()); //todo hide in twopane
+            toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
             appbar.addOnOffsetChangedListener(this);
         } else {
             toolbar.setNavigationIcon(null);
@@ -173,6 +170,17 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         ratingTv.setText(String.valueOf(movie.getVoteAverage()));
         synopsisTv.setText(movie.getOverview());
         titleTv.setText(movie.getTitle());
+        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+            floatingButton.setBackgroundTintList((movie.isInFavorites() != 0) ?
+                    (ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)))
+                    :
+                    ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
+        } else {
+            ViewCompat.setBackgroundTintList(floatingButton, (movie.isInFavorites() != 0) ?
+                    ColorStateList.valueOf(getResources().getColor(R.color.colorAccent))
+                    :
+                    ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
+        }
     }
 
     @Override
