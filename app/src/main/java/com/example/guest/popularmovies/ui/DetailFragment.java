@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
+import com.example.guest.popularmovies.adapters.ReviewsPagerAdapter;
 import com.example.guest.popularmovies.base.BaseFragment;
 import com.example.guest.popularmovies.di.components.DaggerTrailerComponent;
 import com.example.guest.popularmovies.di.modules.TrailerModule;
@@ -30,7 +31,6 @@ import com.example.guest.popularmovies.mvp.model.reviews.Review;
 import com.example.guest.popularmovies.mvp.model.trailers.Result;
 import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
 import com.example.guest.popularmovies.mvp.view.DetailView;
-import com.example.guest.popularmovies.adapters.ReviewsPagerAdapter;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -160,9 +160,12 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     }
 
     private void setActionBarView() {
-
-        toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed()); //todo hide in twopane
-        appbar.addOnOffsetChangedListener(this);
+        if (getActivity().getLocalClassName().equals("ui.DetailActivity")) {
+            toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed()); //todo hide in twopane
+            appbar.addOnOffsetChangedListener(this);
+        } else {
+            toolbar.setNavigationIcon(null);
+        }
     }
 
     private void setView() {

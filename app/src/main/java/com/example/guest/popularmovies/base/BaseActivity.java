@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailFragment;
-import com.example.guest.popularmovies.ui.MainFragment;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
