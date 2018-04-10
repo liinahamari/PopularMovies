@@ -53,6 +53,4 @@ public class ReviewFragment extends Fragment {
         });
         return view;
     }
-
-
 }

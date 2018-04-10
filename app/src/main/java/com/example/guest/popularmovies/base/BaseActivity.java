@@ -62,10 +62,10 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
                     .subscribeOn(Schedulers.io())
                     .subscribe(uri -> {
                         movie.setInFavorites(1);
-                        Toast.makeText(this, movie.getTitle() + " added to Favorites!", Toast.LENGTH_SHORT).show();
                         if (Build.VERSION.SDK_INT >= LOLLIPOP) {
                             floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                         } else {
+                            Toast.makeText(this, movie.getTitle() + " added to Favorites!", Toast.LENGTH_SHORT).show();
                             ViewCompat.setBackgroundTintList(floatingButton, ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                         }
                         floatingButton.setClickable(true);
@@ -78,11 +78,12 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
                     .subscribeOn(Schedulers.io())
                     .subscribe(rowsDeleted -> {
                         movie.setInFavorites(0);
-                        Toast.makeText(this, movie.getTitle() + " removed from Favorites!", Toast.LENGTH_SHORT).show();
                         if (Build.VERSION.SDK_INT >= LOLLIPOP) {
                             floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
                         } else {
+                            Toast.makeText(this, movie.getTitle() + " removed from Favorites!", Toast.LENGTH_SHORT).show();
                             ViewCompat.setBackgroundTintList(floatingButton, ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
+                            //todo why not working?
                         }
                         floatingButton.setClickable(true);
                     }));

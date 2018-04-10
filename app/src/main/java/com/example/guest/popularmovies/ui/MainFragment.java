@@ -90,7 +90,7 @@ public class MainFragment extends BaseFragment implements MainView {
             if (preferences.contains(LAST_SORT_ORDER)) {
                 sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR));
             } else {
-                sortingSwitcher(SORT_ORDER_POPULAR);//todo check default value with null in sharedPref (1st launch)
+                sortingSwitcher(SORT_ORDER_POPULAR);
             }
         } else {
             errorLayout.setVisibility(View.VISIBLE);
@@ -167,7 +167,7 @@ public class MainFragment extends BaseFragment implements MainView {
         lastVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
         Log.d(LAST_POSITION, ": " + String.valueOf(lastVisiblePosition));
         outState.putInt(LAST_POSITION, lastVisiblePosition);
-        outState.putParcelableArrayList(SAVED_LIST, savedList); //todo until 1 mb
+        outState.putParcelableArrayList(SAVED_LIST, savedList); //API < 7.0 == 1 mb
     }
 
     @Override

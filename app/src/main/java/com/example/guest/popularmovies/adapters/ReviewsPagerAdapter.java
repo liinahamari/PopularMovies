@@ -24,8 +24,8 @@ public class ReviewsPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
-    public void setData(List<Review> reviewsList2) {
-        this.reviewsList = reviewsList2;
+    public void setData(List<Review> newReviews) {
+        this.reviewsList = newReviews;
         notifyDataSetChanged();
     }
 

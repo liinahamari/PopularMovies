@@ -83,12 +83,11 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @BindView(R.id.d_poster)
     protected ImageView posterIv;
 
-    private static final int PERCENTAGE_TO_SHOW_IMAGE = 20;
+    private static final int PERCENTAGE_TO_SHOW_IMAGE = 40;
     private int mMaxScrollSize;
     private boolean mIsImageHidden;
 
     private YouTubePlayer player;
-    private YouTubePlayerSupportFragment playerFragment;
     private List<Result> trailers;
     private SingleMovie movie;
     private ReviewsPagerAdapter pagerAdapter;
@@ -142,21 +141,15 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, v);
-        setActionBarView();
         setupListeners();
-        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
-                .into(posterIv);
         viewPager.setAdapter(pagerAdapter);
-        loadData(String.valueOf(movie.getId()), playerFragment);
+        loadData(String.valueOf(movie.getId()));
         setView();
         return v;
     }
 
     private void setupListeners() {
         floatingButton.setOnClickListener(v -> callbacks.onLikeClicked(movie, floatingButton));
-    }
-
-    private void setActionBarView() {
         if (getActivity().getLocalClassName().equals("ui.DetailActivity")) {
             toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
             appbar.addOnOffsetChangedListener(this);
@@ -166,6 +159,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     }
 
     private void setView() {
+        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
+                .into(posterIv);
         releaseDateTv.setText(movie.getReleaseDate());
         ratingTv.setText(String.valueOf(movie.getVoteAverage()));
         synopsisTv.setText(movie.getOverview());
@@ -202,9 +197,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         this.trailers = trailers;
     }
 
-    private void loadData(String id, YouTubePlayerSupportFragment fragment) {
-        fragment = new YouTubePlayerSupportFragment();
-        presenter.getTrailers(id, fragment, this, getFragmentManager());
+    private void loadData(String id) {
+        presenter.getTrailers(id, new YouTubePlayerSupportFragment(), this, getFragmentManager());
         presenter.getReviews(id);
     }
 
@@ -219,7 +213,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     }
 
     @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean isRotated) {
         player = youTubePlayer;
         if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             TypedValue tv = new TypedValue();
