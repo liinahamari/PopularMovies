@@ -6,10 +6,15 @@ package com.example.guest.popularmovies.utils.pagination;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class PaginationTool<T> {
@@ -25,7 +30,7 @@ public class PaginationTool<T> {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
-                .switchMap(offset -> PaginationTool.this.getPagingObservable(pagingListener.onNextPage(offset)));
+                .switchMap(offset -> getPagingObservable(pagingListener.onNextPage(offset)));
     }
 
     private Observable<Integer> getScrollObservable() {
