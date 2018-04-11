@@ -31,6 +31,8 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private PaginationTool<MoviesArray> paginationTool;
 
+//    @Inject
+//    protected Context context;
     @Inject
     protected MovDbApi apiService;
 

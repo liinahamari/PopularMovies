@@ -1,5 +1,7 @@
 package com.example.guest.popularmovies.di.components;
 
+import android.content.Context;
+
 import com.example.guest.popularmovies.di.modules.ApplicationModule;
 
 import javax.inject.Singleton;
@@ -15,4 +17,5 @@ import retrofit2.Retrofit;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     Retrofit exposeRetrofit();
+    Context exposeContext();
 }
