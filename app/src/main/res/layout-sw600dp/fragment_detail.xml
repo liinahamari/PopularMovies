@@ -20,7 +20,7 @@
             android:layout_height="350dp"
             app:contentScrim="?colorPrimary"
             app:expandedTitleMarginBottom="94dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
             <ImageView
                 android:id="@+id/d_poster"
@@ -35,6 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@null"
+                android:minHeight="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/abc_ic_ab_back_material" />
         </android.support.design.widget.CollapsingToolbarLayout>
