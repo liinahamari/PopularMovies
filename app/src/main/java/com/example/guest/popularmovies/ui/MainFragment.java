@@ -34,6 +34,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.VISIBLE;
+
 /**
  * Created by l1maginaire on 4/6/18.
  */
@@ -60,6 +62,8 @@ public class MainFragment extends BaseFragment implements MainView {
     protected FrameLayout errorLayout;
     @BindView(R.id.btn_repeat)
     protected Button repeatButton;
+    @BindView(R.id.empty_favorites_frame)
+    protected FrameLayout emptyFavoritesFrame;
 
     private MovieListAdapter adapter;
     private int lastVisiblePosition = 0;
@@ -99,23 +103,22 @@ public class MainFragment extends BaseFragment implements MainView {
                 sortingSwitcher(SORT_ORDER_POPULAR);
             }
         } else {
-            errorLayout.setVisibility(View.VISIBLE);
+            errorLayout.setVisibility(VISIBLE);
             repeatButton.setOnClickListener(v -> loadNew());
         }
     }
 
     private void setupAdapter() {
         recyclerView.setHasFixedSize(true);
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        } else {
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                || getResources().getBoolean(R.bool.isTab)) {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
         adapter = new MovieListAdapter(getLayoutInflater(), getActivity(), callbacks);
         recyclerView.setAdapter(adapter);
-
     }
-
 
     private void sortingSwitcher(String sortOrder) {
         switch (sortOrder) {
@@ -126,7 +129,7 @@ public class MainFragment extends BaseFragment implements MainView {
                 presenter.getTopRated(recyclerView);
                 break;
             case SORT_ORDER_FAVORITES:
-                presenter.getFavorites(getActivity());
+                presenter.getFavorites();
                 break;
             default:
                 throw new IllegalArgumentException("There's only 3 options to go...");
@@ -134,6 +137,7 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     public void doWorkOnChangingSortOrder(String sortOrder) {
+        emptyFavoritesFrame.setVisibility(View.GONE);
         savedList.clear();
         preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();
         onClearItems();
@@ -160,6 +164,11 @@ public class MainFragment extends BaseFragment implements MainView {
         savedList.addAll(movies);
         adapter.addMovies(movies);
         adapter.notifyItemInserted(adapter.getItemCount() - movies.size());
+    }
+
+    @Override
+    public void emptyFavoritesList() {
+        emptyFavoritesFrame.setVisibility(VISIBLE);
     }
 
     @Override

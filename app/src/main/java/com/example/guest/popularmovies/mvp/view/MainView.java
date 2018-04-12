@@ -14,4 +14,5 @@ import java.util.List;
 public interface MainView extends BaseView {
     void onMoviesLoaded(List<SingleMovie> movies);
     void onClearItems();
+    void emptyFavoritesList();
 }

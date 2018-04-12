@@ -25,4 +25,15 @@
             android:layout_height="match_parent"
             layout="@layout/error_layout" />
     </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/empty_favorites_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/empty_favorites" />
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>

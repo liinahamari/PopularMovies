@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -66,7 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
                         if (Build.VERSION.SDK_INT >= LOLLIPOP) {
                             floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                         } else {
-                            Toast.makeText(this, movie.getTitle() + " added to Favorites!", Toast.LENGTH_SHORT).show();
                             floatingButton.getBackground().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
                         }
                         floatingButton.setClickable(true);
@@ -82,7 +80,6 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
                         if (Build.VERSION.SDK_INT >= LOLLIPOP) {
                             floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
                         } else {
-                            Toast.makeText(this, movie.getTitle() + " removed from Favorites!", Toast.LENGTH_SHORT).show();
                             floatingButton.getBackground().setColorFilter(getResources().getColor(R.color.lightLight), PorterDuff.Mode.MULTIPLY);
                         }
                         floatingButton.setClickable(true);

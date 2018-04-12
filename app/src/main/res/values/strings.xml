@@ -13,4 +13,5 @@
     <string name="action_favorites">Favorites</string>
     <string name="reviews">Reviews: </string>
     <string name="read_all">Read more…</string>
+    <string name="emptyFavorites">There are no movies added to favorites yet.</string>
 </resources>

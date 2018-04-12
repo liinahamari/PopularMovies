@@ -31,13 +31,14 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private PaginationTool<MoviesArray> paginationTool;
 
-//    @Inject
-//    protected Context context;
+    @Inject
+    protected Context context;
     @Inject
     protected MovDbApi apiService;
 
     @Inject
-    public MoviesPresenter() {}
+    public MoviesPresenter() {
+    }
 
     public void getPopular(RecyclerView recyclerView) {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
@@ -62,10 +63,14 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                 .subscribe(items -> getView().onMoviesLoaded(items.getResults())));
     }
 
-    public void getFavorites(Context context) {
+    public void getFavorites() {
         MoviesDbHelper helper = new MoviesDbHelper(context);
         List<SingleMovie> movies = helper.getSavedMovies();
-        getView().onMoviesLoaded(movies);
+        if (movies.size() == 0) {
+            getView().emptyFavoritesList();
+        } else {
+            getView().onMoviesLoaded(movies);
+        }
     }
 
     public void unsubscribe() {
