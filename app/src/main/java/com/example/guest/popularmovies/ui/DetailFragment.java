@@ -4,6 +4,7 @@ package com.example.guest.popularmovies.ui;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -171,10 +172,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
                     :
                     ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
         } else {
-            ViewCompat.setBackgroundTintList(floatingButton, (movie.isInFavorites() != 0) ?
-                    ColorStateList.valueOf(getResources().getColor(R.color.colorAccent))
-                    :
-                    ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
+            floatingButton.getBackground().setColorFilter((movie.isInFavorites() != 0) ? getResources().getColor(R.color.colorAccent)
+                    : getResources().getColor(R.color.lightLight), PorterDuff.Mode.MULTIPLY);
         }
     }
 

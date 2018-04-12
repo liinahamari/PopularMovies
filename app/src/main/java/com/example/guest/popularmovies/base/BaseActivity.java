@@ -1,6 +1,7 @@
 package com.example.guest.popularmovies.base;
 
 import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -66,7 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
                             floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                         } else {
                             Toast.makeText(this, movie.getTitle() + " added to Favorites!", Toast.LENGTH_SHORT).show();
-                            ViewCompat.setBackgroundTintList(floatingButton, ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                            floatingButton.getBackground().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
                         }
                         floatingButton.setClickable(true);
                     }));
@@ -82,8 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
                             floatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
                         } else {
                             Toast.makeText(this, movie.getTitle() + " removed from Favorites!", Toast.LENGTH_SHORT).show();
-                            ViewCompat.setBackgroundTintList(floatingButton, ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
-                            //todo why not working?
+                            floatingButton.getBackground().setColorFilter(getResources().getColor(R.color.lightLight), PorterDuff.Mode.MULTIPLY);
                         }
                         floatingButton.setClickable(true);
                     }));
