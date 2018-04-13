@@ -6,7 +6,13 @@ package com.example.guest.popularmovies.utils.pagination;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -22,6 +28,7 @@ public class PaginationTool<T> {
 
     private RecyclerView recyclerView;
     private PagingListener<T> pagingListener;
+    private FrameLayout layout;
 
     private PaginationTool() {}
 
@@ -30,7 +37,11 @@ public class PaginationTool<T> {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
-                .switchMap(offset -> getPagingObservable(pagingListener.onNextPage(offset)));
+                .switchMap(offset -> getPagingObservable(pagingListener.onNextPage(offset)))
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorResumeNext(observer -> {
+                    layout.setVisibility(View.VISIBLE);//todo отписка
+                });
     }
 
     private Observable<Integer> getScrollObservable() {
@@ -80,20 +91,21 @@ public class PaginationTool<T> {
         return observable
                 .retry(ATTEMPTS_TO_RETRY_LOADING)
                 .onErrorResumeNext(throwable -> {
-                    return Observable.empty();
+                    return Observable.error(new Throwable(throwable));
                 });
     }
 
-    public static <T> Builder<T> buildPagingObservable(RecyclerView recyclerView, PagingListener<T> pagingListener) {
-        return new Builder<>(recyclerView, pagingListener);
+    public static <T> Builder<T> buildPagingObservable(RecyclerView recyclerView, PagingListener<T> pagingListener, FrameLayout layout) {
+        return new Builder<>(recyclerView, pagingListener, layout);
     }
 
     public static class Builder<T> {
 
         private RecyclerView recyclerView;
         private PagingListener<T> pagingListener;
+        private FrameLayout layout;
 
-        private Builder(RecyclerView recyclerView, PagingListener<T> pagingListener) {
+        private Builder(RecyclerView recyclerView, PagingListener<T> pagingListener, FrameLayout layout) {
             if (recyclerView == null) {
                 throw new PagingException("Null recyclerView");
             }
@@ -105,12 +117,14 @@ public class PaginationTool<T> {
             }
             this.recyclerView = recyclerView;
             this.pagingListener = pagingListener;
+            this.layout = layout;
         }
 
         public PaginationTool<T> build() {
             PaginationTool<T> paginationTool = new PaginationTool<>();
             paginationTool.recyclerView = this.recyclerView;
             paginationTool.pagingListener = pagingListener;
+            paginationTool.layout = layout;
             return paginationTool;
         }
     }

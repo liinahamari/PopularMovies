@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.adapters.MovieListAdapter;
@@ -64,6 +65,10 @@ public class MainFragment extends BaseFragment implements MainView {
     protected Button repeatButton;
     @BindView(R.id.empty_favorites_frame)
     protected FrameLayout emptyFavoritesFrame;
+    @BindView(R.id.error_msg_frame)
+    protected FrameLayout errorMsgFrame;
+    @BindView(R.id.error_msg)
+    protected TextView errorMsg;
 
     private MovieListAdapter adapter;
     private int lastVisiblePosition = 0;
@@ -84,6 +89,9 @@ public class MainFragment extends BaseFragment implements MainView {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, v);
+
+        errorMsg.setOnClickListener(view -> presenter.getPopular(recyclerView, errorMsgFrame));
+
         setupAdapter();
         if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList(SAVED_LIST));
@@ -123,10 +131,10 @@ public class MainFragment extends BaseFragment implements MainView {
     private void sortingSwitcher(String sortOrder) {
         switch (sortOrder) {
             case SORT_ORDER_POPULAR:
-                presenter.getPopular(recyclerView);
+                presenter.getPopular(recyclerView, errorMsgFrame);
                 break;
             case SORT_ORDER_TOP_RATED:
-                presenter.getTopRated(recyclerView);
+                presenter.getTopRated(recyclerView, errorMsgFrame);
                 break;
             case SORT_ORDER_FAVORITES:
                 presenter.getFavorites();
@@ -167,7 +175,7 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     @Override
-    public void emptyFavoritesList() {
+    public void hasEmptyFavoritesList() {
         emptyFavoritesFrame.setVisibility(VISIBLE);
     }
 

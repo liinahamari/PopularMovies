@@ -1,8 +1,8 @@
 package com.example.guest.popularmovies.mvp.presenter;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.widget.FrameLayout;
 
 import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
@@ -11,17 +11,15 @@ import com.example.guest.popularmovies.mvp.model.MoviesArray;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.view.MainView;
 import com.example.guest.popularmovies.utils.pagination.PaginationTool;
+import com.example.guest.popularmovies.utils.pagination.PagingListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 
 /**
  * Created by l1maginaire on 2/25/18.
@@ -40,9 +38,9 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public MoviesPresenter() {
     }
 
-    public void getPopular(RecyclerView recyclerView) {
+    public void getPopular(RecyclerView recyclerView, FrameLayout layout) {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
-                page -> apiService.getPopular(page))
+                page -> apiService.getPopular(page), layout)
                 .build();
         compositeDisposable.clear();
         compositeDisposable.add(paginationTool
@@ -52,9 +50,9 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                         getView().onMoviesLoaded(items.getResults())));
     }
 
-    public void getTopRated(RecyclerView recyclerView) {
+    public void getTopRated(RecyclerView recyclerView, FrameLayout layout) {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
-                page -> apiService.getTopRated(page))
+                page -> apiService.getTopRated(page), layout)
                 .build();
         compositeDisposable.clear();
         compositeDisposable.add(paginationTool
@@ -67,7 +65,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         MoviesDbHelper helper = new MoviesDbHelper(context);
         List<SingleMovie> movies = helper.getSavedMovies();
         if (movies.size() == 0) {
-            getView().emptyFavoritesList();
+            getView().hasEmptyFavoritesList();
         } else {
             getView().onMoviesLoaded(movies);
         }

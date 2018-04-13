@@ -36,4 +36,15 @@
             android:layout_height="match_parent"
             layout="@layout/empty_favorites" />
     </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/error_msg_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/error_message" />
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>
