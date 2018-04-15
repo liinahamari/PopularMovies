@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
@@ -40,7 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
-            fragment = getFragment();
+            fragment = getMainFragment();
             manager.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();
@@ -89,5 +88,5 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
 
     protected abstract int getContentView();
 
-    protected abstract Fragment getFragment();
+    protected abstract Fragment getMainFragment();
 }

@@ -5,7 +5,11 @@ package com.example.guest.popularmovies.adapters;
  */
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -31,6 +35,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 import static com.example.guest.popularmovies.utils.FavoritesChecker.isFavorite;
@@ -43,6 +48,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     private float dpHeight;
     private float dpWidth;
     private MainFragment.Callbacks callbacks;
+    private FloatingActionButton fab;
 
     public MovieListAdapter(LayoutInflater layoutInflater, Context context, MainFragment.Callbacks callbacks) {
         this.layoutInflater = layoutInflater;
@@ -66,6 +72,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         notifyDataSetChanged();
     }
 
+    public void setFab(FloatingActionButton fab){
+        this.fab = fab;
+    }
+
     public void clearItems() {
         movies.clear();
         notifyDataSetChanged();
@@ -86,6 +96,15 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                             movie.setInFavorites(1);
                             holder.bookmarkButton.setImageResource(R.drawable.bookmarked);
                             holder.bookmarkButton.setClickable(true);
+                            if(fab!=null){
+                                if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+                                    fab.setBackgroundTintList(ColorStateList.valueOf
+                                            (context.getResources().getColor(R.color.colorAccent)));
+                                } else {
+                                    fab.getBackground().setColorFilter
+                                            (context.getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+                                }
+                            }
                         });
             } else {
                 holder.bookmarkButton.setClickable(false);
@@ -97,6 +116,15 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                             movie.setInFavorites(0);
                             holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
                             holder.bookmarkButton.setClickable(true);
+                            if(fab!=null){
+                                if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+                                    fab.setBackgroundTintList(ColorStateList.valueOf
+                                            (context.getResources().getColor(R.color.lightLight)));
+                                } else {
+                                    fab.getBackground().setColorFilter
+                                            (context.getResources().getColor(R.color.lightLight), PorterDuff.Mode.MULTIPLY);
+                                }
+                            }
                         });
             }
         });

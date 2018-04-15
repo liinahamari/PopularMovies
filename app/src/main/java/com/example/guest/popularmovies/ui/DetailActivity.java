@@ -32,7 +32,7 @@ public class DetailActivity extends BaseActivity implements DetailFragment.Callb
     }
 
     @Override
-    protected Fragment getFragment() {
+    protected Fragment getMainFragment() {
         return DetailFragment.newInstance(getIntent().getParcelableExtra(IDENTIFICATION));
     }
 

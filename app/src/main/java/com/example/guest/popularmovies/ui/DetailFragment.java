@@ -163,6 +163,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
             appbar.addOnOffsetChangedListener(this);
         } else {
             toolbar.setNavigationIcon(null);
+            ((MainActivity)getActivity()).setFab(floatingButton);
         }
     }
 

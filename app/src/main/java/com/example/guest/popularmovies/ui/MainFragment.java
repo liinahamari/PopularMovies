@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -129,6 +130,10 @@ public class MainFragment extends BaseFragment implements MainView {
         }
         adapter = new MovieListAdapter(getLayoutInflater(), getActivity(), callbacks);
         recyclerView.setAdapter(adapter);
+    }
+
+    public void setFab(FloatingActionButton fab){
+        adapter.setFab(fab);
     }
 
     private void sortingSwitcher(String sortOrder) {

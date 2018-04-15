@@ -19,7 +19,7 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private int position;
-    private MainFragment fragment;
+    private MainFragment mainFragment;
 
     @Override
     protected int getContentView() {
@@ -37,13 +37,13 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                fragment.doWorkOnChangingSortOrder(SORT_ORDER_POPULAR);
+                mainFragment.doWorkOnChangingSortOrder(SORT_ORDER_POPULAR);
                 return true;
             case R.id.action_top_rated:
-                fragment.doWorkOnChangingSortOrder(SORT_ORDER_TOP_RATED);
+                mainFragment.doWorkOnChangingSortOrder(SORT_ORDER_TOP_RATED);
                 return true;
             case R.id.action_favorites:
-                fragment.doWorkOnChangingSortOrder(SORT_ORDER_FAVORITES);
+                mainFragment.doWorkOnChangingSortOrder(SORT_ORDER_FAVORITES);
                 /*todo on Empty favorites layout*/
                 return true;
             default:
@@ -68,15 +68,19 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
         }
     }
 
+    protected void setFab(FloatingActionButton fab) {
+        mainFragment.setFab(fab);
+    }
+
     @Override
-    protected Fragment getFragment() {
-        fragment = new MainFragment();
-        return fragment;
+    protected Fragment getMainFragment() {
+        mainFragment = new MainFragment();
+        return mainFragment;
     }
 
     @Override
     public void onLikeClicked(SingleMovie movie, FloatingActionButton floatingButton) {
         super.onLikeClicked(movie, floatingButton);
-        fragment.notifyItemChanged(position);
+        mainFragment.notifyItemChanged(position);
     }
 }
