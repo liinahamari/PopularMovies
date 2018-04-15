@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
+        android:background="@color/lightLight"
         android:textSize="40sp"
         android:text="@string/repeat"
         android:id="@+id/error_msg"

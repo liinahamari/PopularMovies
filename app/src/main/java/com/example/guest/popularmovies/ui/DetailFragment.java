@@ -93,11 +93,18 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     private SingleMovie movie;
     private ReviewsPagerAdapter pagerAdapter;
     private Callbacks callbacks;
+    private int orientation = -1;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         callbacks = (Callbacks) activity;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        orientation = getActivity().getResources().getConfiguration().orientation;
     }
 
     public static DetailFragment newInstance(SingleMovie movie) {
@@ -214,8 +221,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean isRotated) {
         player = youTubePlayer;
-        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ||
-                getResources().getBoolean(R.bool.isTab)) {
+
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE || getResources().getBoolean(R.bool.isTab)) {
             TypedValue tv = new TypedValue();
             int actionBarHeight = 0;
             if (getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
@@ -226,12 +233,12 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
             layoutParams.width = ((getActivity().getResources().getDisplayMetrics().widthPixels) - (2 * actionBarHeight));
             youtubeFrame.setLayoutParams(layoutParams);
         }
-//        if (!b) {
-        if (trailers.size() > 0) //todo save time on rotate
+        player.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
+        player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
+        if (trailers.size() > 0) { //todo save time on rotate
             player.cueVideo(trailers.get(0).getKey());
-//        } else {
-//            player.play();
-//        }
+            player.release();
+        }
     }
 
     @Override

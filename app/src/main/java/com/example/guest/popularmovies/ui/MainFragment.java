@@ -90,7 +90,10 @@ public class MainFragment extends BaseFragment implements MainView {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, v);
 
-        errorMsg.setOnClickListener(view -> presenter.getPopular(recyclerView, errorMsgFrame));
+//        errorMsg.setOnClickListener(view -> {
+//            onClearItems();
+//            onMoviesLoaded(savedList);
+//            recyclerView.scrollToPosition(((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition());});
 
         setupAdapter();
         if (savedInstanceState != null) {
