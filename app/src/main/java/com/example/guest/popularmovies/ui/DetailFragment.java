@@ -221,7 +221,6 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean isRotated) {
         player = youTubePlayer;
-
         if (orientation == Configuration.ORIENTATION_LANDSCAPE || getResources().getBoolean(R.bool.isTab)) {
             TypedValue tv = new TypedValue();
             int actionBarHeight = 0;
@@ -235,9 +234,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         }
         player.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
-        if (trailers.size() > 0) { //todo save time on rotate
+        if (trailers.size() > 0) {
             player.cueVideo(trailers.get(0).getKey());
-            player.release();
         }
     }
 
