@@ -6,7 +6,8 @@
     android:layout_marginBottom="2dp"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    android:background="@color/colorPrimaryLight">
 
     <TextView
         android:id="@+id/single_review"

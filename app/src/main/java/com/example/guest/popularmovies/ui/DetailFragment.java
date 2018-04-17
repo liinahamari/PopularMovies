@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
@@ -83,6 +85,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     protected CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.d_poster)
     protected ImageView posterIv;
+    @BindView(R.id.tab_dots)
+    protected TabLayout dots;
 
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 40;
     private int mMaxScrollSize;
@@ -151,6 +155,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         ButterKnife.bind(this, v);
         setupListeners();
         viewPager.setAdapter(pagerAdapter);
+        dots.setupWithViewPager(viewPager, true);
         loadData(String.valueOf(movie.getId()));
         setView();
         return v;
