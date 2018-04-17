@@ -49,6 +49,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     private float dpWidth;
     private MainFragment.Callbacks callbacks;
     private FloatingActionButton fab;
+    private int position = -1;
 
     public MovieListAdapter(LayoutInflater layoutInflater, Context context, MainFragment.Callbacks callbacks) {
         this.layoutInflater = layoutInflater;
@@ -72,8 +73,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         notifyDataSetChanged();
     }
 
-    public void setFab(FloatingActionButton fab){
+    public void setFab(FloatingActionButton fab, int position){
         this.fab = fab;
+        this.position = position;
     }
 
     public void clearItems() {
@@ -96,7 +98,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                             movie.setInFavorites(1);
                             holder.bookmarkButton.setImageResource(R.drawable.bookmarked);
                             holder.bookmarkButton.setClickable(true);
-                            if(fab!=null){
+                            if(fab!=null && this.position == position){
                                 if (Build.VERSION.SDK_INT >= LOLLIPOP) {
                                     fab.setBackgroundTintList(ColorStateList.valueOf
                                             (context.getResources().getColor(R.color.colorAccent)));
@@ -116,7 +118,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                             movie.setInFavorites(0);
                             holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
                             holder.bookmarkButton.setClickable(true);
-                            if(fab!=null){
+                            if(fab!=null && this.position == position){
                                 if (Build.VERSION.SDK_INT >= LOLLIPOP) {
                                     fab.setBackgroundTintList(ColorStateList.valueOf
                                             (context.getResources().getColor(R.color.lightLight)));

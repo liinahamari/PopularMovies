@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
     }
 
     protected void setFab(FloatingActionButton fab) {
-        mainFragment.setFab(fab);
+        mainFragment.setFab(fab, position);
     }
 
     @Override

@@ -132,8 +132,8 @@ public class MainFragment extends BaseFragment implements MainView {
         recyclerView.setAdapter(adapter);
     }
 
-    public void setFab(FloatingActionButton fab){
-        adapter.setFab(fab);
+    public void setFab(FloatingActionButton fab, int position){
+        adapter.setFab(fab, position);
     }
 
     private void sortingSwitcher(String sortOrder) {
