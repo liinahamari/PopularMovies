@@ -124,7 +124,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         Picasso.with(context)
                 .load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
-                .error(R.drawable.broken_image) //todo: tests in the middle of smth / maybe empty drawable?
+                .error(R.drawable.empty)
                 .into(holder.poster, new Callback() {
                     @Override
                     public void onSuccess() {
