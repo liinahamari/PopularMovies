@@ -73,7 +73,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         notifyDataSetChanged();
     }
 
-    public void setFab(FloatingActionButton fab, int position){
+    public void setFab(FloatingActionButton fab, int position) {
         this.fab = fab;
         this.position = position;
     }
@@ -83,51 +83,42 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         notifyDataSetChanged();
     }
 
+    private void bookmarkCallback(SingleMovie movie, int setFavorite, ViewHolder holder, int position) {
+        movie.setInFavorites(setFavorite);
+        holder.bookmarkButton.setImageResource((setFavorite == 0) ? R.drawable.unbookmarked : R.drawable.bookmarked);
+        if (fab != null && this.position == position) {
+            syncWithLikeButton(setFavorite);
+        }
+        holder.bookmarkButton.setClickable(true);
+    }
+
+    private void syncWithLikeButton(int isFavorite) {
+        int color = (isFavorite == 0) ? R.color.lightLight : R.color.colorAccent;
+        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+            fab.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(color)));
+        } else {
+            fab.getBackground().setColorFilter(context.getResources().getColor(color), PorterDuff.Mode.MULTIPLY);
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final SingleMovie movie = movies.get(position);
+        SingleMovie movie = movies.get(position);
         holder.title.setText(movie.getTitle());
         holder.bookmarkButton.setOnClickListener(v ->
         {
+            holder.bookmarkButton.setClickable(false);
             if (movie.isInFavorites() == 0) {
-                holder.bookmarkButton.setClickable(false);
                 Single.fromCallable(() -> context.getContentResolver().insert(CONTENT_URI, (makeContentValues(movies.get(position)))))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
-                        .subscribe(uri -> {
-                            movie.setInFavorites(1);
-                            holder.bookmarkButton.setImageResource(R.drawable.bookmarked);
-                            holder.bookmarkButton.setClickable(true);
-                            if(fab!=null && this.position == position){
-                                if (Build.VERSION.SDK_INT >= LOLLIPOP) {
-                                    fab.setBackgroundTintList(ColorStateList.valueOf
-                                            (context.getResources().getColor(R.color.colorAccent)));
-                                } else {
-                                    fab.getBackground().setColorFilter
-                                            (context.getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
-                                }
-                            }
-                        });
+                        .subscribe(uri -> bookmarkCallback(movie, 1, holder, position));
             } else {
-                holder.bookmarkButton.setClickable(false);
                 Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
                         new String[]{(makeContentValues(movies.get(position))).getAsString(COLUMN_TITLE)}))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
-                        .subscribe(rowsDeleted -> {
-                            movie.setInFavorites(0);
-                            holder.bookmarkButton.setImageResource(R.drawable.unbookmarked);
-                            holder.bookmarkButton.setClickable(true);
-                            if(fab!=null && this.position == position){
-                                if (Build.VERSION.SDK_INT >= LOLLIPOP) {
-                                    fab.setBackgroundTintList(ColorStateList.valueOf
-                                            (context.getResources().getColor(R.color.lightLight)));
-                                } else {
-                                    fab.getBackground().setColorFilter
-                                            (context.getResources().getColor(R.color.lightLight), PorterDuff.Mode.MULTIPLY);
-                                }
-                            }
-                        });
+                        .subscribe(rowsDeleted -> bookmarkCallback(movie, 0, holder, position));
             }
         });
 
