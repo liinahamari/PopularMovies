@@ -147,13 +147,38 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/reviews_label" />
 
+                    <android.support.design.widget.TabLayout
+                        android:theme="@style/Theme.AppCompat.Light"
+                        android:id="@+id/tab_dots"
+                        android:layout_width="0dp"
+                        android:layout_height="16dp"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp"
+                        tools:layout_constraintRight_creator="1"
+                        app:layout_constraintEnd_toEndOf="@id/center_padder"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="@id/center_padder"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/pager"
+                        tools:layout_constraintLeft_creator="1"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:id="@+id/synopsis_label"
+                        style="@style/LabelTextView"
+                        android:layout_margin="10dp"
+                        android:text="@string/synopsis"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/center_padder"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/d_mov_synopsis"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:fontFamily="@font/thron_demo"
+                        android:fontFamily="@font/oregon_ldo"
                         android:lineSpacingExtra="8dp"
                         android:text="@string/lorem"
                         android:textSize="20sp"
