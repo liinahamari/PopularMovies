@@ -44,7 +44,6 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
                 return true;
             case R.id.action_favorites:
                 mainFragment.doWorkOnChangingSortOrder(SORT_ORDER_FAVORITES);
-                /*todo on Empty favorites layout*/
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

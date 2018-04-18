@@ -8,19 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class PaginationTool<T> {
@@ -30,10 +21,11 @@ public class PaginationTool<T> {
     private PagingListener<T> pagingListener;
     private FrameLayout layout;
 
-    private PaginationTool() {}
+    private PaginationTool() {
+    }
 
-    public Observable<T> getPagingObservable() {
-        return getScrollObservable()
+    public Observable<T> getPagingObservable(int primaryIndex) {
+        return getScrollObservable(primaryIndex)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
@@ -44,7 +36,7 @@ public class PaginationTool<T> {
                 });
     }
 
-    private Observable<Integer> getScrollObservable() {
+    private Observable<Integer> getScrollObservable(int primaryIndex) {
         return Observable.create(subscriber -> {
             final RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
                 @Override
@@ -71,9 +63,7 @@ public class PaginationTool<T> {
                     return false;
                 }
             });
-            if (recyclerView.getAdapter().getItemCount() == 0) {
-                subscriber.onNext(1);
-            }
+            subscriber.onNext(primaryIndex);
         });
     }
 

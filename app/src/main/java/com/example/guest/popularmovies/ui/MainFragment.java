@@ -99,7 +99,8 @@ public class MainFragment extends BaseFragment implements MainView {
         setupAdapter();
         if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList(SAVED_LIST));
-            recyclerView.scrollToPosition(lastVisiblePosition);
+            recyclerView.scrollToPosition(savedInstanceState.getInt(LAST_POSITION));
+            presenter.getPopular(recyclerView, errorMsgFrame, (savedList.size()/20)+1);
         } else {
             loadNew();
         }
@@ -110,9 +111,9 @@ public class MainFragment extends BaseFragment implements MainView {
         if (networkChecker.isNetAvailable(getActivity())) {
             errorLayout.setVisibility(View.INVISIBLE);
             if (preferences.contains(LAST_SORT_ORDER)) {
-                sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR));
+                sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR) ,1);
             } else {
-                sortingSwitcher(SORT_ORDER_POPULAR);
+                sortingSwitcher(SORT_ORDER_POPULAR, 1);
             }
         } else {
             errorLayout.setVisibility(VISIBLE);
@@ -136,13 +137,13 @@ public class MainFragment extends BaseFragment implements MainView {
         adapter.setFab(fab, position);
     }
 
-    private void sortingSwitcher(String sortOrder) {
+    private void sortingSwitcher(String sortOrder, int primaryIndex) {
         switch (sortOrder) {
             case SORT_ORDER_POPULAR:
-                presenter.getPopular(recyclerView, errorMsgFrame);
+                presenter.getPopular(recyclerView, errorMsgFrame, primaryIndex);
                 break;
             case SORT_ORDER_TOP_RATED:
-                presenter.getTopRated(recyclerView, errorMsgFrame);
+                presenter.getTopRated(recyclerView, errorMsgFrame, primaryIndex);
                 break;
             case SORT_ORDER_FAVORITES:
                 presenter.getFavorites();
@@ -157,7 +158,7 @@ public class MainFragment extends BaseFragment implements MainView {
         savedList.clear();
         preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();
         onClearItems();
-        sortingSwitcher(sortOrder);
+        sortingSwitcher(sortOrder, 1);
     }
 
     @Override
@@ -212,14 +213,6 @@ public class MainFragment extends BaseFragment implements MainView {
         super.onDetach();
         presenter.unsubscribe(); //todo: or onDestroy?
         callbacks = null;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            lastVisiblePosition = savedInstanceState.getInt(LAST_POSITION);
-        }
     }
 
     public void notifyItemChanged(int position) {

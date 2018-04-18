@@ -38,25 +38,25 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public MoviesPresenter() {
     }
 
-    public void getPopular(RecyclerView recyclerView, FrameLayout layout) {
+    public void getPopular(RecyclerView recyclerView, FrameLayout layout, int primaryIndex) {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
                 page -> apiService.getPopular(page), layout)
                 .build();
         compositeDisposable.clear();
         compositeDisposable.add(paginationTool
-                .getPagingObservable()
+                .getPagingObservable(primaryIndex)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items ->
                         getView().onMoviesLoaded(items.getResults())));
     }
 
-    public void getTopRated(RecyclerView recyclerView, FrameLayout layout) {
+    public void getTopRated(RecyclerView recyclerView, FrameLayout layout, int primaryIndex) {
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
                 page -> apiService.getTopRated(page), layout)
                 .build();
         compositeDisposable.clear();
         compositeDisposable.add(paginationTool
-                .getPagingObservable()
+                .getPagingObservable(primaryIndex)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> getView().onMoviesLoaded(items.getResults())));
     }
