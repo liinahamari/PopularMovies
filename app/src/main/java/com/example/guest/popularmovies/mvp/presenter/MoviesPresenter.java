@@ -39,6 +39,8 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     }
 
     public void getPopular(RecyclerView recyclerView, FrameLayout layout, int primaryIndex) {
+        if(paginationTool!=null)
+            paginationTool.dispose();
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
                 page -> apiService.getPopular(page), layout)
                 .build();
@@ -51,6 +53,8 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     }
 
     public void getTopRated(RecyclerView recyclerView, FrameLayout layout, int primaryIndex) {
+        if(paginationTool!=null)
+            paginationTool.dispose();
         paginationTool = PaginationTool.buildPagingObservable(recyclerView,
                 page -> apiService.getTopRated(page), layout)
                 .build();
@@ -62,6 +66,8 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     }
 
     public void getFavorites() {
+        if(paginationTool!=null)
+            paginationTool.dispose();
         MoviesDbHelper helper = new MoviesDbHelper(context);
         List<SingleMovie> movies = helper.getSavedMovies();
         if (movies.size() == 0) {

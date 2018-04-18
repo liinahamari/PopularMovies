@@ -149,6 +149,7 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     public void doWorkOnChangingSortOrder(String sortOrder) {
+
         emptyFavoritesFrame.setVisibility(View.GONE);
         savedList.clear();
         preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();

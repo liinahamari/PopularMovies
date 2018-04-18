@@ -20,6 +20,7 @@ public class PaginationTool<T> {
     private RecyclerView recyclerView;
     private PagingListener<T> pagingListener;
     private FrameLayout layout;
+    private Disposable disposable;
 
     private PaginationTool() {
     }
@@ -52,7 +53,7 @@ public class PaginationTool<T> {
                 }
             };
             recyclerView.addOnScrollListener(scrollListener);
-            subscriber.setDisposable(new Disposable() {
+            disposable = new Disposable() {
                 @Override
                 public void dispose() {
                     recyclerView.removeOnScrollListener(scrollListener);
@@ -62,9 +63,14 @@ public class PaginationTool<T> {
                 public boolean isDisposed() {
                     return false;
                 }
-            });
+            };
+            subscriber.setDisposable(disposable);
             subscriber.onNext(primaryIndex);
         });
+    }
+
+    public void dispose(){
+        disposable.dispose();
     }
 
     private int getLastVisibleItemPosition() {
