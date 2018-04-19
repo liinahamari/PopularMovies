@@ -37,10 +37,10 @@
     <FrameLayout
         android:layout_alignStart="@id/poster"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/lightLight">
+        android:layout_height="wrap_content">
 
         <ImageButton
+
             android:id="@+id/favorite_icon"
             android:background="@android:color/transparent"
             android:layout_width="wrap_content"

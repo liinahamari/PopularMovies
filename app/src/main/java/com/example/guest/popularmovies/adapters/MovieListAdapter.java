@@ -85,7 +85,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     private void bookmarkCallback(SingleMovie movie, int setFavorite, ViewHolder holder, int position) {
         movie.setInFavorites(setFavorite);
-        holder.bookmarkButton.setImageResource((setFavorite == 0) ? R.drawable.unbookmarked : R.drawable.bookmarked);
+        Picasso.with(context)
+                .load(setFavorite != 0 ? R.drawable.bookmarked : R.drawable.unbookmarked)
+                .resize(90,90)
+                .into(holder.bookmarkButton);
         if (fab != null && this.position == position) {
             syncWithLikeButton(setFavorite);
         }
@@ -148,6 +151,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                     movie.setInFavorites(isFavorite);
                     Picasso.with(context)
                             .load(isFavorite != 0 ? R.drawable.bookmarked : R.drawable.unbookmarked)
+                            .resize(90,90)
                             .into(holder.bookmarkButton);
                     movie.setInFavorites(isFavorite);
                 });
