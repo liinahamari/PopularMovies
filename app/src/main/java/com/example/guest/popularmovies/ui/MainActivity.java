@@ -1,5 +1,6 @@
 package com.example.guest.popularmovies.ui;
 
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,6 +18,7 @@ import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_TOP_RAT
 
 public class MainActivity extends BaseActivity implements MainFragment.Callbacks, DetailFragment.Callbacks {
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String RETAIN_FRAGMENT = "fragment";
 
     private int position;
     private MainFragment mainFragment;
@@ -24,6 +26,12 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
     @Override
     protected int getContentView() {
         return R.layout.activity_masterdetail;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mainFragment = (MainFragment) getSupportFragmentManager().getFragment(savedInstanceState, RETAIN_FRAGMENT);
     }
 
     @Override
@@ -75,6 +83,12 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
     protected Fragment getMainFragment() {
         mainFragment = new MainFragment();
         return mainFragment;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, RETAIN_FRAGMENT, mainFragment);
     }
 
     @Override
