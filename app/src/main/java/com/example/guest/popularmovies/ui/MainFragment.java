@@ -26,7 +26,6 @@ import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.MoviesPresenter;
 import com.example.guest.popularmovies.mvp.view.MainView;
-import com.example.guest.popularmovies.utils.NetworkChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
+import static com.example.guest.popularmovies.utils.NetworkChecker.isNetAvailable;
 
 /**
  * Created by l1maginaire on 4/6/18.
@@ -55,8 +55,6 @@ public class MainFragment extends BaseFragment implements MainView {
 
     @Inject
     protected MoviesPresenter presenter;
-    @Inject
-    protected NetworkChecker networkChecker;
 
     @BindView(R.id.mov_recycler)
     protected RecyclerView recyclerView;
@@ -72,7 +70,6 @@ public class MainFragment extends BaseFragment implements MainView {
     protected TextView errorMsg;
 
     private MovieListAdapter adapter;
-    private int lastVisiblePosition = 0;
     private ArrayList<SingleMovie> savedList;
     private SharedPreferences preferences;
     private Callbacks callbacks;
@@ -90,12 +87,13 @@ public class MainFragment extends BaseFragment implements MainView {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, v);
-        errorMsg.setOnClickListener(view -> presenter.getPopular(recyclerView, errorMsgFrame, (savedList.size()/20)+1));
+        errorMsg.setOnClickListener(view ->
+                sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR), (savedList.size() / 20) + 1));
         setupAdapter();
         if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList(SAVED_LIST));
             recyclerView.scrollToPosition(savedInstanceState.getInt(LAST_POSITION));
-            presenter.getPopular(recyclerView, errorMsgFrame, (savedList.size()/20)+1);
+            presenter.getPopular(recyclerView, errorMsgFrame, (savedList.size() / 20) + 1);
         } else {
             loadNew();
         }
@@ -103,10 +101,10 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     private void loadNew() {
-        if (networkChecker.isNetAvailable(getActivity())) {
+        if (isNetAvailable(getActivity())) {
             errorLayout.setVisibility(View.INVISIBLE);
             if (preferences.contains(LAST_SORT_ORDER)) {
-                sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR) ,1);
+                sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR), 1);
             } else {
                 sortingSwitcher(SORT_ORDER_POPULAR, 1);
             }
@@ -128,7 +126,7 @@ public class MainFragment extends BaseFragment implements MainView {
         recyclerView.setAdapter(adapter);
     }
 
-    public void setFab(FloatingActionButton fab, int position){
+    public void setFab(FloatingActionButton fab, int position) {
         adapter.setFab(fab, position);
     }
 
@@ -149,7 +147,6 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     public void doWorkOnChangingSortOrder(String sortOrder) {
-
         emptyFavoritesFrame.setVisibility(View.GONE);
         savedList.clear();
         preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();
@@ -193,7 +190,7 @@ public class MainFragment extends BaseFragment implements MainView {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        lastVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+        int lastVisiblePosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
         Log.d(LAST_POSITION, ": " + String.valueOf(lastVisiblePosition));
         outState.putInt(LAST_POSITION, lastVisiblePosition);
         outState.putParcelableArrayList(SAVED_LIST, savedList); //API < 7.0 == 1 mb

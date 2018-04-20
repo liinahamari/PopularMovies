@@ -1,20 +1,26 @@
 package com.example.guest.popularmovies.ui;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.base.BaseActivity;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
+import com.example.guest.popularmovies.utils.NetworkChecker;
+
+import javax.inject.Inject;
 
 import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_FAVORITES;
 import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_POPULAR;
 import static com.example.guest.popularmovies.ui.MainFragment.SORT_ORDER_TOP_RATED;
+import static com.example.guest.popularmovies.utils.NetworkChecker.isNetAvailable;
 
 public class MainActivity extends BaseActivity implements MainFragment.Callbacks, DetailFragment.Callbacks {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -60,18 +66,20 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
 
     @Override
     public void onItemClicked(SingleMovie movie, int position) {
-        Log.d(TAG, movie.getTitle() + " element clicked.");
-
+        Log.d(TAG, movie.getTitle() + " chosen.");
         this.position = position;
-
-        if (findViewById(R.id.twopane_detail_container) == null) {
-            startActivity(DetailActivity.newIntent(this, movie));
+        if (isNetAvailable(this)) {
+            if (findViewById(R.id.twopane_detail_container) == null) {
+                startActivity(DetailActivity.newIntent(this, movie));
+            } else {
+                Fragment detailFragment = DetailFragment.newInstance(movie);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.twopane_detail_container, detailFragment)
+                        .commit();
+            }
         } else {
-            Fragment detailFragment = DetailFragment.newInstance(movie);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.twopane_detail_container, detailFragment)
-                    .commit();
+            Toast.makeText(this, "Lack of connection, try again later...", Toast.LENGTH_SHORT).show();
         }
     }
 

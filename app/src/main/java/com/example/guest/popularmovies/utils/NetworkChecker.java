@@ -11,11 +11,7 @@ import javax.inject.Inject;
  */
 
 public class NetworkChecker {
-
-    @Inject
-    public NetworkChecker() {}
-
-    public boolean isNetAvailable(Context context) {
+    public static boolean isNetAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
