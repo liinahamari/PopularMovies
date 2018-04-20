@@ -38,8 +38,8 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     @Inject
     DetailPresenter() {}
 
-    public void getTrailers(String id, YouTubePlayerSupportFragment fragment, YouTubePlayer.OnInitializedListener listener,
-                            FragmentManager fragmentManager) {
+    public void getTrailers(String id, YouTubePlayerSupportFragment youTubePlayerSupportFragment,
+                            YouTubePlayer.OnInitializedListener listener, FragmentManager fragmentManager) {
         apiService.getTrailers(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,14 +56,14 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "Failed to get trailers data: "+e.toString());
+                        Log.e(TAG, "Failed to get trailers data: "+e.getMessage());
                     }
 
                     @Override
                     public void onComplete() { //todo callback?
-                        fragment.initialize(BuildConfig.YOUTUBE_KEY, listener);
+                        youTubePlayerSupportFragment.initialize(BuildConfig.YOUTUBE_KEY, listener);
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.add(R.id.youtube_frame, fragment).commit();
+                        transaction.add(R.id.youtube_frame, youTubePlayerSupportFragment).commit();
                     }
                 });
     }

@@ -34,13 +34,5 @@ public class MoviesContract {
 
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIES;
-
-        public static Uri buildMovieUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
-
-        public static Uri buildMovieTitle(String title) {
-            return CONTENT_URI.buildUpon().appendPath(title).build();
-        }
     }
 }

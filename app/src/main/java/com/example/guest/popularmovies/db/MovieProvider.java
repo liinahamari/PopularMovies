@@ -20,7 +20,7 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.TABLE_NAME
 
 public class MovieProvider extends ContentProvider {
     private static final UriMatcher uriMatcher = buildUriMatcher();
-    private MoviesDbHelper dbHelper; //todo dagger
+    private MoviesDbHelper dbHelper;
 
     private static final int MOVIES = 100;
     private static final int MOVIE_ITEM = 200;

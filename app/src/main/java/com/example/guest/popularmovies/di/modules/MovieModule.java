@@ -1,7 +1,7 @@
 package com.example.guest.popularmovies.di.modules;
 
 import com.example.guest.popularmovies.api.MovDbApi;
-import com.example.guest.popularmovies.di.scope.PerActivity;
+import com.example.guest.popularmovies.di.scope.PerFragment;
 import com.example.guest.popularmovies.mvp.view.MainView;
 
 import dagger.Module;
@@ -21,13 +21,13 @@ public class MovieModule {
         this.view = view;
     }
 
-    @PerActivity
+    @PerFragment
     @Provides
     MovDbApi provideApiService(Retrofit retrofit) {
         return retrofit.create(MovDbApi.class);
     }
 
-    @PerActivity
+    @PerFragment
     @Provides
     MainView provideView() {
         return view;

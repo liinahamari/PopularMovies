@@ -48,8 +48,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         compositeDisposable.add(paginationTool
                 .getPagingObservable(primaryIndex)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items ->
-                        getView().onMoviesLoaded(items.getResults())));
+                .subscribe(items -> getView().onMoviesLoaded(items.getResults())));
     }
 
     public void getTopRated(RecyclerView recyclerView, FrameLayout layout, int primaryIndex) {
