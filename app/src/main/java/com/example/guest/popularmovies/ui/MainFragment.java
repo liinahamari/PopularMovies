@@ -124,7 +124,7 @@ public class MainFragment extends BaseFragment implements MainView {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
-        cursorAdapter = new FavoritesAdapter(getActivity(), emptyFavoritesFrame, getLayoutInflater());
+        cursorAdapter = new FavoritesAdapter(getActivity(), emptyFavoritesFrame, getLayoutInflater(), callbacks);
         adapter = new MovieListAdapter(getLayoutInflater(), getActivity(), callbacks);
         recyclerView.setAdapter(adapter);
     }

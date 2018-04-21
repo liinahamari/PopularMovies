@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.db.MoviesDbHelper;
+import com.example.guest.popularmovies.mvp.model.SingleMovie;
+import com.example.guest.popularmovies.ui.MainFragment;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -27,6 +29,7 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_POS
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.TABLE_NAME;
+import static com.example.guest.popularmovies.utils.MakeSMovieByQuery.makeMovieFromQuery;
 
 /**
  * Created by l1maginaire on 4/20/18.
@@ -38,9 +41,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private MoviesDbHelper dbHelper;
     private FrameLayout emptyFavoritesFrame;
     private LayoutInflater layoutInflater;
+    private MainFragment.Callbacks callbacks;
 
-    public FavoritesAdapter(Context context, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater) {
+    public FavoritesAdapter(Context context, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater, MainFragment.Callbacks callbacks) {
         this.layoutInflater = layoutInflater;
+        this.callbacks = callbacks;
         this.context = context;
         dbHelper = new MoviesDbHelper(context);
         this.emptyFavoritesFrame = emptyFavoritesFrame;
@@ -58,22 +63,19 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         if (!cursor.moveToPosition(position)) {
             return;
         }
-        String title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
-        holder.title.setText(title);
+        SingleMovie movie = makeMovieFromQuery(cursor);
+        holder.title.setText(movie.getTitle());
         holder.progressBar.setVisibility(View.INVISIBLE);
-        Picasso.with(context)
-                .load("http://image.tmdb.org/t/p/w185/" + cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)))
-                .error(R.drawable.empty)
-                .into(holder.poster);
+        Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath()).error(R.drawable.empty).into(holder.poster);
         Picasso.with(context).load(R.drawable.bookmarked).resize(90, 90).into(holder.bookmarkButton);
-        holder.bookmarkButton.setOnClickListener(v -> {
-            Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
-                    new String[]{title}))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(rowsDeleted -> swapCursor(dbHelper.getReadableDatabase()
-                            .rawQuery("SELECT * FROM " + TABLE_NAME, null)));
-        });
+        holder.bookmarkButton.setOnClickListener(v ->
+                Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
+                        new String[]{movie.getTitle()}))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(rowsDeleted -> swapCursor(dbHelper.getReadableDatabase()
+                                .rawQuery("SELECT * FROM " + TABLE_NAME, null))));
+        holder.itemView.setOnClickListener(v -> callbacks.onItemClicked(movie, position));
     }
 
     @Override

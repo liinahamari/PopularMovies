@@ -229,7 +229,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         if (orientation == Configuration.ORIENTATION_LANDSCAPE || getResources().getBoolean(R.bool.isTab)) {
             TypedValue tv = new TypedValue();
             int actionBarHeight = 0;
-            if (getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            if (getActivity()!=null && getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
                 actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
             }
             ViewGroup.LayoutParams layoutParams = youtubeFrame.getLayoutParams();
