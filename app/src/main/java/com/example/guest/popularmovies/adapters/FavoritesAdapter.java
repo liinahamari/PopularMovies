@@ -65,7 +65,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                 .load("http://image.tmdb.org/t/p/w185/" + cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)))
                 .error(R.drawable.empty)
                 .into(holder.poster);
-        holder.bookmarkButton.setImageResource(R.drawable.bookmarked);
+        Picasso.with(context).load(R.drawable.bookmarked).resize(90,90).into(holder.bookmarkButton);
         holder.bookmarkButton.setOnClickListener(v -> {
             Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
                     new String[]{title}))

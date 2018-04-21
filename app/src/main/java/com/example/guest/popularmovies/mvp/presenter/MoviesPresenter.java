@@ -1,6 +1,7 @@
 package com.example.guest.popularmovies.mvp.presenter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -28,6 +29,7 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_UR
 public class MoviesPresenter extends BasePresenter<MainView> {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private PaginationTool<MoviesArray> paginationTool;
+    private Cursor cursor;
 
     @Inject
     protected Context context;
@@ -72,6 +74,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(cursor -> {
+                    this.cursor = cursor;
                     if (cursor.getCount() == 0) {
                         emptyFavoritesFrame.setVisibility(View.VISIBLE);
                     } else {
@@ -83,5 +86,6 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public void unsubscribe() {
         if (compositeDisposable != null)
             compositeDisposable.dispose();
+        cursor.close();
     }
 }
