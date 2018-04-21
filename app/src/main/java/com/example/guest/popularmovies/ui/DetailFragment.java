@@ -162,7 +162,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
 
     private void setupListeners() {
         floatingButton.setOnClickListener(v -> callbacks.onLikeClicked(movie, floatingButton));
-        if (getActivity().getLocalClassName().equals("ui.DetailActivity")) {
+        if (getActivity()!=null && getActivity().getLocalClassName().equals("ui.DetailActivity")) {
             toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
             appbar.addOnOffsetChangedListener(this);
         } else {

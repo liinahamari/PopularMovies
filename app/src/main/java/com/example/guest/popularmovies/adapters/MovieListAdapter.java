@@ -11,7 +11,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,20 +44,21 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     private List<SingleMovie> movies;
     private Context context;
     private LayoutInflater layoutInflater;
-    private float dpHeight;
-    private float dpWidth;
     private MainFragment.Callbacks callbacks;
     private FloatingActionButton fab;
     private int position = -1;
+    private int resize = 0;
 
     public MovieListAdapter(LayoutInflater layoutInflater, Context context, MainFragment.Callbacks callbacks) {
         this.layoutInflater = layoutInflater;
         this.context = context;
         this.callbacks = callbacks;
         movies = new ArrayList<>();
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        if (context.getResources().getBoolean(R.bool.isTab)) {
+            resize = 60;
+        } else {
+            resize = 90;
+        }
     }
 
     @NonNull
@@ -87,7 +87,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         movie.setInFavorites(setFavorite);
         Picasso.with(context)
                 .load(setFavorite != 0 ? R.drawable.bookmarked : R.drawable.unbookmarked)
-                .resize(90,90)
+                .resize(resize, resize)
                 .into(holder.bookmarkButton);
         if (fab != null && this.position == position) {
             syncWithLikeButton(setFavorite);
@@ -151,7 +151,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                     movie.setInFavorites(isFavorite);
                     Picasso.with(context)
                             .load(isFavorite != 0 ? R.drawable.bookmarked : R.drawable.unbookmarked)
-                            .resize(90,90)
+                            .resize(resize, resize)
                             .into(holder.bookmarkButton);
                     movie.setInFavorites(isFavorite);
                 });
@@ -178,8 +178,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
-            view.setMinimumWidth((int) (dpWidth / 2));
-            view.setMinimumHeight((int) ((dpHeight / 2) * 1.5));
             ButterKnife.bind(this, itemView);
         }
     }

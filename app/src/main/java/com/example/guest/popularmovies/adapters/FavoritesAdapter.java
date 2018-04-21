@@ -42,6 +42,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private FrameLayout emptyFavoritesFrame;
     private LayoutInflater layoutInflater;
     private MainFragment.Callbacks callbacks;
+    private int resize=0;
 
     public FavoritesAdapter(Context context, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater, MainFragment.Callbacks callbacks) {
         this.layoutInflater = layoutInflater;
@@ -49,6 +50,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         this.context = context;
         dbHelper = new MoviesDbHelper(context);
         this.emptyFavoritesFrame = emptyFavoritesFrame;
+        if (context.getResources().getBoolean(R.bool.isTab)) {
+            resize = 60;
+        } else {
+            resize = 90;
+        }
     }
 
     @NonNull
@@ -67,7 +73,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         holder.title.setText(movie.getTitle());
         holder.progressBar.setVisibility(View.INVISIBLE);
         Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath()).error(R.drawable.empty).into(holder.poster);
-        Picasso.with(context).load(R.drawable.bookmarked).resize(90, 90).into(holder.bookmarkButton);
+        Picasso.with(context).load(R.drawable.bookmarked).resize(resize, resize).into(holder.bookmarkButton);
         holder.bookmarkButton.setOnClickListener(v ->
                 Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
                         new String[]{movie.getTitle()}))

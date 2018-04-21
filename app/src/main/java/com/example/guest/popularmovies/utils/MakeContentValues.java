@@ -12,7 +12,6 @@ import static com.example.guest.popularmovies.db.MoviesContract.Entry.*;
  */
 
 public class MakeContentValues {
-
     public static ContentValues makeContentValues(SingleMovie movie) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_MOV_ID, movie.getId());
