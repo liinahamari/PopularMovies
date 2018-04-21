@@ -93,7 +93,7 @@ public class MainFragment extends BaseFragment implements MainView {
         if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList(SAVED_LIST));
             recyclerView.scrollToPosition(savedInstanceState.getInt(LAST_POSITION));
-            presenter.getPopular(recyclerView, errorMsgFrame, (savedList.size() / 20) + 1);
+            sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR), (savedList.size() / 20) + 1);
         } else {
             loadNew();
         }

@@ -86,6 +86,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public void unsubscribe() {
         if (compositeDisposable != null)
             compositeDisposable.dispose();
-        cursor.close();
+        if (cursor != null)
+            cursor.close();
     }
 }
