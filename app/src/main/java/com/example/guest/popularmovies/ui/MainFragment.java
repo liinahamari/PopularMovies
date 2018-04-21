@@ -133,13 +133,15 @@ public class MainFragment extends BaseFragment implements MainView {
     private void sortingSwitcher(String sortOrder, int primaryIndex) {
         switch (sortOrder) {
             case SORT_ORDER_POPULAR:
+                recyclerView.setAdapter(adapter);
                 presenter.getPopular(recyclerView, errorMsgFrame, primaryIndex);
                 break;
             case SORT_ORDER_TOP_RATED:
+                recyclerView.setAdapter(adapter);
                 presenter.getTopRated(recyclerView, errorMsgFrame, primaryIndex);
                 break;
             case SORT_ORDER_FAVORITES:
-                presenter.getFavorites();
+                presenter.getFavorites(recyclerView, emptyFavoritesFrame);
                 break;
             default:
                 throw new IllegalArgumentException("There's only 3 options to go...");

@@ -108,7 +108,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SingleMovie movie = movies.get(position);
         holder.title.setText(movie.getTitle());
-
         holder.bookmarkButton.setOnClickListener(v ->
         {
             holder.bookmarkButton.setClickable(false);
