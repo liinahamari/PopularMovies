@@ -136,11 +136,9 @@ public class MainFragment extends BaseFragment implements MainView {
     private void sortingSwitcher(String sortOrder, int primaryIndex) {
         switch (sortOrder) {
             case SORT_ORDER_POPULAR:
-                recyclerView.setAdapter(adapter);
                 presenter.getPopular(recyclerView, errorMsgFrame, primaryIndex);
                 break;
             case SORT_ORDER_TOP_RATED:
-                recyclerView.setAdapter(adapter);
                 presenter.getTopRated(recyclerView, errorMsgFrame, primaryIndex);
                 break;
             case SORT_ORDER_FAVORITES:
@@ -153,6 +151,7 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     public void doWorkOnChangingSortOrder(String sortOrder) {
+        recyclerView.setAdapter(adapter);
         emptyFavoritesFrame.setVisibility(View.GONE);
         savedList.clear();
         preferences.edit().putString(LAST_SORT_ORDER, sortOrder).apply();
