@@ -37,8 +37,10 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private Context context;
     private MoviesDbHelper dbHelper;
     private FrameLayout emptyFavoritesFrame;
+    private LayoutInflater layoutInflater;
 
-    public FavoritesAdapter(Context context, Cursor cursor, FrameLayout emptyFavoritesFrame) {
+    public FavoritesAdapter(Context context, Cursor cursor, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater) {
+        this.layoutInflater = layoutInflater;
         this.context = context;
         this.cursor = cursor;
         dbHelper = new MoviesDbHelper(context);
@@ -48,9 +50,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.gallery_item, parent, false);
-        return new ViewHolder(view);
+        View v = layoutInflater.inflate(R.layout.gallery_item, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override

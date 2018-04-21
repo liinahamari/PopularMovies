@@ -3,6 +3,7 @@ package com.example.guest.popularmovies.mvp.presenter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -66,7 +67,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                 .subscribe(items -> getView().onMoviesLoaded(items.getResults())));
     }
 
-    public void getFavorites(RecyclerView recyclerView, FrameLayout emptyFavoritesFrame) {
+    public void getFavorites(RecyclerView recyclerView, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater) {
         if (paginationTool != null)
             paginationTool.dispose();
         Single.fromCallable(() -> context.getContentResolver()
@@ -78,7 +79,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                     if (cursor.getCount() == 0) {
                         emptyFavoritesFrame.setVisibility(View.VISIBLE);
                     } else {
-                        recyclerView.setAdapter(new FavoritesAdapter(context, cursor, emptyFavoritesFrame));
+                        recyclerView.setAdapter(new FavoritesAdapter(context, cursor, emptyFavoritesFrame, layoutInflater));
                     }
                 });
     }

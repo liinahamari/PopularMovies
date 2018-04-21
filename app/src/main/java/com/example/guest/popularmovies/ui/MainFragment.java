@@ -141,7 +141,7 @@ public class MainFragment extends BaseFragment implements MainView {
                 presenter.getTopRated(recyclerView, errorMsgFrame, primaryIndex);
                 break;
             case SORT_ORDER_FAVORITES:
-                presenter.getFavorites(recyclerView, emptyFavoritesFrame);
+                presenter.getFavorites(recyclerView, emptyFavoritesFrame, getLayoutInflater());
                 break;
             default:
                 throw new IllegalArgumentException("There's only 3 options to go...");
