@@ -67,7 +67,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                 .subscribe(items -> getView().onMoviesLoaded(items.getResults())));
     }
 
-    public void getFavorites(RecyclerView recyclerView, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater) {
+    public void getFavorites(FavoritesAdapter adapter, FrameLayout emptyFavoritesFrame) {
         if (paginationTool != null)
             paginationTool.dispose();
         Single.fromCallable(() -> context.getContentResolver()
@@ -79,7 +79,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
                     if (cursor.getCount() == 0) {
                         emptyFavoritesFrame.setVisibility(View.VISIBLE);
                     } else {
-                        recyclerView.setAdapter(new FavoritesAdapter(context, cursor, emptyFavoritesFrame, layoutInflater));
+                        adapter.swapCursor(cursor);
                     }
                 });
     }

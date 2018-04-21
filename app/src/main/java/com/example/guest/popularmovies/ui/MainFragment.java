@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
+import com.example.guest.popularmovies.adapters.FavoritesAdapter;
 import com.example.guest.popularmovies.adapters.MovieListAdapter;
 import com.example.guest.popularmovies.base.BaseFragment;
 import com.example.guest.popularmovies.di.components.DaggerMovieComponent;
@@ -73,6 +74,7 @@ public class MainFragment extends BaseFragment implements MainView {
     private ArrayList<SingleMovie> savedList;
     private SharedPreferences preferences;
     private Callbacks callbacks;
+    private FavoritesAdapter cursorAdapter;
 
     @Override
     public void onResume() {
@@ -122,6 +124,7 @@ public class MainFragment extends BaseFragment implements MainView {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
+        cursorAdapter = new FavoritesAdapter(getActivity(), emptyFavoritesFrame, getLayoutInflater());
         adapter = new MovieListAdapter(getLayoutInflater(), getActivity(), callbacks);
         recyclerView.setAdapter(adapter);
     }
@@ -141,7 +144,8 @@ public class MainFragment extends BaseFragment implements MainView {
                 presenter.getTopRated(recyclerView, errorMsgFrame, primaryIndex);
                 break;
             case SORT_ORDER_FAVORITES:
-                presenter.getFavorites(recyclerView, emptyFavoritesFrame, getLayoutInflater());
+                recyclerView.setAdapter(cursorAdapter);
+                presenter.getFavorites(cursorAdapter, emptyFavoritesFrame);
                 break;
             default:
                 throw new IllegalArgumentException("There's only 3 options to go...");

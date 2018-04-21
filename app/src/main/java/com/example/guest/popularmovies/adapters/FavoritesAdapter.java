@@ -39,10 +39,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private FrameLayout emptyFavoritesFrame;
     private LayoutInflater layoutInflater;
 
-    public FavoritesAdapter(Context context, Cursor cursor, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater) {
+    public FavoritesAdapter(Context context, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater) {
         this.layoutInflater = layoutInflater;
         this.context = context;
-        this.cursor = cursor;
         dbHelper = new MoviesDbHelper(context);
         this.emptyFavoritesFrame = emptyFavoritesFrame;
     }
@@ -82,7 +81,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         return cursor.getCount();
     }
 
-    private void swapCursor(Cursor newCursor) {
+    public void swapCursor(Cursor newCursor) {
         if (cursor != null) cursor.close();
         cursor = newCursor;
         if (newCursor != null) {
