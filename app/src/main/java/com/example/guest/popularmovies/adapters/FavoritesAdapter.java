@@ -65,7 +65,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                 .load("http://image.tmdb.org/t/p/w185/" + cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)))
                 .error(R.drawable.empty)
                 .into(holder.poster);
-        Picasso.with(context).load(R.drawable.bookmarked).resize(90,90).into(holder.bookmarkButton);
+        Picasso.with(context).load(R.drawable.bookmarked).resize(90, 90).into(holder.bookmarkButton);
         holder.bookmarkButton.setOnClickListener(v -> {
             Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
                     new String[]{title}))
@@ -78,7 +78,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public int getItemCount() {
-        return cursor.getCount();
+        return cursor != null ? cursor.getCount() : 0;
     }
 
     public void swapCursor(Cursor newCursor) {
@@ -87,7 +87,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         if (newCursor != null) {
             notifyDataSetChanged();
         }
-        if(getItemCount()==0)
+        if (getItemCount() == 0)
             emptyFavoritesFrame.setVisibility(View.VISIBLE);
     }
 
