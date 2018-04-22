@@ -90,8 +90,8 @@ public class MainActivity extends BaseActivity implements MainFragment.Callbacks
         }
     }
 
-    protected void setFab(FloatingActionButton fab) {
-        mainFragment.setFab(fab, position);
+    protected void setFab(FloatingActionButton fab, SingleMovie movie) {
+        mainFragment.setFab(fab, position, movie);
     }
 
     @Override

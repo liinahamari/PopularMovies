@@ -43,6 +43,7 @@ public class MakeSMovieByQuery {
         movie.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
         movie.setVoteAverage(Double.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_VOTE_AVERAGE))));
         movie.setVoteCount(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_VOTE_COUNT))));
+        movie.setInFavorites(1);
         return movie;
     }
 }

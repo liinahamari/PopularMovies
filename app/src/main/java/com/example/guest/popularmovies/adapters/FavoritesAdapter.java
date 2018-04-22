@@ -1,9 +1,14 @@
 package com.example.guest.popularmovies.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +30,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_POSTER_PATH;
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.TABLE_NAME;
@@ -42,7 +47,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private FrameLayout emptyFavoritesFrame;
     private LayoutInflater layoutInflater;
     private MainFragment.Callbacks callbacks;
-    private int resize=0;
+    private int resize = 0;
+    private String title;
+    private FloatingActionButton fab;
 
     public FavoritesAdapter(Context context, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater, MainFragment.Callbacks callbacks) {
         this.layoutInflater = layoutInflater;
@@ -55,6 +62,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         } else {
             resize = 90;
         }
+    }
+
+    public void setFab(FloatingActionButton fab, String title) {
+        this.fab = fab;
+        this.title = title;
     }
 
     @NonNull
@@ -79,9 +91,26 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                         new String[]{movie.getTitle()}))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
-                        .subscribe(rowsDeleted -> swapCursor(dbHelper.getReadableDatabase()
-                                .rawQuery("SELECT * FROM " + TABLE_NAME, null))));
+                        .subscribe(rowsDeleted -> {
+                                    swapCursor(dbHelper.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME, null));
+                                    syncWithLikeButton(movie.getTitle());
+                                }
+                        ));
         holder.itemView.setOnClickListener(v -> callbacks.onItemClicked(movie, position));
+    }
+
+    private void syncWithLikeButton(String title) {
+        try {
+            if (this.title.equals(title)) {
+                if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+                    fab.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightLight)));
+                } else {
+                    fab.getBackground().setColorFilter(context.getResources().getColor(R.color.lightLight), PorterDuff.Mode.MULTIPLY);
+                }
+            }
+        } catch (NullPointerException e) {
+            Log.e("Adapter TAG", "DetailFragment wasn't opened");
+        }
     }
 
     @Override

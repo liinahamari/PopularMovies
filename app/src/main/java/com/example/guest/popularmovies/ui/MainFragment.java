@@ -1,6 +1,7 @@
 package com.example.guest.popularmovies.ui;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.adapters.FavoritesAdapter;
 import com.example.guest.popularmovies.adapters.MovieListAdapter;
 import com.example.guest.popularmovies.base.BaseFragment;
+import com.example.guest.popularmovies.db.MoviesDbHelper;
 import com.example.guest.popularmovies.di.components.DaggerMovieComponent;
 import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
@@ -30,6 +32,7 @@ import com.example.guest.popularmovies.mvp.view.MainView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -37,6 +40,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
+import static com.example.guest.popularmovies.db.MoviesContract.Entry.TABLE_NAME;
 import static com.example.guest.popularmovies.utils.NetworkChecker.isNetAvailable;
 
 /**
@@ -75,6 +80,7 @@ public class MainFragment extends BaseFragment implements MainView {
     private SharedPreferences preferences;
     private Callbacks callbacks;
     private FavoritesAdapter cursorAdapter;
+    private ContentResolver contentResolver;
 
     @Override
     public void onResume() {
@@ -103,7 +109,7 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     private void loadNew() {
-        if (isNetAvailable(getActivity())) {
+        if (isNetAvailable(Objects.requireNonNull(getActivity()))) {
             errorLayout.setVisibility(View.INVISIBLE);
             if (preferences.contains(LAST_SORT_ORDER)) {
                 sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR), 1);
@@ -125,12 +131,16 @@ public class MainFragment extends BaseFragment implements MainView {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
         cursorAdapter = new FavoritesAdapter(getActivity(), emptyFavoritesFrame, getLayoutInflater(), callbacks);
-        adapter = new MovieListAdapter(getLayoutInflater(), getActivity(), callbacks);
+        adapter = new MovieListAdapter(getLayoutInflater(), Objects.requireNonNull(getActivity()), callbacks);
         recyclerView.setAdapter(adapter);
     }
 
-    public void setFab(FloatingActionButton fab, int position) {
+    public void setFab(FloatingActionButton fab, int position, SingleMovie movie) {
+//        if (preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR).equals(SORT_ORDER_FAVORITES)) {
+        cursorAdapter.setFab(fab, movie.getTitle());
+//        } else {
         adapter.setFab(fab, position);
+//        }
     }
 
     private void sortingSwitcher(String sortOrder, int primaryIndex) {
@@ -161,6 +171,7 @@ public class MainFragment extends BaseFragment implements MainView {
 
     @Override
     protected void init() {
+        contentResolver = Objects.requireNonNull(getContext()).getContentResolver();
         savedList = new ArrayList<>();
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
@@ -215,7 +226,12 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     public void notifyItemChanged(int position) {
-        adapter.notifyItemChanged(position);
+        if (preferences.getString(LAST_SORT_ORDER, null).equals(SORT_ORDER_FAVORITES)) {
+            emptyFavoritesFrame.setVisibility(View.GONE);
+            cursorAdapter.swapCursor(contentResolver.query(CONTENT_URI, null, null, null, null));
+        } else {
+            adapter.notifyItemChanged(position);
+        }
     }
 
     public interface Callbacks {
