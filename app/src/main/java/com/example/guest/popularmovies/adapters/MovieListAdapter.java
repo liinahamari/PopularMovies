@@ -11,6 +11,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,12 +49,17 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     private FloatingActionButton fab;
     private int position = -1;
     private int resize = 0;
+    private float dpHeight;
+    private float dpWidth;
 
     public MovieListAdapter(LayoutInflater layoutInflater, Context context, MainFragment.Callbacks callbacks) {
         this.layoutInflater = layoutInflater;
         this.context = context;
         this.callbacks = callbacks;
         movies = new ArrayList<>();
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         if (context.getResources().getBoolean(R.bool.isTab)) {
             resize = 60;
         } else {
@@ -178,6 +184,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
+            view.setMinimumWidth((int) (dpWidth / 2));
+            view.setMinimumHeight((int) ((dpHeight / 2) * 1.5));
             ButterKnife.bind(this, itemView);
         }
     }

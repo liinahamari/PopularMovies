@@ -23,7 +23,6 @@ import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.adapters.FavoritesAdapter;
 import com.example.guest.popularmovies.adapters.MovieListAdapter;
 import com.example.guest.popularmovies.base.BaseFragment;
-import com.example.guest.popularmovies.db.MoviesDbHelper;
 import com.example.guest.popularmovies.di.components.DaggerMovieComponent;
 import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
@@ -41,7 +40,6 @@ import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.TABLE_NAME;
 import static com.example.guest.popularmovies.utils.NetworkChecker.isNetAvailable;
 
 /**
@@ -86,7 +84,9 @@ public class MainFragment extends BaseFragment implements MainView {
     public void onResume() {
         super.onResume();
         if (adapter != null)
-            adapter.notifyDataSetChanged(); //todo: optimization, itemChanged
+            adapter.notifyDataSetChanged();//todo: optimization, itemChanged
+        if (cursorAdapter != null)
+            cursorAdapter.swapCursor(contentResolver.query(CONTENT_URI, null, null, null, null));
     }
 
     @Nullable
