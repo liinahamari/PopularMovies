@@ -183,6 +183,7 @@
                         android:lineSpacingExtra="8dp"
                         android:text="@string/lorem"
                         android:textSize="20sp"
+                        android:paddingBottom="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintLeft_toLeftOf="@id/center_padder"
                         app:layout_constraintRight_toRightOf="parent"
