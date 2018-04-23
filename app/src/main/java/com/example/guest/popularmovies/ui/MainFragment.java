@@ -2,6 +2,7 @@ package com.example.guest.popularmovies.ui;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -213,9 +214,13 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        callbacks = (Callbacks) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            callbacks = (Callbacks) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + "must implement onItemClicked()");
+        }
     }
 
     @Override

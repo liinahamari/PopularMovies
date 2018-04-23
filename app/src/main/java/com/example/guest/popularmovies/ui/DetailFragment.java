@@ -2,6 +2,7 @@ package com.example.guest.popularmovies.ui;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
@@ -99,9 +100,13 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     private int orientation = -1;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        callbacks = (Callbacks) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            callbacks = (DetailFragment.Callbacks) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + "must implement onLikeClicked()");
+        }
     }
 
     @Override
