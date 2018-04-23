@@ -1,4 +1,8 @@
 "Popular Movies": Udacity homework.
+
+<a href="https://www.youtube.com/watch?v=5ptnThLNyNA" target="_blank"><img src="http://img.youtube.com/vi/5ptnThLNyNA/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10"/></a>
+
 =================================
 Third-party resources are used:
 
@@ -21,3 +25,5 @@ http://www.fontspace.com/leosupplyco/thron-demo
 By Luke Owens<br>
 Taken from:<br>
 http://www.fontspace.com/luke-owens/oregon-ldo
+
+* icons from https://www.flaticon.com/

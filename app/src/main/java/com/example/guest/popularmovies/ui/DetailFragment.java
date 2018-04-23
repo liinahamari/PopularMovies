@@ -1,7 +1,6 @@
 package com.example.guest.popularmovies.ui;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -167,12 +166,12 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
 
     private void setupListeners() {
         floatingButton.setOnClickListener(v -> callbacks.onLikeClicked(movie, floatingButton));
-        if (getActivity()!=null && getActivity().getLocalClassName().equals("ui.DetailActivity")) {
+        if (getActivity() != null && getActivity().getLocalClassName().equals("ui.DetailActivity")) {
             toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
             appbar.addOnOffsetChangedListener(this);
         } else {
             toolbar.setNavigationIcon(null);
-            ((MainActivity)getActivity()).setFab(floatingButton, movie);
+            ((MainActivity) getActivity()).setFab(floatingButton, movie);
         }
     }
 
@@ -234,7 +233,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         if (orientation == Configuration.ORIENTATION_LANDSCAPE || getResources().getBoolean(R.bool.isTab)) {
             TypedValue tv = new TypedValue();
             int actionBarHeight = 0;
-            if (getActivity()!=null && getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            if (getActivity() != null && getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
                 actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
             }
             ViewGroup.LayoutParams layoutParams = youtubeFrame.getLayoutParams();
