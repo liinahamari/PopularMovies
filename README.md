@@ -1,8 +1,8 @@
 "Popular Movies": Udacity homework.
 
-<a href="https://www.youtube.com/watch?v=5ptnThLNyNA" target="_blank"><img src="http://img.youtube.com/vi/5ptnThLNyNA/0.jpg" width="240" height="180" border="10"/></a>
+<a href="https://www.youtube.com/watch?v=5ptnThLNyNA" target="_blank"><img src="http://img.youtube.com/vi/5ptnThLNyNA/0.jpg" width="480" height="360" border="10"/></a>
 <br>
-<img src="/meta/image.png" width="240" height="180" border="10"/>
+<img src="/meta/image.png" width="480" height="360" border="10"/>
 =================================
 Third-party resources are used:
 
