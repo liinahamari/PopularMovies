@@ -27,3 +27,7 @@ Taken from:<br>
 http://www.fontspace.com/luke-owens/oregon-ldo
 
 * icons from https://www.flaticon.com/
+
+
+================================
+Do not use libs related to work with databases and ContentProvider was a demand.
