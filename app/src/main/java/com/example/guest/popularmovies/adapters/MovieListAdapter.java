@@ -5,9 +5,6 @@ package com.example.guest.popularmovies.adapters;
  */
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +20,8 @@ import android.widget.TextView;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.MainFragment;
+import com.example.guest.popularmovies.utils.DbOperations;
+import com.example.guest.popularmovies.utils.FavoritesChecker;
 import com.example.guest.popularmovies.utils.LikeButtonColorChanger;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -35,12 +34,6 @@ import butterknife.ButterKnife;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
-import static com.example.guest.popularmovies.utils.FavoritesChecker.isFavorite;
-import static com.example.guest.popularmovies.utils.MakeContentValues.makeContentValues;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
     private List<SingleMovie> movies;
@@ -110,13 +103,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         {
             holder.bookmarkButton.setClickable(false);
             if (movie.isInFavorites() == 0) {
-                Single.fromCallable(() -> context.getContentResolver().insert(CONTENT_URI, (makeContentValues(movies.get(position)))))
+                Single.fromCallable(() -> DbOperations.insert(movies.get(position), context))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(uri -> bookmarkCallback(movie, 1, holder, position));
             } else {
-                Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
-                        new String[]{(makeContentValues(movies.get(position))).getAsString(COLUMN_TITLE)}))
+                Single.fromCallable(() -> DbOperations.delete(movies.get(position).getTitle(), context))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(rowsDeleted -> bookmarkCallback(movie, 0, holder, position));
@@ -140,13 +132,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         Single.fromCallable(() -> {
             holder.bookmarkButton.setClickable(false);
-            return isFavorite(context, movie);
+            return FavoritesChecker.isFavorite(context, movie);
         })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(isFavorite -> {
                     holder.bookmarkButton.setClickable(true);
-                    movie.setInFavorites(isFavorite);
                     Picasso.with(context)
                             .load(isFavorite != 0 ? R.drawable.bookmarked : R.drawable.unbookmarked)
                             .resize(resize, resize)
@@ -176,8 +167,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
+            /**
+             * For remaining appropriate size on fetching errors
+             * */
             view.setMinimumWidth((int) (dpWidth / 2));
             view.setMinimumHeight((int) ((dpHeight / 2) * 1.5));
+
             ButterKnife.bind(this, itemView);
         }
     }

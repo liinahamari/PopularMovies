@@ -2,10 +2,7 @@ package com.example.guest.popularmovies.ui;
 
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +31,7 @@ import com.example.guest.popularmovies.mvp.model.reviews.Review;
 import com.example.guest.popularmovies.mvp.model.trailers.Result;
 import com.example.guest.popularmovies.mvp.presenter.DetailPresenter;
 import com.example.guest.popularmovies.mvp.view.DetailView;
+import com.example.guest.popularmovies.utils.LikeButtonColorChanger;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -46,7 +44,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static android.view.View.GONE;
 
 /**
@@ -79,7 +76,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     @BindView(R.id.my_appbar)
     protected AppBarLayout appbar;
     @BindView(R.id.fab)
-    protected FloatingActionButton floatingButton;
+    protected FloatingActionButton fab;
     @BindView(R.id.my_collapsing_toolbar)
     protected CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.d_poster)
@@ -138,14 +135,14 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         if (currentScrollPercentage >= PERCENTAGE_TO_SHOW_IMAGE) {
             if (!mIsImageHidden) {
                 mIsImageHidden = true;
-                ViewCompat.animate(floatingButton).scaleY(0).scaleX(0).start();
+                ViewCompat.animate(fab).scaleY(0).scaleX(0).start();
             }
         }
 
         if (currentScrollPercentage < PERCENTAGE_TO_SHOW_IMAGE) {
             if (mIsImageHidden) {
                 mIsImageHidden = false;
-                ViewCompat.animate(floatingButton).scaleY(1).scaleX(1).start();
+                ViewCompat.animate(fab).scaleY(1).scaleX(1).start();
             }
         }
     }
@@ -165,13 +162,13 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     }
 
     private void setupListeners() {
-        floatingButton.setOnClickListener(v -> callbacks.onLikeClicked(movie, floatingButton));
+        fab.setOnClickListener(v -> callbacks.onLikeClicked(movie, fab));
         if (getActivity() != null && getActivity().getLocalClassName().equals("ui.DetailActivity")) {
             toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
             appbar.addOnOffsetChangedListener(this);
         } else {
             toolbar.setNavigationIcon(null);
-            ((MainActivity) getActivity()).setFab(floatingButton, movie);
+            ((MainActivity) getActivity()).setFab(fab, movie);
         }
     }
 
@@ -182,15 +179,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         ratingTv.setText(String.valueOf(movie.getVoteAverage()));
         synopsisTv.setText(movie.getOverview());
         titleTv.setText(movie.getTitle());
-        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
-            floatingButton.setBackgroundTintList((movie.isInFavorites() != 0) ?
-                    (ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)))
-                    :
-                    ColorStateList.valueOf(getResources().getColor(R.color.lightLight)));
-        } else {
-            floatingButton.getBackground().setColorFilter((movie.isInFavorites() != 0) ? getResources().getColor(R.color.colorAccent)
-                    : getResources().getColor(R.color.lightLight), PorterDuff.Mode.MULTIPLY);
-        }
+        LikeButtonColorChanger.change(fab, getActivity(), movie.isInFavorites());
     }
 
     @Override

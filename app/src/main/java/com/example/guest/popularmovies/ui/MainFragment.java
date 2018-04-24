@@ -110,7 +110,7 @@ public class MainFragment extends BaseFragment implements MainView {
     }
 
     private void loadNew() {
-        if (isNetAvailable(Objects.requireNonNull(getActivity()))) {
+        if (isNetAvailable(getActivity())) {
             errorLayout.setVisibility(View.INVISIBLE);
             if (preferences.contains(LAST_SORT_ORDER)) {
                 sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR), 1);
@@ -132,7 +132,7 @@ public class MainFragment extends BaseFragment implements MainView {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
         cursorAdapter = new FavoritesAdapter(getActivity(), emptyFavoritesFrame, getLayoutInflater(), callbacks);
-        adapter = new MovieListAdapter(getLayoutInflater(), Objects.requireNonNull(getActivity()), callbacks);
+        adapter = new MovieListAdapter(getLayoutInflater(), getActivity(), callbacks);
         recyclerView.setAdapter(adapter);
     }
 
@@ -172,7 +172,7 @@ public class MainFragment extends BaseFragment implements MainView {
 
     @Override
     protected void init() {
-        contentResolver = Objects.requireNonNull(getContext()).getContentResolver();
+        contentResolver = getContext().getContentResolver();
         savedList = new ArrayList<>();
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }

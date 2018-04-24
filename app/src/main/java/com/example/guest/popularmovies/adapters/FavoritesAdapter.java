@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.MainFragment;
+import com.example.guest.popularmovies.utils.DbOperations;
 import com.example.guest.popularmovies.utils.LikeButtonColorChanger;
 import com.squareup.picasso.Picasso;
 
@@ -88,14 +89,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                 .resize(resize, resize)
                 .into(holder.bookmarkButton);
         holder.bookmarkButton.setOnClickListener(v ->
-                Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
-                        new String[]{movie.getTitle()}))
+                Single.fromCallable(() -> DbOperations.delete(movie.getTitle(), context))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(rowsDeleted -> {
-                                    swapCursor(context.getContentResolver()
-                                            .query(CONTENT_URI, null, null, null, null));
-                                    syncWithLikeButton(movie.getTitle());
+                                    if (rowsDeleted != 0) {
+                                        swapCursor(DbOperations.getAll(context));
+                                        syncWithLikeButton(movie.getTitle());
+                                    }
                                 }
                         ));
         holder.itemView.setOnClickListener(v -> callbacks.onItemClicked(movie, position));
