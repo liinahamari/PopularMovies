@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.guest.popularmovies.R;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.MainFragment;
+import com.example.guest.popularmovies.utils.LikeButtonColorChanger;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -96,18 +97,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                 .resize(resize, resize)
                 .into(holder.bookmarkButton);
         if (fab != null && this.position == position) {
-            syncWithLikeButton(setFavorite);
+            LikeButtonColorChanger.change(fab, context, setFavorite);
         }
         holder.bookmarkButton.setClickable(true);
-    }
-
-    private void syncWithLikeButton(int isFavorite) {
-        int color = (isFavorite == 0) ? R.color.lightLight : R.color.colorAccent;
-        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
-            fab.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(color)));
-        } else {
-            fab.getBackground().setColorFilter(context.getResources().getColor(color), PorterDuff.Mode.MULTIPLY);
-        }
     }
 
     @Override

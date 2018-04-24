@@ -1,10 +1,7 @@
 package com.example.guest.popularmovies.adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.guest.popularmovies.R;
-import com.example.guest.popularmovies.db.MoviesDbHelper;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.MainFragment;
+import com.example.guest.popularmovies.utils.LikeButtonColorChanger;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -30,10 +27,8 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.TABLE_NAME;
 import static com.example.guest.popularmovies.utils.MakeSMovieByQuery.makeMovieFromQuery;
 
 /**
@@ -41,9 +36,9 @@ import static com.example.guest.popularmovies.utils.MakeSMovieByQuery.makeMovieF
  */
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
+    private static final String TAG = FavoritesAdapter.class.getSimpleName();
     private Cursor cursor;
     private Context context;
-    private MoviesDbHelper dbHelper;
     private FrameLayout emptyFavoritesFrame;
     private LayoutInflater layoutInflater;
     private MainFragment.Callbacks callbacks;
@@ -56,7 +51,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         this.layoutInflater = layoutInflater;
         this.callbacks = callbacks;
         this.context = context;
-        dbHelper = new MoviesDbHelper(context);
         this.emptyFavoritesFrame = emptyFavoritesFrame;
         if (context.getResources().getBoolean(R.bool.isTab)) {
             resize = 60;
@@ -85,15 +79,22 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         SingleMovie movie = makeMovieFromQuery(cursor);
         holder.title.setText(movie.getTitle());
         holder.progressBar.setVisibility(View.INVISIBLE);
-        Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath()).error(R.drawable.empty).into(holder.poster);
-        Picasso.with(context).load(R.drawable.bookmarked).resize(resize, resize).into(holder.bookmarkButton);
+        Picasso.with(context)
+                .load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
+                .error(R.drawable.empty)
+                .into(holder.poster);
+        Picasso.with(context)
+                .load(R.drawable.bookmarked)
+                .resize(resize, resize)
+                .into(holder.bookmarkButton);
         holder.bookmarkButton.setOnClickListener(v ->
                 Single.fromCallable(() -> context.getContentResolver().delete(CONTENT_URI, COLUMN_TITLE + " = ?",
                         new String[]{movie.getTitle()}))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(rowsDeleted -> {
-                                    swapCursor(dbHelper.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME, null));
+                                    swapCursor(context.getContentResolver()
+                                            .query(CONTENT_URI, null, null, null, null));
                                     syncWithLikeButton(movie.getTitle());
                                 }
                         ));
@@ -103,14 +104,10 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private void syncWithLikeButton(String title) {
         try {
             if (this.title.equals(title)) {
-                if (Build.VERSION.SDK_INT >= LOLLIPOP) {
-                    fab.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightLight)));
-                } else {
-                    fab.getBackground().setColorFilter(context.getResources().getColor(R.color.lightLight), PorterDuff.Mode.MULTIPLY);
-                }
+                LikeButtonColorChanger.change(fab, context, 0);
             }
         } catch (NullPointerException e) {
-            Log.e("Adapter TAG", "DetailFragment wasn't opened");
+            Log.e(TAG, "DetailFragment wasn't opened");
         }
     }
 
