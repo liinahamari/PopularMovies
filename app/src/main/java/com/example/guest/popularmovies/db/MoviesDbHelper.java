@@ -30,50 +30,10 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public List<SingleMovie> getSavedMovies() {
-        List<SingleMovie> movies = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
-        try {
-            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-            if (cursor != null) {
-                if (cursor.getCount() > 0) {
-                    if (cursor.moveToFirst()) {
-                        do {
-                            SingleMovie movie = new SingleMovie();
-                            ArrayList<Integer> genreIds = new ArrayList<>();
-                            List<String> list = Arrays.asList(cursor.getString(cursor.getColumnIndex(COLUMN_GENRE_IDS)).split("\\s*,\\s*"));
-                            for (String s : list) {
-                                genreIds.add(Integer.valueOf(s));
-                            }
-                            movie.setGenreIds(genreIds);
-                            movie.setId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_MOV_ID))));
-                            movie.setBackdropPath(cursor.getString(cursor.getColumnIndex(COLUMN_BACKDROP_PATH)));
-                            movie.setOriginalTitle(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGINAL_TITLE)));
-                            movie.setOverview(cursor.getString(cursor.getColumnIndex(COLUMN_OVERVIEW)));
-                            movie.setPopularity(Double.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_POPULARITY))));
-                            movie.setPosterPath(cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)));
-                            movie.setReleaseDate(cursor.getString(cursor.getColumnIndex(COLUMN_RELEASE_DATE)));
-                            movie.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
-                            movie.setVoteAverage(Double.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_VOTE_AVERAGE))));
-                            movie.setVoteCount(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_VOTE_COUNT))));
-                            movies.add(movie);
-                        } while (cursor.moveToNext());
-                    }
-                }
-            }
-            if (cursor != null) {
-                cursor.close();
-            }
-        } catch (SQLException e) {
-            Log.d(TAG, e.getMessage());
-        }
-        return movies;
-    }
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_TABLE = "CREATE TABLE " + Entry.TABLE_NAME + " (" +
-                Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + //todo necessity
+                Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_MOV_ID + " INTEGER, " +
                 COLUMN_BACKDROP_PATH + " TEXT, " +
                 COLUMN_GENRE_IDS + " TEXT, " +
@@ -91,6 +51,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        Log.d(TAG, "Upgrading database... Previous version: " + i + "; actual version: " + i1);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Entry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }

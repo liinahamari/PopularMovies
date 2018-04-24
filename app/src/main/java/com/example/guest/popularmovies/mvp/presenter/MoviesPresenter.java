@@ -70,8 +70,8 @@ public class MoviesPresenter extends BasePresenter<MainView> {
     public void getFavorites(FavoritesAdapter adapter, FrameLayout emptyFavoritesFrame) {
         if (paginationTool != null)
             paginationTool.dispose();
-        Single.fromCallable(() -> context.getContentResolver()
-                .query(CONTENT_URI, null, null, null, null))
+        Single.fromCallable(() -> context.getContentResolver().query(CONTENT_URI, null, null, null,
+                                                                                                                null))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(cursor -> {

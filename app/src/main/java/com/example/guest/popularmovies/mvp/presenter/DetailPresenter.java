@@ -17,6 +17,7 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -30,10 +31,10 @@ import io.reactivex.schedulers.Schedulers;
 public class DetailPresenter extends BasePresenter<DetailView> {
     private final static String TAG = "DetailPresenter";
 
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     @Inject
     MovDbApi apiService;
-
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     DetailPresenter() {}
@@ -60,7 +61,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                     }
 
                     @Override
-                    public void onComplete() { //todo callback?
+                    public void onComplete() {
                         youTubePlayerSupportFragment.initialize(BuildConfig.YOUTUBE_KEY, listener);
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.add(R.id.youtube_frame, youTubePlayerSupportFragment).commit();

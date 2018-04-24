@@ -51,7 +51,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private String title;
     private FloatingActionButton fab;
 
-    public FavoritesAdapter(Context context, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater, MainFragment.Callbacks callbacks) {
+    public FavoritesAdapter(Context context, FrameLayout emptyFavoritesFrame, LayoutInflater layoutInflater,
+                            MainFragment.Callbacks callbacks) {
         this.layoutInflater = layoutInflater;
         this.callbacks = callbacks;
         this.context = context;
