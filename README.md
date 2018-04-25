@@ -1,10 +1,17 @@
-"Popular Movies": Udacity homework.
 
+<div align="center">
 <a href="https://www.youtube.com/watch?v=5ptnThLNyNA" target="_blank"><img src="http://img.youtube.com/vi/5ptnThLNyNA/0.jpg" width="480" height="360" border="10"/></a>
 <br>
-<img src="/meta/image.png" width="480" height="360" border="10"/>
-=================================
-Third-party resources are used:
+<img src="/meta/image.png" width="480" height="360" border="10"/></div>
+<hr>
+
+API Keys<br>
+For this app to work you have to acquire API keys and put them into gradle.properties file.
+<br>Following lines should be added to the file: <br>
+MOVIE_DB_API_KEY="your_key"
+<br>YOUTUBE_API_KEY="your_key"
+<hr>
+Third-party resources in use:
 
 * Birds of Paradise Personal use font<br>
 by Herofonts.<br>
@@ -27,7 +34,5 @@ Taken from:<br>
 http://www.fontspace.com/luke-owens/oregon-ldo
 
 * icons from https://www.flaticon.com/
-
-
-================================
-Do not use libs related to work with databases and ContentProvider was a demand.
+<hr>
+<br>Do not use libs related to work with databases and ContentProvider was a demand.
