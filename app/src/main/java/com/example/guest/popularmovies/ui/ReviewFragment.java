@@ -13,6 +13,7 @@ import com.example.guest.popularmovies.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 
@@ -23,16 +24,19 @@ import static android.content.DialogInterface.BUTTON_NEGATIVE;
 public class ReviewFragment extends Fragment {
     public static final String REVIEW_DATA = "data";
     public static final String REVIEW_AUTHOR = "author";
+
     @BindView(R.id.single_review)
     protected TextView reviewTv;
     @BindView(R.id.load_more_label)
     protected TextView loadMoreTv;
 
+    Unbinder unbinder;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.reviews_item, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         String message = getArguments().getString(REVIEW_DATA) + "\n\n by: " + getArguments().getString(REVIEW_AUTHOR);
         reviewTv.setText(message);
         reviewTv.post(() -> {
@@ -52,5 +56,11 @@ public class ReviewFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

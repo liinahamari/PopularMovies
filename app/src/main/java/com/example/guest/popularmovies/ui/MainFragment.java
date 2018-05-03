@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static android.view.View.VISIBLE;
 import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
@@ -78,6 +79,7 @@ public class MainFragment extends BaseFragment implements MainView {
     private SharedPreferences preferences;
     private Callbacks callbacks;
     private FavoritesAdapter cursorAdapter;
+    Unbinder unbinder;
 
     @Override
     public void onResume() {
@@ -93,7 +95,7 @@ public class MainFragment extends BaseFragment implements MainView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, v);
+        unbinder = ButterKnife.bind(this, v);
         setupListeners();
         setupAdapter();
         if (savedInstanceState != null) {
@@ -229,6 +231,12 @@ public class MainFragment extends BaseFragment implements MainView {
         super.onDetach();
         presenter.unsubscribe();
         callbacks = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     public void notifyItemChanged(int position) {

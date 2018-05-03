@@ -43,6 +43,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static android.view.View.GONE;
 
@@ -94,6 +95,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     private ReviewsPagerAdapter pagerAdapter;
     private Callbacks callbacks;
     private int orientation = -1;
+    Unbinder unbinder;
 
     @Override
     public void onAttach(Context context) {
@@ -150,7 +152,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
-        ButterKnife.bind(this, v);
+        unbinder = ButterKnife.bind(this, v);
         setupListeners();
         loadData(String.valueOf(movie.getId()));
         setView();
@@ -245,6 +247,12 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         super.onDetach();
         presenter.unsubscribe();
         callbacks = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     public interface Callbacks {
