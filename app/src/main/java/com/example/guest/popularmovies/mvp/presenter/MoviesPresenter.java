@@ -3,7 +3,6 @@ package com.example.guest.popularmovies.mvp.presenter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -71,7 +70,7 @@ public class MoviesPresenter extends BasePresenter<MainView> {
         if (paginationTool != null)
             paginationTool.dispose();
         Single.fromCallable(() -> context.getContentResolver().query(CONTENT_URI, null, null, null,
-                                                                                                                null))
+                null))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(cursor -> {

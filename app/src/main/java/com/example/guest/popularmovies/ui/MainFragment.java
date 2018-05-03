@@ -1,6 +1,5 @@
 package com.example.guest.popularmovies.ui;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,10 +28,10 @@ import com.example.guest.popularmovies.di.modules.MovieModule;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.mvp.presenter.MoviesPresenter;
 import com.example.guest.popularmovies.mvp.view.MainView;
+import com.example.guest.popularmovies.utils.DbOperations;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -79,15 +78,14 @@ public class MainFragment extends BaseFragment implements MainView {
     private SharedPreferences preferences;
     private Callbacks callbacks;
     private FavoritesAdapter cursorAdapter;
-    private ContentResolver contentResolver;
 
     @Override
     public void onResume() {
         super.onResume();
         if (adapter != null)
-            adapter.notifyDataSetChanged();//todo: optimization, itemChanged
+            adapter.notifyDataSetChanged();
         if (cursorAdapter != null)
-            cursorAdapter.swapCursor(contentResolver.query(CONTENT_URI, null, null, null, null));
+            cursorAdapter.swapCursor(DbOperations.getAll(getActivity()));
     }
 
     @Nullable
@@ -96,8 +94,7 @@ public class MainFragment extends BaseFragment implements MainView {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, v);
-        errorMsg.setOnClickListener(view ->
-                sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR), (savedList.size() / 20) + 1));
+        setupListeners();
         setupAdapter();
         if (savedInstanceState != null) {
             onMoviesLoaded(savedInstanceState.getParcelableArrayList(SAVED_LIST));
@@ -107,6 +104,12 @@ public class MainFragment extends BaseFragment implements MainView {
             loadNew();
         }
         return v;
+    }
+
+    protected void setupListeners(){
+        errorMsg.setOnClickListener(view ->
+                sortingSwitcher(preferences.getString(LAST_SORT_ORDER, SORT_ORDER_POPULAR), (savedList.size() / 20) + 1));
+        repeatButton.setOnClickListener(v -> loadNew());
     }
 
     private void loadNew() {
@@ -119,7 +122,6 @@ public class MainFragment extends BaseFragment implements MainView {
             }
         } else {
             errorLayout.setVisibility(VISIBLE);
-            repeatButton.setOnClickListener(v -> loadNew());
         }
     }
 
@@ -172,7 +174,6 @@ public class MainFragment extends BaseFragment implements MainView {
 
     @Override
     protected void init() {
-        contentResolver = getContext().getContentResolver();
         savedList = new ArrayList<>();
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
@@ -226,14 +227,14 @@ public class MainFragment extends BaseFragment implements MainView {
     @Override
     public void onDetach() {
         super.onDetach();
-        presenter.unsubscribe(); //todo: or onDestroy?
+        presenter.unsubscribe();
         callbacks = null;
     }
 
     public void notifyItemChanged(int position) {
         if (preferences.getString(LAST_SORT_ORDER, null).equals(SORT_ORDER_FAVORITES)) {
             emptyFavoritesFrame.setVisibility(View.GONE);
-            cursorAdapter.swapCursor(contentResolver.query(CONTENT_URI, null, null, null, null));
+            cursorAdapter.swapCursor(DbOperations.getAll(getActivity()));
         } else {
             adapter.notifyItemChanged(position);
         }

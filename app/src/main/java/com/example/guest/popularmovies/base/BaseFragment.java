@@ -28,4 +28,6 @@ public abstract class BaseFragment extends Fragment {
     protected ApplicationComponent getApplicationComponent(Activity activity) {
         return ((PopMoviesApp) activity.getApplication()).getApplicationComponent();
     }
+
+    protected abstract void setupListeners();
 }

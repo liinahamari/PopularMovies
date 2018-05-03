@@ -85,8 +85,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     protected TabLayout dots;
 
     private static final int PERCENTAGE_TO_SHOW_IMAGE = 40;
-    private int mMaxScrollSize;
-    private boolean mIsImageHidden;
+    private int maxScrollSize;
+    private boolean isImageHidden;
 
     private YouTubePlayer player;
     private List<Result> trailers;
@@ -127,21 +127,19 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-        if (mMaxScrollSize == 0)
-            mMaxScrollSize = appBarLayout.getTotalScrollRange();
-
-        int currentScrollPercentage = (Math.abs(i)) * 100 / mMaxScrollSize;
-
+        if (maxScrollSize == 0)
+            maxScrollSize = appBarLayout.getTotalScrollRange();
+        int currentScrollPercentage = (Math.abs(i)) * 100 / maxScrollSize;
         if (currentScrollPercentage >= PERCENTAGE_TO_SHOW_IMAGE) {
-            if (!mIsImageHidden) {
-                mIsImageHidden = true;
+            if (!isImageHidden) {
+                isImageHidden = true;
                 ViewCompat.animate(fab).scaleY(0).scaleX(0).start();
             }
         }
 
         if (currentScrollPercentage < PERCENTAGE_TO_SHOW_IMAGE) {
-            if (mIsImageHidden) {
-                mIsImageHidden = false;
+            if (isImageHidden) {
+                isImageHidden = false;
                 ViewCompat.animate(fab).scaleY(1).scaleX(1).start();
             }
         }
@@ -154,14 +152,12 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, v);
         setupListeners();
-        viewPager.setAdapter(pagerAdapter);
-        dots.setupWithViewPager(viewPager, true);
         loadData(String.valueOf(movie.getId()));
         setView();
         return v;
     }
 
-    private void setupListeners() {
+    protected void setupListeners() {
         fab.setOnClickListener(v -> callbacks.onLikeClicked(movie, fab));
         if (getActivity() != null && getActivity().getLocalClassName().equals("ui.DetailActivity")) {
             toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
@@ -173,6 +169,8 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     }
 
     private void setView() {
+        viewPager.setAdapter(pagerAdapter);
+        dots.setupWithViewPager(viewPager, true);
         Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/original/" + movie.getPosterPath())
                 .into(posterIv);
         releaseDateTv.setText(movie.getReleaseDate());
@@ -246,6 +244,7 @@ public class DetailFragment extends BaseFragment implements DetailView, YouTubeP
     public void onDetach() {
         super.onDetach();
         presenter.unsubscribe();
+        callbacks = null;
     }
 
     public interface Callbacks {

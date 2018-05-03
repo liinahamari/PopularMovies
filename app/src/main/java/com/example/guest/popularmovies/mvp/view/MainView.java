@@ -1,7 +1,5 @@
 package com.example.guest.popularmovies.mvp.view;
 
-import android.net.Uri;
-
 import com.example.guest.popularmovies.base.BaseView;
 import com.example.guest.popularmovies.mvp.model.SingleMovie;
 
