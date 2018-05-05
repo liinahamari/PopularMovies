@@ -1,6 +1,6 @@
 
 <div align="center">
-<a href="https://www.youtube.com/watch?v=5ptnThLNyNA" target="_blank"><img src="http://img.youtube.com/vi/5ptnThLNyNA/0.jpg" width="480" height="360" border="10"/></a>
+<a href="https://www.youtube.com/watch?v=5ptnThLNyNA" target="_blank"><img src="/meta/youtube.png" width="480" height="360" border="10"/></a>
 <br>
 <img src="/meta/image.png" width="480" height="360" border="10"/></div>
 <hr>
