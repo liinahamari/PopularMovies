@@ -20,16 +20,13 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.MainFragment;
 import com.example.guest.popularmovies.utils.DbOperations;
 import com.example.guest.popularmovies.utils.LikeButtonColorChanger;
+import com.example.guest.popularmovies.utils.RxThreadManager;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.COLUMN_TITLE;
-import static com.example.guest.popularmovies.db.MoviesContract.Entry.CONTENT_URI;
 import static com.example.guest.popularmovies.utils.MakeSMovieByQuery.makeMovieFromQuery;
 
 /**
@@ -90,8 +87,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                 .into(holder.bookmarkButton);
         holder.bookmarkButton.setOnClickListener(v ->
                 Single.fromCallable(() -> DbOperations.delete(movie.getTitle(), context))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
+                        .compose(RxThreadManager.manageSingle())
                         .subscribe(rowsDeleted -> {
                                     if (rowsDeleted != 0) {
                                         swapCursor(DbOperations.getAll(context));

@@ -12,11 +12,10 @@ import com.example.guest.popularmovies.mvp.model.SingleMovie;
 import com.example.guest.popularmovies.ui.DetailFragment;
 import com.example.guest.popularmovies.utils.DbOperations;
 import com.example.guest.popularmovies.utils.LikeButtonColorChanger;
+import com.example.guest.popularmovies.utils.RxThreadManager;
 
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by l1maginaire on 3/1/18.
@@ -51,8 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
         if (movie.isInFavorites() == 0) {
             fab.setClickable(false);
             compositeDisposable.add(Single.fromCallable(() -> DbOperations.insert(movie, this))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
+                    .compose(RxThreadManager.manageSingle())
                     .subscribe(uri -> {
                         movie.setInFavorites(1);
                         LikeButtonColorChanger.change(fab, this, 1);
@@ -61,8 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DetailFr
         } else {
             fab.setClickable(false);
             compositeDisposable.add(Single.fromCallable(() -> DbOperations.delete(movie.getTitle(), this))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
+                    .compose(RxThreadManager.manageSingle())
                     .subscribe(rowsDeleted -> {
                         if (rowsDeleted != 0) {
                             movie.setInFavorites(0);

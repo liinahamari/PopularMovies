@@ -23,6 +23,7 @@ import com.example.guest.popularmovies.ui.MainFragment;
 import com.example.guest.popularmovies.utils.DbOperations;
 import com.example.guest.popularmovies.utils.FavoritesChecker;
 import com.example.guest.popularmovies.utils.LikeButtonColorChanger;
+import com.example.guest.popularmovies.utils.RxThreadManager;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -32,8 +33,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
     private List<SingleMovie> movies;
@@ -104,13 +103,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             holder.bookmarkButton.setClickable(false);
             if (movie.isInFavorites() == 0) {
                 Single.fromCallable(() -> DbOperations.insert(movies.get(position), context))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
+                        .compose(RxThreadManager.manageSingle())
                         .subscribe(uri -> bookmarkCallback(movie, 1, holder, position));
             } else {
                 Single.fromCallable(() -> DbOperations.delete(movies.get(position).getTitle(), context))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
+                        .compose(RxThreadManager.manageSingle())
                         .subscribe(rowsDeleted -> bookmarkCallback(movie, 0, holder, position));
             }
         });
@@ -134,8 +131,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             holder.bookmarkButton.setClickable(false);
             return FavoritesChecker.isFavorite(context, movie);
         })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .compose(RxThreadManager.manageSingle())
                 .subscribe(isFavorite -> {
                     holder.bookmarkButton.setClickable(true);
                     Picasso.with(context)

@@ -5,11 +5,17 @@ package com.example.guest.popularmovies.utils;
  */
 
 import io.reactivex.ObservableTransformer;
+import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class RxThreadManager {
-    public static <T> ObservableTransformer<T, T> manage() {
+    public static <T> SingleTransformer<T, T> manageSingle() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T>ObservableTransformer<T, T> manageObservable(){
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

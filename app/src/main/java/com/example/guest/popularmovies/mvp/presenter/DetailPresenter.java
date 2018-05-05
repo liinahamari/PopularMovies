@@ -3,7 +3,6 @@ package com.example.guest.popularmovies.mvp.presenter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.widget.FrameLayout;
 
 import com.example.guest.popularmovies.BuildConfig;
 import com.example.guest.popularmovies.R;
@@ -11,15 +10,13 @@ import com.example.guest.popularmovies.api.MovDbApi;
 import com.example.guest.popularmovies.base.BasePresenter;
 import com.example.guest.popularmovies.mvp.model.trailers.MovieTrailers;
 import com.example.guest.popularmovies.mvp.view.DetailView;
+import com.example.guest.popularmovies.utils.RxThreadManager;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -42,8 +39,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     public void getTrailers(String id, YouTubePlayerSupportFragment youTubePlayerSupportFragment,
                             YouTubePlayer.OnInitializedListener listener, FragmentManager fragmentManager) {
         apiService.getTrailers(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxThreadManager.manageObservable())
                 .subscribe(new Observer<MovieTrailers>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -71,8 +67,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
     public void getReviews(String id) {
         compositeDisposable.add(apiService.getMovieReviews(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxThreadManager.manageObservable())
                 .subscribe(movieReviews -> getView().onReviewsLoaded(movieReviews.getReviews())));
     }
 
